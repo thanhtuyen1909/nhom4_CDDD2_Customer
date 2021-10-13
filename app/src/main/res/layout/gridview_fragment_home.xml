@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/tvGridHomeName"
         android:layout_width="112dp"
-        android:layout_height="28dp"
+        android:layout_height="36dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="TextView"

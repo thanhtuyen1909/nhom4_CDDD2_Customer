@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nguyenloi.shop_ecommerce.R;
+import com.nguyenloi.shop_ecommerce.RatingDetailActivity;
 import com.nguyenloi.shop_ecommerce.TheBill;
 import com.nguyenloi.shop_ecommerce.adapters.TheBillAdapter;
 
@@ -57,7 +58,16 @@ public class HistoryBillActivity extends AppCompatActivity {
                 Toast.makeText(HistoryBillActivity.this, "Đang vận chuyển", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.itFilterReceived:
-                Toast.makeText(HistoryBillActivity.this, "Đã nhận hàng", Toast.LENGTH_SHORT).show();
+                theBillAdapter=new TheBillAdapter(HistoryBillActivity.this,R.layout.item_bill_rating);
+                lvHistoryBill.setAdapter(theBillAdapter);
+                addData();
+                lvHistoryBill.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(HistoryBillActivity.this, RatingDetailActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 break;
         }
         return super.onOptionsItemSelected(item);
