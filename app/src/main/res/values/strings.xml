@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Shop_Ecommerce</string>
+    <string name="IntroTittle">Ứng dụng mua hàng điện tử</string>
+    <string name="appName">Zuke</string>
+    <string name="introHotline">Hotline: 0123456789</string>
+    <string name="introAddress">Địa chỉ văn phòng: 53 Võ Văn Ngân, p.Linh Chiểu, tp.Thủ Đức, tp. HCM</string>
+    <string name="introTarget">Mục tiêu: </string>
+    <string name="introTargetDecription">Thái độ của mọi người và hành động của họ đối với một sự vật là do niềm tin của họ về sự vật đó quyết định rất nhiều. Hình ảnh là một tập hợp những niềm tin, ý tưởng và ấn tượng của một người về sự vật. Lượng hóa sự chấp nhận của công chúng mục tiêu về sự vật đó bằng thước đo mức độ quen thuộc như sau: Chưa hề nghe thấy, mới chỉ nghe thấy, có biết đôi chút, biết khá nhiều, biết rất rõ, mua, mua lặp lại, mua nhiều.</string>
+    <string name="question1">Không thể đăng nhập?</string>
+    <string name="answer1">Nếu bạn quên mật khẩu bạn có thể vào ngay màn hình đăng nhập, chọn vào quên mật khẩu, sau đó bạn hãy xác nhận thông tin</string>
+    <string name="question2">Đổi mật khẩu?</string>
+    <string name="answer2">Bạn hãy vào màn hình cá nhân, tiếp hãy chọn vào cài đặt tài khoản rồi chọn vào đổi mật khẩu. Bạn sẽ đổi mật khẩu thông qua mật khẩu cũ</string>
+    <string name="question3">Sản phẩm bị lỗi?</string>
+    <string name="answer3">Nếu sản phẩm của bạn bị lỗi và vẫn còn trong thời hạn bảo hành thì mong bạn hãy đưa món đồ đó đến cửa hàng của chúng tôi hoặc liên hệ qua số điện thoại: 0123 345 567</string>
+    <string name="question4">Đơn hàng vẫn chưa được gửi tới?</string>
+    <string name="answer4">Chúng tôi sẽ gửi đơn hàng đến sớm nhất cho các bạn. Hoặc bạn có thể gọi cho chúng tôi qua số điện thoại 056 123 123</string>
+    <string name="question5">Hoàn trả đơn hàng?</string>
+    <string name="answer5">Chúng tôi có chính sách hoàn trả đơn hàng miễn phí 100% trong 3 ngày trừ trường hợp bị vỡ hoặc liên quan đến do bạn làm hỏng</string>
+    <string name="question6">Chính sách khuyến mãi</string>
+    <string name="answer6">Chúng tôi luôn có chính sách khuyễn mãi môi tuần. Mong bạn hãy theo dõi và tiếp tục ủng hộ chúng tôi</string>
+    <string name="question7">Phương thức thanh toán</string>
+    <string name="answer7">Chúng tôi đảm bảo phương thức thanh toán luôn an toàn, đó là giao dịch trực tiếp khi mà bạn đã nhận hàng</string>
+    <string name="question8">Khoá tài khoản?</string>
+    <string name="answer8">Nếu bạn spam quá nhiều chúng tôi sẽ khoá tài khoản của bạn. Nếu trong trường hợp bạn không vi phạm mà bị khoá thì hãy liên hệ với chúng tôi.</string>
+    <string name="question9">Khiếu nại sản phẩm?</string>
+    <string name="answer9">Bạn hãy liên hệ với trực tiếp với chúng tôi hoặc qua số điện thoại: 056 8442 312 chúng tôi luôn đảm bảo chính thực nhất cho bạn</string>
+    <string name="question10">Chính sách cho khách hàng</string>
+    <string name="commen1">Shop đáng yêu lắm luôn ạ, đóng gói còn cẩn thận nữa ạ. Nhưng mình sợ mấy cái này ko cùng đc lâu nhưng vs giá tiền của món hàng thì quá chất lượng rồi ạ!!!!!</string>
+    <string name="commen2">Đóng gói cẩn thận giao hàng hơi lâu phải chờ lâu sản phẩm tốt hợp vs giá tiền còn sử dụng tốt hay không thì tôi mới mua chưa kiểm tra được😏😏😏</string>
+    <string name="description">Surface Pro 7 Core i5 RAM 8GB SSD 256GB sở hữu màn hình có kích thước 12.3 inch với độ phân giải cực cao 2736x1824 Pixel cùng mật độ điểm ảnh đạt 267 PPI và tỷ lệ khung hình truyền thống 3:2 mang lại chất lượng hiển thị siêu nét, hình ảnh chân thực nhất với độ sáng tốt thoải mái làm việc ở những nơi có ánh sáng lớn. Thiết bị cùng được trang bị cảm ứng đa điểm lên tới 10 điểm cho phép bạn thao tác hoàn hảo nhất.</string>
+    <string name="answer10">Chúng tôi luôn nỗ lực mang đến sự hài lòng cho mỗi khách hàng qua phong cách phục vụ tận tình, thấu hiểu và tinh tế. Với đội ngũ nhân viên tư vấn bán hàng chuyên nghiệp, các chuyên gia kĩ thuật trong ngành, Zuke đảm bảo cung cấp cho khách hàng những thông tin trung thực cùng những giải pháp tốt nhất, đạt hiệu quả kinh tế cao nhất</string>
+
+
+    <string name="commentRating1">Giao hàng chuẩn .sản phẩm như môta. Con tội học online rất hài lòng.</string>
+    <string name="commentRating2">Máy siêu xinh lun chạy mượt còn mới lắm sh 4 vấn rất nhiệt tình sẽ ủbg hộ nữa ạ</string>
+    <string name="commentRating3">Giao hàng khá nhanh, máy thì hơi xước tí, góc màn hình thì hơi bị mẻ tí, nhưng k sao,  máy ngon là đc, nên mua nha cả nhà</string>
+</resources>
