@@ -28,7 +28,7 @@
             <LinearLayout style="@style/ve_5"></LinearLayout>
 
             <EditText
-                android:id="@+id/btnRegisterEmail"
+                android:id="@+id/edtRegisterEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -53,7 +53,7 @@
             <LinearLayout style="@style/ve_5"></LinearLayout>
 
             <EditText
-                android:id="@+id/btnRegisterPhone"
+                android:id="@+id/edtRegisterPhone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -80,13 +80,13 @@
             <LinearLayout style="@style/ve_5"></LinearLayout>
 
             <EditText
-                android:id="@+id/btnRegisterPassword"
+                android:id="@+id/edtRegisterPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Mật khẩu"
-                android:inputType="number|textPassword|textEmailAddress" />
+                android:inputType="textPassword" />
 
             <LinearLayout style="@style/ve_5"></LinearLayout>
         </LinearLayout>
@@ -102,13 +102,13 @@
             <LinearLayout style="@style/ve_5"></LinearLayout>
 
             <EditText
-                android:id="@+id/btnRegisterSubmitPassword"
+                android:id="@+id/edtRegisterSubmitPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Xác nhận mật khẩu"
-                android:inputType="number|textPassword|textEmailAddress" />
+                android:inputType="textPassword" />
 
             <LinearLayout style="@style/ve_5"></LinearLayout>
         </LinearLayout>
@@ -124,7 +124,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="9"
+        android:layout_weight="13"
         android:gravity="center">
 
         <LinearLayout
@@ -137,7 +137,7 @@
             android:id="@+id/btnRegisterRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="Đăng ký" />
 
         <LinearLayout

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.FirebaseApp;
 import com.nguyenloi.shop_ecommerce.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -18,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setControl();
+        FirebaseApp.initializeApp(this);
         this.getSupportActionBar().setTitle("Đăng nhập");
         btnLoginLogin.setOnClickListener(new View.OnClickListener() {
             @Override
