@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/loginSnackBar"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activites.LoginActivity">
@@ -34,14 +35,14 @@
 
             <LinearLayout style="@style/ve_5"></LinearLayout>
 
-            <EditText
-                android:id="@+id/ediLoginPhone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Số điện thoại"
-                android:inputType="number" />
+         <EditText
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_weight="1"
+             android:inputType="number"
+             android:id="@+id/edtLoginPhoneNum"
+             android:ems="10"
+             android:hint="Số điện thoại"/>
 
             <LinearLayout style="@style/ve_5"></LinearLayout>
         </LinearLayout>

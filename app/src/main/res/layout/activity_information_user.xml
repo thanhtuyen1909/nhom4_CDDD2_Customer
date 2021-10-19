@@ -49,12 +49,21 @@
                 android:id="@+id/edtInformationUsername"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:enabled="false"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Username"
                 android:inputType="text" />
 
-            <LinearLayout style="@style/ve_5"></LinearLayout>
+            <LinearLayout style="@style/ve_5">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgInformationEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_edit" />
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             style="@style/ve_2_total_free"
@@ -75,24 +84,10 @@
 
             <LinearLayout style="@style/ve_5"></LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             style="@style/ve_2_total_free"
-            android:layout_weight="4">
-
-            <LinearLayout style="@style/ve_5"></LinearLayout>
-
-            <TextView
-                android:id="@+id/tvInformationEmail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:text="usercute@gmail.com"
-                android:textSize="18sp" />
-
-            <LinearLayout style="@style/ve_5"></LinearLayout>
-        </LinearLayout>
+            android:layout_weight="5" />
         <LinearLayout
             style="@style/ve_2_total_free"
             android:layout_weight="4">
