@@ -1,25 +1,53 @@
 package com.nguyenloi.shop_ecommerce;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.ListView;
 
-import com.nguyenloi.shop_ecommerce.adapters.TheListAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.nguyenloi.shop_ecommerce.adapters.ProductsFindAdapter;
+import com.nguyenloi.shop_ecommerce.adapters.ProductsHomeCategoryAdapter;
+
+import java.util.ArrayList;
 
 public class FindProductActivity extends AppCompatActivity {
-   ListView lvFindNameProduct;
-   TheListAdapter theListAdapter;
+   RecyclerView rcvFindProducts;
+   ProductsFindAdapter findAdapter;
+   Query queryFilterData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_product);
-        lvFindNameProduct=findViewById(R.id.lvFindNameProduct);
-        theListAdapter = new TheListAdapter(FindProductActivity.this,R.layout.item_list);
-        lvFindNameProduct.setAdapter(theListAdapter);
-        addData();
+        setControl();
+
+        queryFilterData=FirebaseDatabase.getInstance().getReference().child("Products");
+        //Load data
+        loadDataFilter();
+    }
+
+    private void loadDataFilter(){
+        FirebaseRecyclerOptions<Products> options =
+                new FirebaseRecyclerOptions.Builder<Products>()
+                        .setQuery(queryFilterData, Products.class)
+                        .build();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FindProductActivity.this, LinearLayoutManager.VERTICAL, false);;
+        rcvFindProducts.setLayoutManager(linearLayoutManager);
+        findAdapter = new ProductsFindAdapter(options,FindProductActivity.this);
+        rcvFindProducts.setAdapter(findAdapter);
+    }
+
+
+
+
+    private void setControl() {
+        rcvFindProducts=findViewById(R.id.rcvFindProducts);
     }
 
     @Override
@@ -29,11 +57,16 @@ public class FindProductActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void addData() {
-        theListAdapter.add(new TheList(R.drawable.lap5,1000000,13,"Laptop Asus"));
-        theListAdapter.add(new TheList(R.drawable.lap2,1200000,13,"Macbook pro"));
-        theListAdapter.add(new TheList(R.drawable.lap3,1430000,13,"Dell i3"));
-        theListAdapter.add(new TheList(R.drawable.lap4,1320000,13,"Lenovo"));
-        theListAdapter.add(new TheList(R.drawable.lap5,9000000,13,"Asus i5"));
+    @Override
+    protected void onStart() {
+        super.onStart();
+        findAdapter.startListening();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        findAdapter.stopListening();
+    }
+
 }

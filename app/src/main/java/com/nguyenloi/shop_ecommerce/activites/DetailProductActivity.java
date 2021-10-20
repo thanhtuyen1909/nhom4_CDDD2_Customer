@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.widget.GridView;
 
 import com.nguyenloi.shop_ecommerce.R;
-import com.nguyenloi.shop_ecommerce.adapters.GridHomeAdapter;
 
 import java.util.ArrayList;
 
@@ -14,20 +13,19 @@ public class DetailProductActivity extends AppCompatActivity {
     ArrayList<String> nameProduct = new ArrayList<>();
     ArrayList<String> priceProduct = new ArrayList<>();
     ArrayList<Integer> imgProduct = new ArrayList<>();
-   GridView girdDetailProduct;
+    GridView girdDetailProduct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_product);
         this.getSupportActionBar().setTitle("Chi tiết sản phẩm");
-       setControl();
+        setControl();
     }
 
     private void setControl() {
         girdDetailProduct=findViewById(R.id.gridDetailProduct);
         fillArray();
-        GridHomeAdapter adapter = new GridHomeAdapter(DetailProductActivity.this, nameProduct, priceProduct, imgProduct);
-        girdDetailProduct.setAdapter(adapter);
+
     }
 
     private void fillArray() {

@@ -1,7 +1,7 @@
 package com.nguyenloi.shop_ecommerce;
 
  public  class   GlobalIdUser {
-    public static String userId;
+    public static String userId="-MmBj2794bYrrB8TZQtN";
 
     public GlobalIdUser() {
     }

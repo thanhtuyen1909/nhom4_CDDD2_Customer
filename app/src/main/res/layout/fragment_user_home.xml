@@ -12,214 +12,47 @@
         android:layout_margin="@dimen/size_border_all"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView"
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/imgHomeSlider"
             android:layout_width="match_parent"
-            android:layout_height="161dp"
-            app:srcCompat="@drawable/lap6" />
+            android:layout_height="160dp"
+            android:animateLayoutChanges="true"
 
-        <LinearLayout
+            android:background="#3F51B5"
+            android:elevation="3dp"
+            android:gravity="center"
+            app:auto_cycle="true"
+            app:corner_radius="20"
+            app:delay="0"
+            app:error_image="@drawable/lap2"
+            app:period="3000"
+            app:placeholder="@drawable/lap1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvHomeCategory"
             android:layout_width="match_parent"
-            android:layout_height="60dp">
-
-            <Button
-                android:id="@+id/btn1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3sp"
-                android:layout_weight="1"
-                android:text="Tivi"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/btn2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3sp"
-                android:layout_weight="1"
-                android:text="Tủ lạnh"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/btn3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3sp"
-                android:layout_weight="1"
-                android:text="Máy giặt"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/btn4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3sp"
-                android:layout_weight="1"
-                android:text="Máy lạnh"
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp">
-
-            <Button
-                android:id="@+id/btn5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3sp"
-                android:layout_weight="1"
-                android:text="Máy tính"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/btn6"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3sp"
-                android:layout_weight="1"
-                android:text="Linh kiện"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/btn7"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3sp"
-                android:layout_weight="1"
-                android:text="Điện thoại"
-                android:textSize="11sp" />
-
-            <Button
-                android:id="@+id/btn8"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="3sp"
-                android:layout_weight="1"
-                android:text="Đồ bếp"
-                android:textSize="11sp" />
-        </LinearLayout>
+            android:layout_height="120dp" />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="5sp"
+            android:layout_marginTop="19sp"
             android:layout_marginBottom="3sp"
             android:text="Gợi ý dành cho bạn"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvHomeSuggestion"
             android:layout_width="match_parent"
-            android:layout_height="167dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/lap3" />
-
-                <TextView
-                    android:id="@+id/textView22"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:text="MacBook"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView28"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center_horizontal"
-                    android:text="9000000đ"
-                    android:textColor="@color/colorPrice"
-                    android:textStyle="bold|italic" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imageView10"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/lap4" />
-
-                <TextView
-                    android:id="@+id/textView33"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:text="Asus"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView31"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center_horizontal"
-                    android:text="9000000đ"
-                    android:textColor="@color/colorPrice"
-                    android:textStyle="bold|italic" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imageView11"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/lap1" />
-
-                <TextView
-                    android:id="@+id/textView34"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center"
-                    android:text="Lenovo"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView32"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:gravity="center_horizontal"
-                    android:text="9000000đ"
-                    android:textColor="@color/colorPrice"
-                    android:textStyle="bold|italic" />
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_height="165dp"/>
 
         <TextView
             android:id="@+id/textView11"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="5sp"
+            android:layout_marginTop="19sp"
             android:text="Mua nhiều nhất"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -229,14 +62,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <GridView
-                android:id="@+id/gridDataHome"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvHomeTopSold"
                 android:layout_width="match_parent"
-                android:layout_height="580dp"
-                android:gravity="center"
-                android:horizontalSpacing="2dp"
-                android:isScrollContainer="false"
-                android:numColumns="2" />
+                android:layout_height="1500dp" />
         </LinearLayout>
 
 

@@ -40,10 +40,8 @@ public class RegisterActivity extends AppCompatActivity {
     String password, cofirmPassword, email;
 
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    ;
-    DatabaseReference reference = database.getReference();
-    ;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();;
+    DatabaseReference reference = database.getReference();;
 
     Query filterPhoneNumberUser;
 
@@ -63,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
                 password = edtRegisterPassword.getText().toString();
                 cofirmPassword = edtRegisterSubmitPassword.getText().toString();
                 email = edtRegisterEmail.getText().toString().trim();
-                ;
                 checkData();
             }
         });

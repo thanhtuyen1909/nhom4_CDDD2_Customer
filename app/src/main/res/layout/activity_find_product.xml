@@ -31,8 +31,8 @@
             app:srcCompat="@drawable/ic_filter" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lvFindNameProduct"
+    <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/rcvFindProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />

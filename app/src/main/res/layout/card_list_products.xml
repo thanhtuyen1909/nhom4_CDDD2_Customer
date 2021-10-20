@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:layout_margin="5dp"
+    android:backgroundTint="#F1B9B9"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="2dp">>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6sp"
+            android:scaleType="fitCenter"
+            android:id="@+id/imgListProducts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="7dp"
+            android:layout_weight="4"
+            app:srcCompat="@drawable/f1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvListProductsName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="123"
+                android:textColor="#232121"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+               android:id="@+id/tvListProductsPrice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="123"
+                android:textColor="@color/colorPrice"
+                android:textSize="15sp" />
+
+            <TextView
+               android:id="@+id/tvListProductsSold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="123"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <ImageView
+         android:id="@+id/imgListProductsTym"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="5"
+            android:foregroundTintMode="add"
+            app:srcCompat="@drawable/ic_favorite_border"
+            app:tint="@color/colorPrice" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
