@@ -10,5 +10,9 @@
     <color name="colorMain">#03A9F4</color>
     <color name="colorLink">#536DFE</color>
     <color name="colorPrice">#D32F2F</color>
+    <color name="colorBackground">#A5B1F1</color>
+    <color name="colorDivider">#222020</color>
+    <color name="colorTintIcon">#212330</color>
+    <color name="colorMenu">#03A9F4</color>
 
 </resources>

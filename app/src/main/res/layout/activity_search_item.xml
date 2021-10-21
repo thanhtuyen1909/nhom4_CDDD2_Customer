@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SearchItemActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_height_menu"
+        android:background="@color/colorMenu"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/size_border_all"
+            android:layout_marginRight="@dimen/size_border_all">
+
+            <AutoCompleteTextView
+                android:id="@+id/idAutoCompleted"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:completionThreshold="1"
+                android:drawableLeft="@drawable/ic_search_black_24dp"
+                android:hint="Nhập tên sản phẩm"
+                android:imeOptions="actionNext"
+                android:inputType="text" />
+
+            <ImageView
+                android:id="@+id/imgIconHomeShop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:foregroundTintMode="add"
+                app:srcCompat="@drawable/ic_cart"
+                app:tint="@color/colorTintIcon" />
+
+            <ImageView
+                android:id="@+id/imgIconHomeNotification"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:foregroundTintMode="add"
+                app:srcCompat="@drawable/ic_notification"
+                app:tint="#1F2429" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider" />
+</LinearLayout>

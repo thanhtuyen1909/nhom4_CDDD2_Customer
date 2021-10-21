@@ -13,8 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.nguyenloi.shop_ecommerce.R;
-import com.nguyenloi.shop_ecommerce.TheList;
-import com.nguyenloi.shop_ecommerce.TheRating;
+import com.nguyenloi.shop_ecommerce.Class.TheRating;
 
 public class TheRatingAdapter extends ArrayAdapter<TheRating> {
     Activity context;

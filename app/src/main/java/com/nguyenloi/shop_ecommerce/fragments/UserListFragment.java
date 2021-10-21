@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.nguyenloi.shop_ecommerce.activites.CartActivity;
+import com.nguyenloi.shop_ecommerce.activites.Cart.CartActivity;
 import com.nguyenloi.shop_ecommerce.R;
 
 public class UserListFragment extends Fragment {

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.nguyenloi.shop_ecommerce.Notification;
+import com.nguyenloi.shop_ecommerce.Class.Notification;
 import com.nguyenloi.shop_ecommerce.R;
 
 public class NotificationAdapter extends ArrayAdapter<Notification> {

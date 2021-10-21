@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8sp"
-    tools:context=".activites.CartActivity">
+    tools:context=".activites.Cart.CartActivity">
 
     <ListView
         android:id="@+id/lvCart"

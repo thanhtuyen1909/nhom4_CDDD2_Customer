@@ -6,7 +6,7 @@
     android:id="@+id/loginSnackBar"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activites.LoginActivity">
+    tools:context=".activites.Login.LoginActivity">
 
 
     <ImageView

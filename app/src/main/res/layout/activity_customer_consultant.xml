@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10sp"
-    tools:context=".activites.CustomerConsultantActivity">
+    tools:context=".activites.User.CustomerConsultantActivity">
 
     <TextView
         android:id="@+id/textView7"

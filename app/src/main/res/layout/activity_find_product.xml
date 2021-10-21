@@ -4,34 +4,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="6dp"
+    android:background="@color/colorBackground"
     android:orientation="vertical"
-    tools:context=".FindProductActivity">
+    tools:context=".activites.Other.FindProductActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="12"
+        android:layout_height="@dimen/size_height_menu"
+
+        android:background="@color/colorMenu"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgFindArrowBack"
+
+           style="@style/image_arrow_back" />
+
+        <AutoCompleteTextView
+           android:id="@+id/edtFindAutocompleted"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:completionThreshold="1"
+            android:drawableLeft="@drawable/ic_search_black_24dp"
+            android:hint="Nhập tên sản phẩm"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:layout_marginLeft="@dimen/size_border_all"
+            android:layout_marginRight="@dimen/size_border_all"/>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="@dimen/size_border_all"
+        android:layout_marginRight="@dimen/size_border_all"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView45"
+            android:id="@+id/tvFindSearchTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="Tìm được: 4 kết quả" />
+            android:text="TextView"
+            android:textColor="@color/colorTintIcon" />
 
         <ImageView
-            android:id="@+id/imageView15"
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="3dp"
-            android:layout_weight="5"
-            app:srcCompat="@drawable/ic_filter" />
+            android:layout_weight="7"
+            app:srcCompat="@drawable/ic_filter"
+            app:tint="@color/colorTintIcon" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/divider9"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider" />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="@dimen/size_border_all"
        android:id="@+id/rcvFindProducts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,6 +1,7 @@
 package com.nguyenloi.shop_ecommerce.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.nguyenloi.shop_ecommerce.Category;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.nguyenloi.shop_ecommerce.Class.Category;
 import com.nguyenloi.shop_ecommerce.R;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +32,13 @@ public class ProductsHomeCategoryAdapter extends FirebaseRecyclerAdapter<Categor
     @Override
     protected void onBindViewHolder(@NonNull ProductsCategoryViewHolder holder, int position, @NonNull Category model) {
         holder.tvCardHomeCategory.setText(model.getName());
-        Picasso.get().load(model.getImage()).into(holder.imgCardHomeCategory);
+        StorageReference imageRef = FirebaseStorage.getInstance().getReference("images/manufactures/" + model.getName() + "/" + model.getName() + ".jpg");
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri.toString()).resize(holder.imgCardHomeCategory.getWidth(), holder.imgCardHomeCategory.getHeight()).into(holder.imgCardHomeCategory);
+            }
+        });
 
         //Search by category
         holder.cardHomeCategory.setOnClickListener(new View.OnClickListener() {

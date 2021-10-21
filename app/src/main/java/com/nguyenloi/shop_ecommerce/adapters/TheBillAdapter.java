@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.nguyenloi.shop_ecommerce.TheBill;
+import com.nguyenloi.shop_ecommerce.Class.TheBill;
 import com.nguyenloi.shop_ecommerce.R;
 
 public class TheBillAdapter extends ArrayAdapter<TheBill> {

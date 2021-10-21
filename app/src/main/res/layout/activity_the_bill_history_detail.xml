@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="7sp"
     android:orientation="vertical"
-    tools:context=".activites.TheBillHistoryDetailActivity">
+    tools:context=".activites.Bill.TheBillHistoryDetailActivity">
 
     <ListView
         android:id="@+id/lvHistoryBillDetail"

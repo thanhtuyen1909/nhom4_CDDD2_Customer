@@ -1,7 +1,6 @@
 package com.nguyenloi.shop_ecommerce.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.nguyenloi.shop_ecommerce.R;
-import com.nguyenloi.shop_ecommerce.TheCustomerConslutant;
+import com.nguyenloi.shop_ecommerce.Class.TheCustomerConslutant;
 
 public class TheCustomerConslutantAdapter extends ArrayAdapter<TheCustomerConslutant> {
     Activity context;

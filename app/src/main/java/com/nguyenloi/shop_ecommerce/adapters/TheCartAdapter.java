@@ -1,7 +1,6 @@
 package com.nguyenloi.shop_ecommerce.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.nguyenloi.shop_ecommerce.R;
-import com.nguyenloi.shop_ecommerce.TheCart;
+import com.nguyenloi.shop_ecommerce.Class.TheCart;
 
 public class TheCartAdapter extends ArrayAdapter<TheCart> {
     Activity context;

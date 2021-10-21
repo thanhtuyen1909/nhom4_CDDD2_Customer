@@ -17,12 +17,9 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.nguyenloi.shop_ecommerce.Products;
+import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.Stack;
 
 public class ProductsHomeTopSoldAdapter extends FirebaseRecyclerAdapter<Products, ProductsHomeTopSoldAdapter.HomeTopSoldViewHolder> {
     Context context;
@@ -50,7 +47,7 @@ public class ProductsHomeTopSoldAdapter extends FirebaseRecyclerAdapter<Products
             }
         });
 
-        //Remove data;
+
         holder.cardHomeTopSold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

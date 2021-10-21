@@ -12,17 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop_Ecommerce">
         <activity
-            android:name=".ForgetPasswordDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.LoginActivity"
+            android:name=".SearchItemActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,9 +21,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NotificationActiviy"
+            android:name=".activites.Login.ForgetPasswordDetailActivity"
             android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
+            android:parentActivityName=".activites.Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,17 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FindProductActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".RatingDetailActivity"
+            android:name=".activites.Login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,9 +40,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChangePasswordDetailActivity"
+            android:name=".activites.Other.NotificationActiviy"
             android:exported="true"
-            android:parentActivityName=".activites.InformationUserActivity">
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,7 +50,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.BottomNavigationUserActivity"
+            android:name=".activites.Other.FindProductActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activites.RatingDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -79,9 +69,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.DetailProductActivity"
+            android:name=".activites.User.ChangePasswordDetailActivity"
             android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
+            android:parentActivityName=".activites.User.InformationUserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -89,47 +79,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.CartDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.CartActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.CartActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.HistoryBillActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.TheBillHistoryDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.HistoryBillActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.CustomerConsultantActivity"
+            android:name=".activites.Other.BottomNavigationUserActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -138,9 +88,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.IntroduceActivity"
+            android:name=".activites.Other.DetailProductActivity"
             android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -148,9 +98,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.InformationUserActivity"
+            android:name=".activites.Cart.CartDetailActivity"
             android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
+            android:parentActivityName=".activites.Cart.CartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -158,9 +108,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.ChangePasswordActivity"
+            android:name=".activites.Cart.CartActivity"
             android:exported="true"
-            android:parentActivityName=".activites.InformationUserActivity">
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -168,9 +118,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.NewPasswordActivity"
+            android:name=".activites.Bill.HistoryBillActivity"
             android:exported="true"
-            android:parentActivityName=".activites.OtpActivity">
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -178,9 +128,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.ForgetPasswordActivity"
+            android:name=".activites.Bill.TheBillHistoryDetailActivity"
             android:exported="true"
-            android:parentActivityName=".activites.LoginActivity">
+            android:parentActivityName=".activites.Bill.HistoryBillActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -188,9 +138,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.RegisterActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.LoginActivity">
+            android:name=".activites.User.CustomerConsultantActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -198,9 +147,69 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.OtpActivity"
+            android:name=".activites.User.IntroduceActivity"
             android:exported="true"
-            android:parentActivityName=".activites.ForgetPasswordActivity">
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activites.User.InformationUserActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activites.User.ChangePasswordActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.User.InformationUserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activites.User.NewPasswordActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.Login.OtpActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activites.Login.ForgetPasswordActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.Login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activites.Login.RegisterActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.Login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activites.Login.OtpActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.Login.ForgetPasswordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

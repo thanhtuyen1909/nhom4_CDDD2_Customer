@@ -19,17 +19,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.nguyenloi.shop_ecommerce.GlobalIdUser;
+import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.R;
-import com.nguyenloi.shop_ecommerce.activites.BottomNavigationUserActivity;
-import com.nguyenloi.shop_ecommerce.activites.CustomerConsultantActivity;
-import com.nguyenloi.shop_ecommerce.activites.HistoryBillActivity;
-import com.nguyenloi.shop_ecommerce.activites.InformationUserActivity;
-import com.nguyenloi.shop_ecommerce.activites.IntroduceActivity;
-import com.nguyenloi.shop_ecommerce.activites.LoginActivity;
+import com.nguyenloi.shop_ecommerce.activites.User.CustomerConsultantActivity;
+import com.nguyenloi.shop_ecommerce.activites.Bill.HistoryBillActivity;
+import com.nguyenloi.shop_ecommerce.activites.User.InformationUserActivity;
+import com.nguyenloi.shop_ecommerce.activites.Login.LoginActivity;
 import com.squareup.picasso.Picasso;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class UserAccountFragment extends Fragment {
