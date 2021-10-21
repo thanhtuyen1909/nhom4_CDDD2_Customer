@@ -9,73 +9,57 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop_Ecommerce">
+
         <activity
             android:name=".activites.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".FindProductActivity"
+            android:parentActivityName=".activites.BottomNavigationUserActivity"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".NotificationActiviy"
+            android:exported="true"
+            android:parentActivityName=".activites.BottomNavigationUserActivity">
+
         </activity>
         <activity
             android:name=".RatingDetailActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
         <activity
             android:name=".ChangePasswordDetailActivity"
             android:exported="true"
             android:parentActivityName=".activites.InformationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.BottomNavigationUserActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.DetailProductActivity"
             android:exported="true"
             android:parentActivityName=".activites.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.CartDetailActivity"
             android:exported="true"
             android:parentActivityName=".activites.CartActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.CartActivity"
             android:exported="true"
             android:parentActivityName=".activites.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.HistoryBillActivity"
@@ -91,90 +75,54 @@
             android:name=".activites.TheBillHistoryDetailActivity"
             android:exported="true"
             android:parentActivityName=".activites.HistoryBillActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.CustomerConsultantActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.IntroduceActivity"
             android:exported="true"
             android:parentActivityName=".activites.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.InformationUserActivity"
             android:exported="true"
             android:parentActivityName=".activites.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.ChangePasswordActivity"
             android:exported="true"
             android:parentActivityName=".activites.InformationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.NewPasswordActivity"
             android:exported="true"
             android:parentActivityName=".activites.OtpActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.ForgetPasswordActivity"
             android:exported="true"
             android:parentActivityName=".activites.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.RegisterActivity"
             android:exported="true"
             android:parentActivityName=".activites.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.OtpActivity"
             android:exported="true"
             android:parentActivityName=".activites.ForgetPasswordActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

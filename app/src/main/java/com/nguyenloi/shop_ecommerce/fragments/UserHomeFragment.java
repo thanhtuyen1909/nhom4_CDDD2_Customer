@@ -14,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.nguyenloi.shop_ecommerce.FindProductActivity;
+import com.nguyenloi.shop_ecommerce.NotificationActiviy;
 import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.activites.CartActivity;
 import com.nguyenloi.shop_ecommerce.adapters.GridHomeAdapter;
@@ -50,7 +53,11 @@ public class UserHomeFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.itNotification:
-                Toast.makeText(getContext(), "Thông báo", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(getContext(), NotificationActiviy.class);
+                startActivity(intent2);
+            case R.id.itGoToFind:
+                Intent intent3 = new Intent(getContext(), FindProductActivity.class);
+                startActivity(intent3);
                 break;
 
         }

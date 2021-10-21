@@ -8,15 +8,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.nguyenloi.shop_ecommerce.FindProductActivity;
 import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.TheList;
 import com.nguyenloi.shop_ecommerce.activites.CartActivity;
+import com.nguyenloi.shop_ecommerce.activites.DetailProductActivity;
 import com.nguyenloi.shop_ecommerce.adapters.TheListAdapter;
 
 public class UserFavoriteFragment extends Fragment {
@@ -31,6 +35,13 @@ public class UserFavoriteFragment extends Fragment {
         theListAdapter = new TheListAdapter(this.getActivity(),R.layout.item_list);
         lvFavorite.setAdapter(theListAdapter);
         addData();
+        lvFavorite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent3 = new Intent(getContext(), FindProductActivity.class);
+                startActivity(intent3);
+            }
+        });
         return view;
     }
 

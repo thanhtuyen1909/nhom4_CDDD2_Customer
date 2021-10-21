@@ -29,9 +29,22 @@
     <string name="commen2">Đóng gói cẩn thận giao hàng hơi lâu phải chờ lâu sản phẩm tốt hợp vs giá tiền còn sử dụng tốt hay không thì tôi mới mua chưa kiểm tra được😏😏😏</string>
     <string name="description">Surface Pro 7 Core i5 RAM 8GB SSD 256GB sở hữu màn hình có kích thước 12.3 inch với độ phân giải cực cao 2736x1824 Pixel cùng mật độ điểm ảnh đạt 267 PPI và tỷ lệ khung hình truyền thống 3:2 mang lại chất lượng hiển thị siêu nét, hình ảnh chân thực nhất với độ sáng tốt thoải mái làm việc ở những nơi có ánh sáng lớn. Thiết bị cùng được trang bị cảm ứng đa điểm lên tới 10 điểm cho phép bạn thao tác hoàn hảo nhất.</string>
     <string name="answer10">Chúng tôi luôn nỗ lực mang đến sự hài lòng cho mỗi khách hàng qua phong cách phục vụ tận tình, thấu hiểu và tinh tế. Với đội ngũ nhân viên tư vấn bán hàng chuyên nghiệp, các chuyên gia kĩ thuật trong ngành, Zuke đảm bảo cung cấp cho khách hàng những thông tin trung thực cùng những giải pháp tốt nhất, đạt hiệu quả kinh tế cao nhất</string>
+    <string name="commentRating1">Giao hàng chuẩn .sản phẩm như môta. Con tội học online rất hài lòng.</string>
+    <string name="commentRating2">Máy siêu xinh lun chạy mượt còn mới lắm sh 4 vấn rất nhiệt tình sẽ ủbg hộ nữa ạ</string>
+    <string name="commentRating3">Giao hàng khá nhanh, máy thì hơi xước tí, góc màn hình thì hơi bị mẻ tí, nhưng k sao,  máy ngon là đc, nên mua nha cả nhà</string>
 
+    <string-array name="mau">
+        <item>Màu 1</item>
+        <item>Màu 2 AAAAAAAAAAA</item>
+    </string-array>
 
-   <string name="commentRating1">Giao hàng chuẩn .sản phẩm như môta. Con tội học online rất hài lòng.</string>
-   <string name="commentRating2">Máy siêu xinh lun chạy mượt còn mới lắm sh 4 vấn rất nhiệt tình sẽ ủbg hộ nữa ạ</string>
-   <string name="commentRating3">Giao hàng khá nhanh, máy thì hơi xước tí, góc màn hình thì hơi bị mẻ tí, nhưng k sao,  máy ngon là đc, nên mua nha cả nhà</string>
+    <string-array name="thuonghieu">
+        <item>Asus</item>
+        <item>Acer</item>
+    </string-array>
+
+    <string-array name="initial_slider_values">
+        <item>20.0</item>
+        <item>70.0</item>
+    </string-array>
 </resources>
