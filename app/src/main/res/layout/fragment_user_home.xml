@@ -13,13 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_height_menu"
         android:background="@color/colorMenu"
-
+        android:id="@+id/layoutHome"
         android:orientation="horizontal">
 
-        <include
-            layout="@layout/activity_search_item"
-            android:id="@+id/includedLayout"
-            />
+
     </LinearLayout>
 
     <View

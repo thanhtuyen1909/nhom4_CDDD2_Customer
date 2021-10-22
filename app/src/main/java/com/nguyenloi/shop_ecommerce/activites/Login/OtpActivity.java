@@ -101,13 +101,13 @@ public class OtpActivity extends AppCompatActivity {
         map.put("status", "unlock");
         map.put("role_id", 1);
         map.put("phone", phone);
+
         reference.child("Account").push()
                 .setValue(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         finish();
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

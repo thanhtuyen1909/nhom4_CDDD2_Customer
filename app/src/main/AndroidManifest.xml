@@ -12,18 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop_Ecommerce">
         <activity
-            android:name=".SearchItemActivity"
+            android:name=".activites.Other.BottomNavigationUserActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.Login.ForgetPasswordDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,40 +23,30 @@
         <activity
             android:name=".activites.Login.LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+        <activity
+            android:name=".activites.Login.ForgetPasswordDetailActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.Login.LoginActivity">
+
+        </activity>
+
+
         <activity
             android:name=".activites.Other.NotificationActiviy"
             android:exported="true"
             android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.Other.FindProductActivity"
             android:exported="true"
             android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.RatingDetailActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activites.User.ChangePasswordDetailActivity"
@@ -78,15 +58,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activites.Other.BottomNavigationUserActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".activites.Other.DetailProductActivity"
             android:exported="true"

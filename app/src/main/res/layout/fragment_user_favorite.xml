@@ -4,17 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        layout="@layout/activity_search_item"
-        android:id="@+id/includedLayout"
-        />
-    <ListView
-        android:id="@+id/lvFavorite"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/layoutFavorite"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_height_menu">
+
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:orientation="vertical"
         android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_margin="@dimen/size_border_all"
+            android:id="@+id/rcvFavorite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-    </ListView>
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

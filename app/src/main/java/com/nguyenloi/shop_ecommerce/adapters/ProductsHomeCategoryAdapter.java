@@ -1,12 +1,15 @@
 package com.nguyenloi.shop_ecommerce.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,10 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nguyenloi.shop_ecommerce.Class.Category;
+import com.nguyenloi.shop_ecommerce.Class.SearchHandle;
 import com.nguyenloi.shop_ecommerce.R;
+import com.nguyenloi.shop_ecommerce.activites.Other.FindProductActivity;
 import com.squareup.picasso.Picasso;
 
 public class ProductsHomeCategoryAdapter extends FirebaseRecyclerAdapter<Category, ProductsHomeCategoryAdapter.ProductsCategoryViewHolder> {
@@ -30,9 +36,9 @@ public class ProductsHomeCategoryAdapter extends FirebaseRecyclerAdapter<Categor
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ProductsCategoryViewHolder holder, int position, @NonNull Category model) {
+    protected void onBindViewHolder(@NonNull ProductsCategoryViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull Category model) {
         holder.tvCardHomeCategory.setText(model.getName());
-        StorageReference imageRef = FirebaseStorage.getInstance().getReference("images/manufactures/" + model.getName() + "/" + model.getName() + ".jpg");
+        StorageReference imageRef = FirebaseStorage.getInstance().getReference("images/categories/"+model.getImage());
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -44,7 +50,13 @@ public class ProductsHomeCategoryAdapter extends FirebaseRecyclerAdapter<Categor
         holder.cardHomeCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String idCategory = "";
+                idCategory = FirebaseDatabase.getInstance().getReference().child("Categories")
+                        .child(getRef(position).getKey()).getKey();
+                SearchHandle.setIdCategory(idCategory);
+                SearchHandle.setTypeActivity("Category");
+                Intent i = new Intent(context, FindProductActivity.class);
+                context.startActivity(i);
             }
         });
     }

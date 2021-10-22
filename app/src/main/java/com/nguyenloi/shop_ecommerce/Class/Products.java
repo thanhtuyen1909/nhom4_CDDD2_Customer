@@ -1,22 +1,13 @@
 package com.nguyenloi.shop_ecommerce.Class;
 
 public class Products {
-    private String category_id, description, image, name;
+    private String category_id, description, image, name, created_at, manu_id;
     private int quantity, import_price, sold, price;
 
     public Products() {
     }
 
-    public Products(String category_id, String description, String image, String name, int quantity, int import_price, int sold, int price) {
-        this.category_id = category_id;
-        this.description = description;
-        this.image = image;
-        this.name = name;
-        this.quantity = quantity;
-        this.import_price = import_price;
-        this.sold = sold;
-        this.price = price;
-    }
+
 
     public String getCategory_id() {
         return category_id;
@@ -32,6 +23,14 @@ public class Products {
 
     public String getName() {
         return name;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public String getManu_id() {
+        return manu_id;
     }
 
     public int getQuantity() {

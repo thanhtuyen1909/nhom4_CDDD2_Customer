@@ -1,18 +1,23 @@
-package com.nguyenloi.shop_ecommerce;
+package com.nguyenloi.shop_ecommerce.fragments;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,57 +26,72 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.nguyenloi.shop_ecommerce.Class.AllProducts;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
+import com.nguyenloi.shop_ecommerce.Class.SearchHandle;
+import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.activites.Other.FindProductActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SearchItemActivity extends AppCompatActivity {
+public class SearchItemFragment extends Fragment {
     AutoCompleteTextView edtAutoCompleted;
     ImageView imgIconHomeShop, imgIconHomeNotification;
     Query queryBySuggestion;
 
+    public SearchItemFragment() {
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_item);
-        setControl();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_search_item, container, false);
+        setControl(view);
         queryBySuggestion = FirebaseDatabase.getInstance().getReference().
                 child("AutocompleteSuggesstion").orderByChild("userId").equalTo(GlobalIdUser.userId);
 
         loadDataSearch();
 
-        //Tab on keyboard done
-        edtAutoCompleted.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        edtAutoCompleted.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    checkIsSuggesstion();
-                    Intent i = new Intent(SearchItemActivity.this, FindProductActivity.class);
-                    i.putExtra("nameProduct", edtAutoCompleted.getText().toString());
-                    Toast.makeText(SearchItemActivity.this, "send " + edtAutoCompleted.getText().toString(), Toast.LENGTH_SHORT).show();
-                    startActivity(i);
-                    return true;
-                }
-                return false;
-            }
-        });
+        onClickSearch();
 
         //Tab on icon notification
         imgIconHomeNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SearchItemActivity.this, FindProductActivity.class);
-                startActivity(intent);
+
             }
         });
+
+        return view;
     }
+     private void onClickSearch(){
+         //Tab on keyboard done
+         edtAutoCompleted.setImeOptions(EditorInfo.IME_ACTION_DONE);
+         edtAutoCompleted.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+             @Override
+             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+                     checkIsSuggesstion();
+                     goToPageSearch();
+                     return true;
+                 }
+                 return false;
+             }
+         });
+
+         edtAutoCompleted.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+             @Override
+             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 checkIsSuggesstion();
+                 goToPageSearch();
+             }
+         });
+     }
     //Load data search by this user
     private void loadDataSearch() {
 
-        final ArrayAdapter<String> autoComplete = new ArrayAdapter<String>(SearchItemActivity.this, android.R.layout.simple_list_item_1);
+        final ArrayAdapter<String> autoComplete = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
         queryBySuggestion.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -89,7 +109,14 @@ public class SearchItemActivity extends AppCompatActivity {
             }
         });
         edtAutoCompleted.setAdapter(autoComplete);
+    }
 
+    private void goToPageSearch(){
+        String nameProduct = edtAutoCompleted.getText().toString();
+        SearchHandle.setNameProduct(nameProduct);
+        SearchHandle.setTypeActivity("FindByName");
+        Intent i = new Intent(getContext(), FindProductActivity.class);
+        startActivity(i);
     }
 
     private void checkIsSuggesstion(){
@@ -102,7 +129,7 @@ public class SearchItemActivity extends AppCompatActivity {
                     String suggestion = suggestionSnapshot.child("suggestion").getValue(String.class);
                     String userId = suggestionSnapshot.child("userId").getValue(String.class);
                     if(edtAutoCompleted.getText().toString().trim().equals(suggestion)
-                            &&GlobalIdUser.userId.equals(userId)
+                            && GlobalIdUser.userId.equals(userId)
                             &&!processDone){
                         processDone=true;
                     }
@@ -134,9 +161,9 @@ public class SearchItemActivity extends AppCompatActivity {
                 });
     }
 
-    private void setControl() {
-        edtAutoCompleted = findViewById(R.id.idAutoCompleted);
-        imgIconHomeNotification = findViewById(R.id.imgIconHomeNotification);
-        imgIconHomeShop = findViewById(R.id.imgIconHomeShop);
+    private void setControl(View v) {
+        edtAutoCompleted = v.findViewById(R.id.idAutoCompleted);
+        imgIconHomeNotification = v.findViewById(R.id.imgIconHomeNotification);
+        imgIconHomeShop = v.findViewById(R.id.imgIconHomeShop);
     }
 }

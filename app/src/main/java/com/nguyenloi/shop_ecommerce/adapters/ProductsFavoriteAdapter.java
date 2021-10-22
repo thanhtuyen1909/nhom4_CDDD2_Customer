@@ -31,25 +31,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapter.ProductsFindViewHolder> {
+public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavoriteAdapter.ProductsFavoriteViewHolder> {
     Context mContext;
     ArrayList<Products> arrProducts;
     String idProduct="";
 
-    public ProductsFindAdapter(Context mContext, ArrayList<Products> arrProducts) {
+    public ProductsFavoriteAdapter(Context mContext, ArrayList<Products> arrProducts) {
         this.mContext = mContext;
         this.arrProducts = arrProducts;
     }
 
     @NonNull
     @Override
-    public ProductsFindViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductsFavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list_products, parent, false);
-        return new ProductsFindViewHolder(view);
+        return new ProductsFavoriteViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductsFindViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull ProductsFavoriteViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Products model  = arrProducts.get(position);
         holder.tvListProductsSold.setText("Đã bán: " + model.getSold());
         holder.tvListProductsPrice.setText(model.getPrice() + " đ");
@@ -61,7 +61,7 @@ public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapte
             String strName = model.getName().substring(0, 12) + "..";
             holder.tvListProductsName.setText(strName);
         }
-
+        holder.imgListProductsTym.setImageResource(R.drawable.ic_favorite_border);
         //Image
         StorageReference imageRef = FirebaseStorage.getInstance().getReference("images/products/" + model.getName() + "/" + model.getName() + ".jpg");
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -75,47 +75,33 @@ public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapte
         holder.imgListProductsTym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdProductByName(model.getName());
-               if(!idProduct.equals("")){
-                   insertTym(holder,idProduct);
-               }else{
-                   Toast.makeText(mContext, "Có lỗi xãy ra vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
-               }
+                String keyFavorite="";
 
+                FirebaseDatabase.getInstance().getReference().child("Favorite");
+//                        .child().removeValue();
             }
         });
     }
 
-    private void getIdProductByName(String name){
-        FirebaseDatabase.getInstance().getReference().child("Products")
-                .orderByChild("name").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot childSnapshot: snapshot.getChildren()) {
-                     idProduct = childSnapshot.getKey();
-                }
-            }
+//private void FindKeyFavorite(){
+//    FirebaseDatabase.getInstance().getReference().child("Favorite")
+//            .orderByChild("userId").equalTo(GlobalIdUser.userId).addListenerForSingleValueEvent(new ValueEventListener() {
+//        @Override
+//        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//            for (DataSnapshot childSnapshot: snapshot.getChildren()) {
+//                idProduct = childSnapshot.getKey();
+//                for()
+//            }
+//        }
+//
+//        @Override
+//        public void onCancelled(@NonNull DatabaseError error) {
+//
+//        }
+//    });
+//}
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-    }
-
-    private void insertTym(@NonNull ProductsFindViewHolder holder, String productId) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("userId", GlobalIdUser.userId);
-        map.put("productId", productId);
-        FirebaseDatabase.getInstance().getReference().child("Favorite")
-                .push().setValue(map)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        holder.imgListProductsTym.setImageResource(R.drawable.ic_favorite);
-                    }
-                });
-    }
 
 
 
@@ -125,11 +111,11 @@ public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapte
     }
 
 
-    public class ProductsFindViewHolder extends RecyclerView.ViewHolder {
+    public class ProductsFavoriteViewHolder extends RecyclerView.ViewHolder {
         private TextView tvListProductsName, tvListProductsPrice, tvListProductsSold;
         private ImageView imgListProducts, imgListProductsTym;
 
-        public ProductsFindViewHolder(@NonNull View itemView) {
+        public ProductsFavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
             tvListProductsPrice = itemView.findViewById(R.id.tvListProductsPrice);
             tvListProductsName = itemView.findViewById(R.id.tvListProductsName);
