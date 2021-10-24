@@ -1,6 +1,8 @@
 package com.nguyenloi.shop_ecommerce.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
+import com.nguyenloi.shop_ecommerce.activites.Other.DetailProductActivity;
 import com.squareup.picasso.Picasso;
 
 public class ProductsHomeTopSoldAdapter extends FirebaseRecyclerAdapter<Products, ProductsHomeTopSoldAdapter.HomeTopSoldViewHolder> {
@@ -30,7 +34,7 @@ public class ProductsHomeTopSoldAdapter extends FirebaseRecyclerAdapter<Products
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull HomeTopSoldViewHolder holder, int position, @NonNull Products model) {
+    protected void onBindViewHolder(@NonNull HomeTopSoldViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull Products model) {
         holder.tvCardHomeTopSoldPrice.setText(model.getPrice() + "đ");
         if(model.getName().length()<12){
             holder.tvCardHomeTopSoldName.setText(model.getName());
@@ -51,7 +55,12 @@ public class ProductsHomeTopSoldAdapter extends FirebaseRecyclerAdapter<Products
         holder.cardHomeTopSold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String productId = "";
+                productId = FirebaseDatabase.getInstance().getReference().child("Products")
+                        .child(getRef(position).getKey()).getKey();
+                Intent intent = new Intent(context, DetailProductActivity.class);
+                intent.putExtra("productId",productId);
+                context.startActivity(intent);
             }
         });
     }

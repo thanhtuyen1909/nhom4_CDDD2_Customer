@@ -2,6 +2,7 @@ package com.nguyenloi.shop_ecommerce.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +20,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nguyenloi.shop_ecommerce.Class.AllFavoriteUser;
+import com.nguyenloi.shop_ecommerce.Class.AllProducts;
+import com.nguyenloi.shop_ecommerce.Class.Favorite;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
+import com.nguyenloi.shop_ecommerce.activites.Other.DetailProductActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,7 +40,10 @@ import java.util.Map;
 public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapter.ProductsFindViewHolder> {
     Context mContext;
     ArrayList<Products> arrProducts;
-    String idProduct="";
+    Query queryByFavorite;
+    ArrayList<Favorite> arrFavorite;
+    private String productId, userId, keyFavorite;
+    Favorite favor;
 
     public ProductsFindAdapter(Context mContext, ArrayList<Products> arrProducts) {
         this.mContext = mContext;
@@ -50,7 +59,13 @@ public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ProductsFindViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Products model  = arrProducts.get(position);
+        arrFavorite = new ArrayList<>();
+        queryByFavorite = FirebaseDatabase.getInstance().getReference()
+                .child("Favorite").orderByChild("userId").equalTo(GlobalIdUser.userId);
+        //Load all data
+        loadDataFavoriteUser();
+
+        Products model = arrProducts.get(position);
         holder.tvListProductsSold.setText("Đã bán: " + model.getSold());
         holder.tvListProductsPrice.setText(model.getPrice() + " đ");
 
@@ -71,29 +86,94 @@ public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapte
             }
         });
 
+        holder.imgListProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), model.getKey() + "-----" + model.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //Update user tym products
         holder.imgListProductsTym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getIdProductByName(model.getName());
-               if(!idProduct.equals("")){
-                   insertTym(holder,idProduct);
-               }else{
-                   Toast.makeText(mContext, "Có lỗi xãy ra vui lòng thử lại sau", Toast.LENGTH_SHORT).show();
-               }
+                try {
+                    if (!checkInsertTym(model.getKey())) {
+                        insertTymFirebase(model.getKey());
+                    } else {
+                        Toast.makeText(mContext, "Đã tồn tại", Toast.LENGTH_SHORT).show();
+                    }
+                    holder.imgListProductsTym.setImageResource(R.drawable.ic_favorite);
+                } catch (Exception ex) {
+                    Toast.makeText(v.getContext(), "Thêm vào yêu thích thất bại bạn có thể thử lại", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
+
+        //Go to page detail
+        holder.imgListProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String productId = "";
+                productId = model.getKey();
+                Intent intent = new Intent(mContext, DetailProductActivity.class);
+                intent.putExtra("productId",productId);
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.tvListProductsName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String productId = "";
+                productId = model.getKey();
+                Intent intent = new Intent(mContext, DetailProductActivity.class);
+                intent.putExtra("productId",productId);
+                mContext.startActivity(intent);
+            }
+        });
+
+        //Load status
     }
 
-    private void getIdProductByName(String name){
-        FirebaseDatabase.getInstance().getReference().child("Products")
-                .orderByChild("name").equalTo(name).addListenerForSingleValueEvent(new ValueEventListener() {
+    private boolean checkInsertTym(String id) {
+        for (int i = 0; i < arrFavorite.size(); i++) {
+            if (arrFavorite.get(i).getProductId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    private void loadDataFavoriteUser() {
+        queryByFavorite.addValueEventListener(new ValueEventListener() {
+            boolean processDone = false;
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot childSnapshot: snapshot.getChildren()) {
-                     idProduct = childSnapshot.getKey();
+                arrFavorite.clear();
+                if (!processDone && snapshot.exists()) {
+                    arrFavorite.clear();
+                    for (DataSnapshot favorite : snapshot.getChildren()) {
+                        productId = favorite.getValue(Favorite.class).getProductId();
+                        userId = favorite.getValue(Favorite.class).getUserId();
+                        keyFavorite = favorite.getKey();
+                        favor = new Favorite(productId, userId, keyFavorite);
+                        arrFavorite.add(favor);
+                        processDone = true;
+                    }
+                } else {
+                    processDone = true;
                 }
+                //Filter data for recycler view
+                if (processDone) {
+                    //Handle until load complete data
+                    processDone = false;
+                }
+
             }
 
             @Override
@@ -103,7 +183,8 @@ public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapte
         });
     }
 
-    private void insertTym(@NonNull ProductsFindViewHolder holder, String productId) {
+
+    private void insertTymFirebase(@NonNull String productId) {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", GlobalIdUser.userId);
         map.put("productId", productId);
@@ -112,11 +193,10 @@ public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapte
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        holder.imgListProductsTym.setImageResource(R.drawable.ic_favorite);
+
                     }
                 });
     }
-
 
 
     @Override

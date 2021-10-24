@@ -1,12 +1,15 @@
 package com.nguyenloi.shop_ecommerce.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,10 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
+import com.nguyenloi.shop_ecommerce.activites.Other.DetailProductActivity;
 import com.squareup.picasso.Picasso;
 
 public class ProductsHomeSuggestionAdapter extends FirebaseRecyclerAdapter<Products, ProductsHomeSuggestionAdapter.SuggestionViewHolder> {
@@ -30,7 +35,7 @@ public class ProductsHomeSuggestionAdapter extends FirebaseRecyclerAdapter<Produ
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull SuggestionViewHolder holder, int position, @NonNull Products model) {
+    protected void onBindViewHolder(@NonNull SuggestionViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull Products model) {
         holder.tvCardHomeSuggestionPrice.setText(model.getPrice() + "đ");
         if(model.getName().length()<12){
             holder.tvCardHomeSuggestionName.setText(model.getName());
@@ -44,6 +49,18 @@ public class ProductsHomeSuggestionAdapter extends FirebaseRecyclerAdapter<Produ
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri.toString()).resize(holder.imgCardHomeSuggestion.getWidth(), holder.imgCardHomeSuggestion.getHeight()).into(holder.imgCardHomeSuggestion);
+            }
+        });
+
+        holder.cardHomeSuggestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String productId = "";
+                productId = FirebaseDatabase.getInstance().getReference().child("Products")
+                        .child(getRef(position).getKey()).getKey();
+                Intent intent = new Intent(context, DetailProductActivity.class);
+                intent.putExtra("productId",productId);
+                context.startActivity(intent);
             }
         });
     }

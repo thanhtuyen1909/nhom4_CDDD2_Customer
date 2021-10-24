@@ -1,14 +1,16 @@
 package com.nguyenloi.shop_ecommerce.Class;
 
 public class Favorite {
-    private String productId, userId;
+    private String productId, userId, key;
 
-    public Favorite(String productId, String userId) {
-        this.productId = productId;
-        this.userId = userId;
-    }
 
     public Favorite() {
+    }
+
+    public Favorite(String productId, String userId, String key) {
+        this.productId = productId;
+        this.userId = userId;
+        this.key = key;
     }
 
     public String getProductId() {
@@ -18,4 +20,10 @@ public class Favorite {
     public String getUserId() {
         return userId;
     }
+
+    public String getKey() {
+        return key;
+    }
+
+
 }

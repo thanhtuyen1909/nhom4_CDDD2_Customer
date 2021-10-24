@@ -8,6 +8,7 @@ public class AllFavoriteUser {
     public AllFavoriteUser() {
     }
 
+
     public static ArrayList<Favorite> getArrAllFavoriteUser() {
         return arrAllFavoriteUser;
     }

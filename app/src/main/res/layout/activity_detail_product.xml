@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/viewProductDetail"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,9 +24,10 @@
 
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imgProductDetailMain"
                 android:layout_width="match_parent"
                 android:layout_height="149dp"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/lap3" />
 
             <View
@@ -47,36 +49,30 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView20"
+                        android:singleLine="false"
+                        android:id="@+id/tvProductDetailName"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:gravity="center_vertical"
                         android:text="Laptop ASUS"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="10sp"
-                        android:layout_weight="1">
+                        android:layout_weight="5"
+                        android:orientation="vertical"></LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"></LinearLayout>
-
-                        <ImageView
-                            android:id="@+id/imageView8"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="6sp"
-                            android:layout_weight="2"
-                            app:srcCompat="@drawable/ic_favorite_border" />
-
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/imgProductDetailTym"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="6sp"
+                        android:layout_weight="5"
+                        app:srcCompat="@drawable/ic_favorite_border"
+                        app:tint="@color/colorPrice" />
 
                 </LinearLayout>
 
@@ -87,17 +83,17 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView24"
+                        android:id="@+id/tvProductDetailPrice"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="Giá: 16.000đ"
                         android:textColor="#F81A1A"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textView26"
+                        android:id="@+id/tvProductDetailSold"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginRight="10sp"
@@ -127,10 +123,11 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView35"
+                android:id="@+id/tvProductDetailDescription"
                 android:layout_width="match_parent"
-                android:layout_height="223dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:singleLine="false"
                 android:text="@string/description"
                 android:textSize="18sp" />
 
@@ -421,17 +418,12 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <GridView
-                android:id="@+id/gridDetailProduct"
-                android:layout_width="match_parent"
-                android:layout_height="530dp"
-                android:gravity="center"
-                android:horizontalSpacing="2dp"
-                android:isScrollContainer="false"
-                android:numColumns="2">
+           <androidx.recyclerview.widget.RecyclerView
+               android:layout_width="match_parent"
+               android:layout_height="1500dp"
+               android:id="@+id/rcvProductDetail"
+               />
 
-
-            </GridView>
 
 
         </LinearLayout>
@@ -445,7 +437,7 @@
         android:background="#000000">
 
         <ImageView
-            android:id="@+id/imageView4"
+           android:id="@+id/imgProductDetailCall"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="2sp"
@@ -455,7 +447,7 @@
             app:srcCompat="@drawable/ic_phone" />
 
         <ImageView
-            android:id="@+id/imageView5"
+           android:id="@+id/imgProductDetailCart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="2sp"
@@ -465,7 +457,7 @@
             app:srcCompat="@drawable/ic_cart_add" />
 
         <TextView
-            android:id="@+id/textView17"
+           android:id="@+id/tvProductDetailShopNow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

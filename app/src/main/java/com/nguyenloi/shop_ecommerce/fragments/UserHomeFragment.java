@@ -41,14 +41,17 @@ public class UserHomeFragment extends Fragment {
     RecyclerView rcvHomeTopSold, rcvHomeSuggestion, rcvHomeCategory;
     ImageSlider imgHomeSlider;
 
+
     ProductsHomeTopSoldAdapter topSoldAdapter;
     ProductsHomeSuggestionAdapter suggestionAdapter;
     ProductsHomeCategoryAdapter categoryAdapter;
-
+    private String category_id, description, image, name, created_at, manu_id, key;
+    private int quantity, import_price, sold, price;
 
     Query querySortBySold, querySortBySuggestion, queryByCategory, querySortBySoldTop4, queryBySuggestion;
     List<SlideModel> arrListAds;
     ArrayList<Products> arrProducts;
+    Products pro;
 
     @Nullable
     @Override
@@ -77,7 +80,7 @@ public class UserHomeFragment extends Fragment {
         //Load all products
         loadAllProducts();
         AllProducts.setArrAllProducts(arrProducts);
-         //Tab on keyboard done
+        //Tab on keyboard done
         replaceLayoutMenuTop();
         return view;
     }
@@ -87,7 +90,19 @@ public class UserHomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot products : snapshot.getChildren()) {
-                   arrProducts.add(products.getValue(Products.class));
+                    category_id = products.getValue(Products.class).getCategory_id();
+                    description = products.getValue(Products.class).getDescription();
+                    image = products.getValue(Products.class).getImage();
+                    name = products.getValue(Products.class).getName();
+                    created_at = products.getValue(Products.class).getCreated_at();
+                    manu_id = products.getValue(Products.class).getManu_id();
+                    key = products.getKey();
+                    quantity = products.getValue(Products.class).getQuantity();
+                    import_price = products.getValue(Products.class).getImport_price();
+                    sold = products.getValue(Products.class).getSold();
+                    price = products.getValue(Products.class).getPrice();
+                    pro = new Products(category_id,description,image,name,created_at,manu_id,key,quantity,import_price,sold,price);
+                    arrProducts.add(pro);
                 }
             }
 
@@ -159,7 +174,7 @@ public class UserHomeFragment extends Fragment {
         imgHomeSlider = v.findViewById(R.id.imgHomeSlider);
     }
 
-    private void replaceLayoutMenuTop(){
+    private void replaceLayoutMenuTop() {
         FragmentManager fragmentManager = getChildFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         final SearchItemFragment newFragment = new SearchItemFragment();

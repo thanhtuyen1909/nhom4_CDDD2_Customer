@@ -8,6 +8,7 @@ public class AllProducts {
     public AllProducts() {
     }
 
+
     public static ArrayList<Products> getArrAllProducts() {
         return arrAllProducts;
     }

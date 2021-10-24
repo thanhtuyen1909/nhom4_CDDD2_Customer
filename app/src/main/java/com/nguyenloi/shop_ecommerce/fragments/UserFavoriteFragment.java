@@ -1,13 +1,11 @@
 package com.nguyenloi.shop_ecommerce.fragments;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nguyenloi.shop_ecommerce.Class.AllFavoriteUser;
+import com.nguyenloi.shop_ecommerce.Class.AllProducts;
 import com.nguyenloi.shop_ecommerce.Class.Favorite;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.Class.Products;
@@ -40,57 +39,51 @@ public class UserFavoriteFragment extends Fragment {
     ArrayList<Products> arrProduct;
     ProductsFavoriteAdapter productsFavoriteAdapter;
     RecyclerView rcvFavorite;
+    private String productId, userId, keyFavorite;
+    Favorite favor;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_user_favorite,container,false);
+        View view = inflater.inflate(R.layout.fragment_user_favorite, container, false);
         replaceLayoutMenuTop();
         setControl(view);
-        arrFavorite=new ArrayList<>();
-        arrProduct=new ArrayList<>();
+        arrFavorite = new ArrayList<>();
+        arrProduct = new ArrayList<>();
 
         queryByFavorite = FirebaseDatabase.getInstance().getReference()
                 .child("Favorite").orderByChild("userId").equalTo(GlobalIdUser.userId);
 
         //Load all data
         loadDataFavoriteUser();
-        AllFavoriteUser.setArrAllFavoriteUser(arrFavorite);
+
         //set status for recycler view
         setRecylerView();
-        //Load data favorite
-        loadDataFavorite();
 
         return view;
     }
 
     private void setControl(View v) {
-        rcvFavorite= v.findViewById(R.id.rcvFavorite);
+        rcvFavorite = v.findViewById(R.id.rcvFavorite);
     }
-    private void  loadDataFavorite(){
-       FirebaseDatabase.getInstance().getReference().child("Products").addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot snapshot) {
-               for (DataSnapshot products: snapshot.getChildren()){
-                   String productId = products.getKey();
-                   for(int i=0;i< arrFavorite.size();i++){
-                       if(productId.equals(arrFavorite.get(i).getProductId())){
-                           arrProduct.add(products.getValue(Products.class));
-                       }
-                       productsFavoriteAdapter.notifyDataSetChanged();
-                   }
-               }
 
-           }
+    private void loadDataFavorite() {
+        for (int i = 0; i < AllProducts.getArrAllProducts().size(); i++) {
+            for (int j = 0; j < arrFavorite.size(); j++) {
+                if (AllProducts.getArrAllProducts().get(i).getKey()
+                        .equals(arrFavorite.get(j).getProductId())) {
+                    arrProduct.add(AllProducts.getArrAllProducts().get(i));
+                }
+            }
+        }
+        setDataChangeRecyclerView();
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError error) {
-
-           }
-       });
     }
+
 
     private void setRecylerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        ;
         rcvFavorite.setLayoutManager(linearLayoutManager);
         setDataChangeRecyclerView();
     }
@@ -103,13 +96,34 @@ public class UserFavoriteFragment extends Fragment {
 
     private void loadDataFavoriteUser() {
         queryByFavorite.addValueEventListener(new ValueEventListener() {
+            boolean processDone = false;
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot favorite : snapshot.getChildren()) {
-                    arrFavorite.add(favorite.getValue(Favorite.class));
-
+                arrFavorite.clear();
+                if (!processDone && snapshot.exists()) {
+                    arrFavorite.clear();
+                    for (DataSnapshot favorite : snapshot.getChildren()) {
+                        productId = favorite.getValue(Favorite.class).getProductId();
+                        userId = favorite.getValue(Favorite.class).getUserId();
+                        keyFavorite = favorite.getKey();
+                        favor = new Favorite(productId, userId, keyFavorite);
+                        arrFavorite.add(favor);
+                        processDone = true;
+                    }
+                } else {
+                    processDone = true;
                 }
+                //Filter data for recycler view
+                if (processDone) {
+                    loadDataFavorite();
+                    AllFavoriteUser.setArrAllFavoriteUser(arrFavorite);
+
+                    processDone = false;
+                }
+
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -117,14 +131,13 @@ public class UserFavoriteFragment extends Fragment {
         });
     }
 
-    private void replaceLayoutMenuTop(){
+    private void replaceLayoutMenuTop() {
         FragmentManager fragmentManager = getChildFragmentManager();
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         final SearchItemFragment newFragment = new SearchItemFragment();
         fragmentTransaction.replace(R.id.layoutFavorite, newFragment);
         fragmentTransaction.commit();
     }
-
 
 
 }

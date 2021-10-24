@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nguyenloi.shop_ecommerce.Class.AllFavoriteUser;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
@@ -34,7 +35,6 @@ import java.util.Map;
 public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavoriteAdapter.ProductsFavoriteViewHolder> {
     Context mContext;
     ArrayList<Products> arrProducts;
-    String idProduct="";
 
     public ProductsFavoriteAdapter(Context mContext, ArrayList<Products> arrProducts) {
         this.mContext = mContext;
@@ -50,7 +50,7 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
 
     @Override
     public void onBindViewHolder(@NonNull ProductsFavoriteViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Products model  = arrProducts.get(position);
+        Products model = arrProducts.get(position);
         holder.tvListProductsSold.setText("Đã bán: " + model.getSold());
         holder.tvListProductsPrice.setText(model.getPrice() + " đ");
 
@@ -61,7 +61,7 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
             String strName = model.getName().substring(0, 12) + "..";
             holder.tvListProductsName.setText(strName);
         }
-        holder.imgListProductsTym.setImageResource(R.drawable.ic_favorite_border);
+        holder.imgListProductsTym.setImageResource(R.drawable.ic_favorite);
         //Image
         StorageReference imageRef = FirebaseStorage.getInstance().getReference("images/products/" + model.getName() + "/" + model.getName() + ".jpg");
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -75,34 +75,26 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
         holder.imgListProductsTym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String keyFavorite="";
+                String keyFavorite = FindKeyFavoriteToDelete(model.getKey());
+               try{
+                   FirebaseDatabase.getInstance().getReference().child("Favorite")
+                           .child(keyFavorite).removeValue();
+               }catch (Exception e){
 
-                FirebaseDatabase.getInstance().getReference().child("Favorite");
-//                        .child().removeValue();
+               }
+
             }
         });
     }
 
-//private void FindKeyFavorite(){
-//    FirebaseDatabase.getInstance().getReference().child("Favorite")
-//            .orderByChild("userId").equalTo(GlobalIdUser.userId).addListenerForSingleValueEvent(new ValueEventListener() {
-//        @Override
-//        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//            for (DataSnapshot childSnapshot: snapshot.getChildren()) {
-//                idProduct = childSnapshot.getKey();
-//                for()
-//            }
-//        }
-//
-//        @Override
-//        public void onCancelled(@NonNull DatabaseError error) {
-//
-//        }
-//    });
-//}
-
-
-
+    private String FindKeyFavoriteToDelete(String productId) {
+        for (int i = 0; i < AllFavoriteUser.getArrAllFavoriteUser().size(); i++) {
+            if (productId.equals(AllFavoriteUser.getArrAllFavoriteUser().get(i).getProductId())) {
+                return AllFavoriteUser.getArrAllFavoriteUser().get(i).getKey();
+            }
+        }
+        return null;
+    }
 
 
     @Override
