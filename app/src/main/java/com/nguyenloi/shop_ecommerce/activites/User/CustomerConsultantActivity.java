@@ -21,6 +21,8 @@ public class CustomerConsultantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_consultant);
         this.getSupportActionBar().setTitle("Hỗ trợ");
+        assert getSupportActionBar() != null;   //null check
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setControl();
         addData();
         lvQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,5 +60,10 @@ public class CustomerConsultantActivity extends AppCompatActivity {
         lvQuestion=findViewById(R.id.lvQuestion);
         conslutantAdapter = new TheCustomerConslutantAdapter(CustomerConsultantActivity.this,R.layout.item_the_customer_conslutant);
         lvQuestion.setAdapter(conslutantAdapter);
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

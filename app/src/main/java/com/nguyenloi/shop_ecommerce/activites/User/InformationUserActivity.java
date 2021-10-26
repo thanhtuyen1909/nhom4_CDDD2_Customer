@@ -52,6 +52,8 @@ public class InformationUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information_user);
         this.getSupportActionBar().setTitle("Thiết lập tài khoản");
+        assert getSupportActionBar() != null;   //null check
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setControl();
 
         database = FirebaseDatabase.getInstance();
@@ -185,5 +187,11 @@ public class InformationUserActivity extends AppCompatActivity {
         tvInformationPhone=findViewById(R.id.tvInformationPhone);
         edtInformationUsername=findViewById(R.id.edtInformationUsername);
         imgInformation=findViewById(R.id.imgInformation);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="150dp"
 
     android:layout_margin="8dp"
-    android:backgroundTint="#F1B9B9"
+    android:backgroundTint="@color/colorCard"
     app:cardCornerRadius="5dp"
     app:cardElevation="3dp">>
 

@@ -3,12 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorBackground"
     android:layout_height="match_parent"
     tools:context=".activites.RatingDetailActivity">
 
-    <ListView
-        android:id="@+id/lvBillRatingDetail"
+    <LinearLayout
+        android:layout_margin="@dimen/size_border_all"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10sp" />
+        android:orientation="vertical">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvRatingDetailComment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            android:layout_weight="1">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvRatingDetailCommentList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4" />
+
+        <Button
+            android:id="@+id/btnRatingDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="4"
+            android:text="Button" />
+    </LinearLayout>
+
 </LinearLayout>

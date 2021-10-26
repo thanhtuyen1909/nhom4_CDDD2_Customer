@@ -27,6 +27,7 @@
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_new_password.xml" value="0.1265625" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_notification_activiy.xml" value="0.2" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_otp.xml" value="0.1265625" />
+        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_rating.xml" value="0.2" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_rating_detail.xml" value="0.10677083333333333" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_register.xml" value="0.2" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_search_item.xml" value="0.11979166666666667" />
@@ -36,6 +37,7 @@
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_home_suggestions.xml" value="0.33" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_home_top_sold.xml" value="0.25" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_list_products.xml" value="0.1682051282051282" />
+        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_text_comment.xml" value="0.2" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/custom_autocompleted.xml" value="0.1" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_account.xml" value="0.15208333333333332" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_favorite.xml" value="0.15260416666666668" />
@@ -45,6 +47,7 @@
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_order_processing__will_order.xml" value="0.12864583333333332" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_order_processing_cancel.xml" value="0.12864583333333332" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_order_processing_home.xml" value="0.11510416666666666" />
+        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_search_item.xml" value="0.2" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_ship_cancel.xml" value="0.15625" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_ship_home.xml" value="0.15625" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_ship_received.xml" value="0.15625" />

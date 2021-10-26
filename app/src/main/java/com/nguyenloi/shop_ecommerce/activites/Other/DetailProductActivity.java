@@ -62,6 +62,8 @@ public class DetailProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_product);
         this.getSupportActionBar().setTitle("Chi tiết sản phẩm");
+        assert getSupportActionBar() != null;   //null check
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setControl();
 
         arrProduct = new ArrayList<>();
@@ -128,9 +130,9 @@ public class DetailProductActivity extends AppCompatActivity {
         imgProductDetailCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(cart_detail==null){
+                if (cart_detail == null) {
                     insertThisProductToFirebase();
-                }else{
+                } else {
                     showSnackbarNotification("Bạn đã thêm sản phẩm này vào giỏ hàng rồi");
                 }
             }
@@ -246,7 +248,7 @@ public class DetailProductActivity extends AppCompatActivity {
                         String userIdd = cart.getValue(Cart_Detail.class).getUserId();
                         String keyCartDetail = cart.getKey();
                         if (productIdCart.equals(productId)) {
-                            cart_detail = new Cart_Detail(amount, totalPrice,productId,userIdd, keyCartDetail);
+                            cart_detail = new Cart_Detail(amount, totalPrice, productId, userIdd, keyCartDetail);
                             processDone = true;
                         }
                     }
@@ -328,4 +330,9 @@ public class DetailProductActivity extends AppCompatActivity {
         ;
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }

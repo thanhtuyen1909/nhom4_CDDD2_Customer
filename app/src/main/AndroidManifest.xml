@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop_Ecommerce">
         <activity
+            android:name=".Rating"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activites.Other.BottomNavigationUserActivity"
             android:exported="true">
             <intent-filter>
@@ -22,32 +31,22 @@
         </activity>
         <activity
             android:name=".activites.Login.LoginActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".activites.Login.ForgetPasswordDetailActivity"
             android:exported="true"
-            android:parentActivityName=".activites.Login.LoginActivity">
-
-        </activity>
-
-
+            android:parentActivityName=".activites.Login.LoginActivity"></activity>
         <activity
             android:name=".activites.Other.NotificationActiviy"
             android:exported="true"
-            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
-        </activity>
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity"></activity>
         <activity
             android:name=".activites.Other.FindProductActivity"
             android:exported="true"
-            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
-        </activity>
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity"></activity>
         <activity
             android:name=".activites.RatingDetailActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".activites.User.ChangePasswordDetailActivity"
             android:exported="true"
@@ -58,11 +57,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activites.Other.DetailProductActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
