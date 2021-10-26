@@ -101,7 +101,7 @@ public class ProductsFindAdapter extends RecyclerView.Adapter<ProductsFindAdapte
                     if (!checkInsertTym(model.getKey())) {
                         insertTymFirebase(model.getKey());
                     } else {
-                        Toast.makeText(mContext, "Đã tồn tại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "Bạn đã thêm sản phẩm này vào danh sách yêu thích rồi", Toast.LENGTH_SHORT).show();
                     }
                     holder.imgListProductsTym.setImageResource(R.drawable.ic_favorite);
                 } catch (Exception ex) {

@@ -2,16 +2,19 @@ package com.nguyenloi.shop_ecommerce.activites.Other;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +46,7 @@ public class FindProductActivity extends AppCompatActivity {
     String nameProduct;
     private ArrayList<Products> arrProducts;
     Query queryBySuggestion;
+    ImageView btnFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,20 @@ public class FindProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_product);
         setControl();
         this.getSupportActionBar().hide();
+
+        btnFilter = findViewById(R.id.imageView);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Nay m la m nhanh qua hinh nhu ađ sai thư viên z ha
+                DrawerLayout navDrawer = findViewById(R.id.activity_main_drawer);
+                // If the navigation drawer is not open then open it, if its already open then close it.
+                if(!navDrawer.isDrawerOpen(Gravity.RIGHT)) navDrawer.openDrawer(Gravity.RIGHT);
+                else navDrawer.closeDrawer(Gravity.LEFT);
+            }
+        });
+
+
 
         queryBySuggestion = FirebaseDatabase.getInstance().getReference().
                 child("AutocompleteSuggesstion").orderByChild("userId").equalTo(GlobalIdUser.userId);

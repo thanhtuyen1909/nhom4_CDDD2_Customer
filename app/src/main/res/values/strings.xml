@@ -40,4 +40,20 @@
     <string name="commentRating1">Giao hàng chuẩn .sản phẩm như môta. Con tội học online rất hài lòng.</string>
     <string name="commentRating2">Máy siêu xinh lun chạy mượt còn mới lắm sh 4 vấn rất nhiệt tình sẽ ủbg hộ nữa ạ</string>
     <string name="commentRating3">Giao hàng khá nhanh, máy thì hơi xước tí, góc màn hình thì hơi bị mẻ tí, nhưng k sao,  máy ngon là đc, nên mua nha cả nhà</string>
+
+    <string-array name="mau">
+        <item>Màu 1</item>
+        <item>Màu 2 </item>
+    </string-array>
+
+    <string-array name="thuonghieu">
+        <item>Asus</item>
+        <item>Acer</item>
+    </string-array>
+
+    <string-array name="initial_slider_values">
+        <item>20.0</item>
+        <item>70.0</item>
+    </string-array>
+
 </resources>

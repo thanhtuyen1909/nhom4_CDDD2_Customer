@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +30,7 @@ import com.nguyenloi.shop_ecommerce.Class.AllProducts;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.Class.SearchHandle;
 import com.nguyenloi.shop_ecommerce.R;
+import com.nguyenloi.shop_ecommerce.activites.Cart.CartActivity;
 import com.nguyenloi.shop_ecommerce.activites.Other.FindProductActivity;
 
 import java.util.HashMap;
@@ -59,7 +60,8 @@ public class SearchItemFragment extends Fragment {
         imgIconHomeNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               Intent intent = new Intent(getContext(), CartActivity.class);
+               startActivity(intent);
             }
         });
 
