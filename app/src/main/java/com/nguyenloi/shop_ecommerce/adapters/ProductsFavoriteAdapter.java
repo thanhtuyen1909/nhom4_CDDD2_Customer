@@ -2,6 +2,7 @@ package com.nguyenloi.shop_ecommerce.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.nguyenloi.shop_ecommerce.Class.AllFavoriteUser;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
+import com.nguyenloi.shop_ecommerce.activites.Other.DetailProductActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,6 +56,16 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
         holder.tvListProductsSold.setText("Đã bán: " + model.getSold());
         holder.tvListProductsPrice.setText(model.getPrice() + " đ");
 
+        holder.imgListProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String productId = "";
+                productId = model.getKey();
+                Intent intent = new Intent(mContext, DetailProductActivity.class);
+                intent.putExtra("productId",productId);
+                mContext.startActivity(intent);
+            }
+        });
 
         if (model.getName().length() < 14) {
             holder.tvListProductsName.setText(model.getName());

@@ -97,4 +97,6 @@
 
 
     </ScrollView>
+    <LinearLayout
+        style="@style/bottom_custom_size"/>
 </LinearLayout>

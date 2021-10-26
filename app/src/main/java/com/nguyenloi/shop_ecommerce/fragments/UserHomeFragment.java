@@ -25,9 +25,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.nguyenloi.shop_ecommerce.Class.AllCategory;
+import com.nguyenloi.shop_ecommerce.Class.AllManufactures;
 import com.nguyenloi.shop_ecommerce.Class.AllProducts;
 import com.nguyenloi.shop_ecommerce.Class.Category;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
+import com.nguyenloi.shop_ecommerce.Class.Manufactures;
 import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.adapters.ProductsHomeCategoryAdapter;
@@ -51,8 +54,11 @@ public class UserHomeFragment extends Fragment {
     Query querySortBySold, querySortBySuggestion, queryByCategory, querySortBySoldTop4, queryBySuggestion;
     List<SlideModel> arrListAds;
     ArrayList<Products> arrProducts;
+    ArrayList<Category> arrCategory;
+    ArrayList<Manufactures> arrManufacture;
     Products pro;
-
+    Category category;
+    Manufactures manufactures;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +69,8 @@ public class UserHomeFragment extends Fragment {
         //Load data search
         arrListAds = new ArrayList<>();
         arrProducts = new ArrayList<>();
+        arrCategory = new ArrayList<>();
+        arrManufacture = new ArrayList<>();
 
         //Query
         querySortBySold = FirebaseDatabase.getInstance().getReference().child("Products").orderByChild("sold").limitToFirst(20);
@@ -80,9 +88,37 @@ public class UserHomeFragment extends Fragment {
         //Load all products
         loadAllProducts();
         AllProducts.setArrAllProducts(arrProducts);
+        //Load all category
+        loadAllCategory();
+        AllCategory.setArrAllCategory(arrCategory);
+        //load all manufactures
+        loadAllManufactures();
+        AllManufactures.setAllManufactures(arrManufacture);
         //Tab on keyboard done
         replaceLayoutMenuTop();
         return view;
+    }
+
+    private void loadAllManufactures(){
+        FirebaseDatabase.getInstance().getReference().child("Manufactures").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot  manu : snapshot.getChildren()) {
+                    String idManufactures = manu.getKey();
+                    String idCategoryManufactures = manu.getValue(Manufactures.class).getIdCategory();
+                    String imageManufactures = manu.getValue(Manufactures.class).getImage();
+                    String nameManufactures = manu.getValue(Manufactures.class).getName();
+
+                    manufactures = new Manufactures(idManufactures, idCategoryManufactures, imageManufactures, nameManufactures);
+                    arrManufacture.add(manufactures);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void loadAllProducts() {
@@ -101,8 +137,28 @@ public class UserHomeFragment extends Fragment {
                     import_price = products.getValue(Products.class).getImport_price();
                     sold = products.getValue(Products.class).getSold();
                     price = products.getValue(Products.class).getPrice();
-                    pro = new Products(category_id,description,image,name,created_at,manu_id,key,quantity,import_price,sold,price);
+                    pro = new Products(category_id, description, image, name, created_at, manu_id, key, quantity, import_price, sold, price);
                     arrProducts.add(pro);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void loadAllCategory() {
+        FirebaseDatabase.getInstance().getReference().child("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ca : snapshot.getChildren()) {
+                    String imageCategory = ca.getValue(Category.class).getImage();
+                    String nameCategory = ca.getValue(Category.class).getName();
+                    String idCategory = ca.getKey();
+                    category = new Category(imageCategory,nameCategory,idCategory);
+                    arrCategory.add(category);
                 }
             }
 

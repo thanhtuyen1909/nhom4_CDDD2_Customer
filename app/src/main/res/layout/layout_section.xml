@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    app:elevation="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="@dimen/size_border_all"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/teal_200"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_section"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Hello you"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <ToggleButton
+            android:id="@+id/toggle_button_section"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:background="@drawable/selector_section_toggle"
+            android:padding="5dp"
+            android:textOff=""
+            android:textOn=""
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

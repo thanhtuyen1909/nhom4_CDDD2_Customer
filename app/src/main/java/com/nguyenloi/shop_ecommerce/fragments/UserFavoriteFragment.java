@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,10 +26,7 @@ import com.nguyenloi.shop_ecommerce.Class.Favorite;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
-import com.nguyenloi.shop_ecommerce.activites.Cart.CartActivity;
-import com.nguyenloi.shop_ecommerce.activites.Other.FindProductActivity;
 import com.nguyenloi.shop_ecommerce.adapters.ProductsFavoriteAdapter;
-import com.nguyenloi.shop_ecommerce.adapters.ProductsFindAdapter;
 
 import java.util.ArrayList;
 
