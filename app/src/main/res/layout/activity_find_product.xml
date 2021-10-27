@@ -9,8 +9,6 @@
     android:orientation="vertical"
     tools:context=".activites.Other.FindProductActivity">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

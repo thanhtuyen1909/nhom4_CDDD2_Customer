@@ -16,7 +16,8 @@
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_change_password.xml" value="0.1265625" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_change_password_detail.xml" value="0.10416666666666667" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_customer_consultant.xml" value="0.2" />
-        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_detail_product.xml" value="0.1394422310756972" />
+        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_detail_product.xml" value="0.22" />
+        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_detail_product_comment.xml" value="0.12239583333333333" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_find_product.xml" value="0.2" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_forget_password.xml" value="0.1265625" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/activity_forget_password_detail.xml" value="0.175" />
@@ -40,6 +41,8 @@
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_home_top_sold.xml" value="0.25" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_list_products.xml" value="0.1682051282051282" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_text_comment.xml" value="0.2" />
+        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_text_comment_list.xml" value="0.175" />
+        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/card_viewcomment_product.xml" value="0.25" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/custom_autocompleted.xml" value="0.1" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_account.xml" value="0.15208333333333332" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_favorite.xml" value="0.15260416666666668" />
@@ -55,7 +58,7 @@
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_ship_received.xml" value="0.15625" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_user_account.xml" value="0.12864583333333332" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_user_favorite.xml" value="0.2" />
-        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_user_home.xml" value="0.233502538071066" />
+        <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_user_home.xml" value="0.21630434782608696" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/fragment_user_list.xml" value="0.25" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/gridview_fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/Shop_Ecommerce/app/src/main/res/layout/item.xml" value="1.165625" />

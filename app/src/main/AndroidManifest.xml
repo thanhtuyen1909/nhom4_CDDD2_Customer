@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop_Ecommerce">
         <activity
+            android:name=".activites.Other.DetailProductComment"
+            android:exported="true"
+           >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activites.User.NewPasswordActivity"
             android:exported="true"
             android:parentActivityName=".activites.Login.OtpActivity">
@@ -41,22 +51,15 @@
         </activity>
         <activity
             android:name=".activites.Login.LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".activites.Login.ForgetPasswordDetailActivity"
             android:exported="true"
-            android:parentActivityName=".activites.Login.LoginActivity"></activity>
-        <activity
-            android:name=".activites.Other.NotificationActiviy"
-            android:exported="true"
-            android:parentActivityName=".activites.Other.BottomNavigationUserActivity"></activity>
+            android:parentActivityName=".activites.Login.LoginActivity" />
         <activity
             android:name=".activites.Other.FindProductActivity"
             android:exported="true"
-            android:parentActivityName=".activites.Other.BottomNavigationUserActivity"></activity>
-        <activity
-            android:name=".activites.RatingDetailActivity"
-            android:exported="true"></activity>
+            android:parentActivityName=".activites.Other.BottomNavigationUserActivity" />
         <activity
             android:name=".activites.User.ChangePasswordDetailActivity"
             android:exported="true"
@@ -70,46 +73,6 @@
         <activity
             android:name=".activites.Other.DetailProductActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.Cart.CartDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.Cart.CartActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.Cart.CartActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.Bill.HistoryBillActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.Other.BottomNavigationUserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activites.Bill.TheBillHistoryDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.Bill.HistoryBillActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -155,7 +118,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activites.Login.ForgetPasswordActivity"
             android:exported="true"

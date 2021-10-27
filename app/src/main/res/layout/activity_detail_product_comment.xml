@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorBackground"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".activites.Bill.HistoryBillActivity">
+    tools:context=".activites.Other.DetailProductComment">
 
-    <ListView
-        android:id="@+id/lvHistoryBill"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:scrollbars="none"
+        android:layout_margin="@dimen/size_border_all"
         android:layout_height="match_parent"
-        android:listSelector="@color/colorMain" />
+        android:id="@+id/rcvAllComment"/>
+
 </LinearLayout>

@@ -30,9 +30,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class InformationUserActivity extends AppCompatActivity {
     Button btnInformationChangePassword, btnInformationSave;
-    ImageView imgInformationEdit, imgInformation;
+    ImageView imgInformationEdit;
+    CircleImageView imgInformation;
     EditText edtInformationUsername, edtMonth, edtDate, edtYear;
     TextView tvInformationPhone;
 

@@ -29,15 +29,15 @@
                 android:layout_weight="2"
                 android:orientation="vertical">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imgAccount"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="14dp"
                     android:layout_marginTop="6sp"
                     android:layout_weight="1"
-                    android:background="#FAEFEF"
-                    android:scaleType="fitCenter"
+
+                    android:scaleType="centerCrop"
                     app:civ_border_overlay="false"
                     app:srcCompat="@drawable/ic_account" />
 

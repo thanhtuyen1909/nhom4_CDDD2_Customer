@@ -250,9 +250,8 @@ public class FindProductActivity extends AppCompatActivity {
 
     //Load data search by this user
     private void loadDataSearch() {
-
         final ArrayAdapter<String> autoComplete = new ArrayAdapter<String>(FindProductActivity.this, android.R.layout.simple_list_item_1);
-        queryBySuggestion.addListenerForSingleValueEvent(new ValueEventListener() {
+        queryBySuggestion.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {

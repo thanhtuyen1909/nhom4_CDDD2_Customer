@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -27,19 +26,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.nguyenloi.shop_ecommerce.Class.AllProducts;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.Class.SearchHandle;
 import com.nguyenloi.shop_ecommerce.R;
-import com.nguyenloi.shop_ecommerce.activites.Cart.CartActivity;
 import com.nguyenloi.shop_ecommerce.activites.Other.FindProductActivity;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class SearchItemFragment extends Fragment {
@@ -100,7 +92,7 @@ public class SearchItemFragment extends Fragment {
     private void loadDataSearch() {
 
         final ArrayAdapter<String> autoComplete = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1);
-        queryBySuggestion.addListenerForSingleValueEvent(new ValueEventListener() {
+        queryBySuggestion.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {

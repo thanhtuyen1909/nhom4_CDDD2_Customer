@@ -22,14 +22,15 @@
             </LinearLayout>
 
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+
                 android:id="@+id/imgInformation"
                 android:background="@color/colorBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/user"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                  />
 
             <LinearLayout style="@style/ve_5"></LinearLayout>

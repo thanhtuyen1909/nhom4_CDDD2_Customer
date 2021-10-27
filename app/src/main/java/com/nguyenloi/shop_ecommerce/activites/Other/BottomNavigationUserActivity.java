@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.activites.Login.LoginActivity;
@@ -50,10 +51,9 @@ public class BottomNavigationUserActivity extends AppCompatActivity {
         });
 
     }
-    public void takeLogout(String dataLogout){
-
-        Intent intent = new Intent(BottomNavigationUserActivity.this, LoginActivity.class);
-        startActivity(intent);
-
+    public void takeLogout(){
+       Intent intent = new Intent(BottomNavigationUserActivity.this, LoginActivity.class);
+       startActivity(intent);
+       finish();
     }
 }

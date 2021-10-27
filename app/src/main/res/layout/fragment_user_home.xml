@@ -91,12 +91,13 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcvHomeTopSold"
                     android:layout_width="match_parent"
-                    android:layout_height="1500dp" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
 
 
     </ScrollView>
+
     <LinearLayout
         style="@style/bottom_custom_size"/>
 </LinearLayout>

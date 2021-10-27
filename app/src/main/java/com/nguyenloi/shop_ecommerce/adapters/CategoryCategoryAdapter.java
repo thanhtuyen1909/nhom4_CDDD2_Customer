@@ -25,6 +25,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class CategoryCategoryAdapter extends RecyclerView.Adapter<CategoryCategoryAdapter.CategoryViewHolder>{
     Context mContext;
@@ -89,7 +91,7 @@ public class CategoryCategoryAdapter extends RecyclerView.Adapter<CategoryCatego
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView tvCardCategoryCategory;
-        private ImageView imgCardCategoryCategory;
+        private CircleImageView imgCardCategoryCategory;
         private LinearLayout cardCategoryCategory;
 
         public CategoryViewHolder(@NonNull View itemView) {

@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -54,7 +55,7 @@ public class UserHomeFragment extends Fragment {
     private int quantity, import_price, sold, price, rating;
 
     Query querySortBySold, querySortBySuggestion, queryByCategory, querySortBySoldTop4, queryBySuggestion,
-           queryByOrderId, queryGetCustomer;;
+           queryByCartId, queryGetCustomer;;
     List<SlideModel> arrListAds;
     ArrayList<Products> arrProducts;
     ArrayList<Category> arrCategory;
@@ -82,8 +83,8 @@ public class UserHomeFragment extends Fragment {
         queryByCategory = FirebaseDatabase.getInstance().getReference().child("Categories");
         queryBySuggestion = FirebaseDatabase.getInstance().getReference().
                 child("AutocompleteSuggesstion").orderByChild("userId").equalTo(GlobalIdUser.userId);
-        queryByOrderId = FirebaseDatabase.getInstance().getReference().
-                child("Order").orderByChild("accountID").equalTo(GlobalIdUser.userId);
+        queryByCartId = FirebaseDatabase.getInstance().getReference().
+                child("Cart").orderByChild("accountID").equalTo(GlobalIdUser.userId);
         queryGetCustomer = FirebaseDatabase.getInstance().getReference().
                 child("Customer").orderByChild("id").equalTo(GlobalIdUser.userId);
 
@@ -182,14 +183,14 @@ public class UserHomeFragment extends Fragment {
     }
 
     private void loadOrderUser() {
-       queryByOrderId.addValueEventListener(new ValueEventListener() {
+       queryByCartId.addValueEventListener(new ValueEventListener() {
             boolean processDone = false;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!processDone && snapshot.exists()) {
-                    for (DataSnapshot order : snapshot.getChildren()) {
-                        String key = order.getKey();
-                        GlobalIdUser.setOrderId(key);
+                    for (DataSnapshot cart : snapshot.getChildren()) {
+                        String key = cart.getKey();
+                        GlobalIdUser.setCartId(key);
                         processDone = true;
                     }
                 } else {
@@ -197,8 +198,11 @@ public class UserHomeFragment extends Fragment {
                 }
                 //Filter data for recycler view
                 if (processDone) {
-                   if(GlobalIdUser.getOrderId().equals("")){
-                       insertNewOrderUser();
+                    //set status when login
+                    FirebaseDatabase.getInstance().getReference().child("Customer")
+                            .child(GlobalIdUser.customerId).child("status").setValue("green");
+                   if(GlobalIdUser.getCartId().equals("")){
+                       insertNewCartUser();
                    }
                     processDone = false;
                 }
@@ -211,15 +215,11 @@ public class UserHomeFragment extends Fragment {
         });
     }
 
-    private void insertNewOrderUser(){
+    private void insertNewCartUser(){
         Map<String, Object> map = new HashMap<>();
         map.put("accountID", GlobalIdUser.userId);
-        map.put("address", "null");
-        map.put("created_at", "null");
         map.put("total", 0);
-        map.put("status", "null");
-        map.put("transport_fee", "null");
-        FirebaseDatabase.getInstance().getReference().child("Order")
+        FirebaseDatabase.getInstance().getReference().child("Cart")
                 .push().setValue(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

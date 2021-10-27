@@ -19,16 +19,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.R;
+import com.nguyenloi.shop_ecommerce.activites.Other.BottomNavigationUserActivity;
 import com.nguyenloi.shop_ecommerce.activites.User.CustomerConsultantActivity;
-import com.nguyenloi.shop_ecommerce.activites.Bill.HistoryBillActivity;
 import com.nguyenloi.shop_ecommerce.activites.User.InformationUserActivity;
 import com.nguyenloi.shop_ecommerce.activites.User.IntroduceActivity;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class UserAccountFragment extends Fragment {
     Button btnAccountHistory, btnAccountIntroduce, btnAccountSetting, btnAccountSupport, btnAccountLogout;
-    ImageView imgAccount;
+    CircleImageView imgAccount;
     TextView tvAccout;
 
 
@@ -58,7 +60,11 @@ public class UserAccountFragment extends Fragment {
         btnAccountLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //set status when logout
+                FirebaseDatabase.getInstance().getReference().child("Customer")
+                        .child(GlobalIdUser.customerId).child("status").setValue("red");
+                BottomNavigationUserActivity mainActivity = (BottomNavigationUserActivity) getActivity();
+                mainActivity.takeLogout();
             }
         });
         btnAccountSupport.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +77,7 @@ public class UserAccountFragment extends Fragment {
         btnAccountHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), HistoryBillActivity.class);
-                startActivity(intent);
+
             }
         });
         return view;
