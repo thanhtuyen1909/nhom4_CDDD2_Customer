@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,9 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.nguyenloi.shop_ecommerce.Class.AllProducts;
-import com.nguyenloi.shop_ecommerce.Class.Cart_Detail;
 import com.nguyenloi.shop_ecommerce.Class.Favorite;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
+import com.nguyenloi.shop_ecommerce.Class.Order_Details;
 import com.nguyenloi.shop_ecommerce.Class.Products;
 import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.adapters.ProductsHomeTopSoldAdapter;
@@ -52,9 +51,9 @@ public class DetailProductActivity extends AppCompatActivity {
     ArrayList<Products> arrProduct;
     View view;
 
-    Query queryByCategory, queryByFavorite, queryByCartDetail;
+    Query queryByCategory, queryByFavorite, queryByOrderDetail;
     Favorite favor;
-    Cart_Detail cart_detail;
+    Order_Details order_detail;
     boolean isFavorite = false;
 
     @Override
@@ -78,8 +77,8 @@ public class DetailProductActivity extends AppCompatActivity {
                 .equalTo(arrProduct.get(0).getCategory_id());
         queryByFavorite = FirebaseDatabase.getInstance().getReference()
                 .child("Favorite").orderByChild("userId").equalTo(GlobalIdUser.userId);
-        queryByCartDetail = FirebaseDatabase.getInstance().getReference()
-                .child("Cart_Detail").orderByChild("userId").equalTo(GlobalIdUser.userId);
+        queryByOrderDetail = FirebaseDatabase.getInstance().getReference()
+                .child("Order_Details").orderByChild("orderID").equalTo(GlobalIdUser.orderId);
         //LoadUI
         loadUiFromData();
         //Call phone
@@ -96,7 +95,7 @@ public class DetailProductActivity extends AppCompatActivity {
         //Load status favorite
         loadFavoriteUserDatabase();
         //Load statusCart
-        loadCartDetailUserDatabase();
+        loadOderDetailUserDatabase();
         //Click tym
         imgProductDetailTym.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +115,7 @@ public class DetailProductActivity extends AppCompatActivity {
                             deleteTymFirebase();
                         }
                     });
-                    btn.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    btn.setNegativeButton("Không", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -130,7 +129,7 @@ public class DetailProductActivity extends AppCompatActivity {
         imgProductDetailCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cart_detail == null) {
+                if (order_detail == null) {
                     insertThisProductToFirebase();
                 } else {
                     showSnackbarNotification("Bạn đã thêm sản phẩm này vào giỏ hàng rồi");
@@ -142,11 +141,11 @@ public class DetailProductActivity extends AppCompatActivity {
 
     private void insertThisProductToFirebase() {
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", GlobalIdUser.userId);
-        map.put("productId", productId);
+        map.put("orderID", GlobalIdUser.orderId);
+        map.put("productID", productId);
         map.put("amount", 1);
-        map.put("totalPrice", arrProduct.get(0).getPrice());
-        FirebaseDatabase.getInstance().getReference().child("Cart_Detail")
+        map.put("price", arrProduct.get(0).getPrice());
+        FirebaseDatabase.getInstance().getReference().child("Order_Details")
                 .push().setValue(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -234,26 +233,22 @@ public class DetailProductActivity extends AppCompatActivity {
         });
     }
 
-    private void loadCartDetailUserDatabase() {
-        queryByCartDetail.addValueEventListener(new ValueEventListener() {
-            boolean processDone = false;
-
+    private void loadOderDetailUserDatabase() {
+        queryByOrderDetail.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!processDone && snapshot.exists()) {
-                    for (DataSnapshot cart : snapshot.getChildren()) {
-                        int amount = cart.getValue(Cart_Detail.class).getAmount();
-                        int totalPrice = cart.getValue(Cart_Detail.class).getTotalPrice();
-                        String productIdCart = cart.getValue(Cart_Detail.class).getProductId();
-                        String userIdd = cart.getValue(Cart_Detail.class).getUserId();
-                        String keyCartDetail = cart.getKey();
-                        if (productIdCart.equals(productId)) {
-                            cart_detail = new Cart_Detail(amount, totalPrice, productId, userIdd, keyCartDetail);
-                            processDone = true;
+                if (snapshot.exists()) {
+                    for (DataSnapshot or : snapshot.getChildren()) {
+                        int amount = or.getValue(Order_Details.class).getAmount();
+                        int price = or.getValue(Order_Details.class).getPrice();
+                        String productIdOrderDetail = or.getValue(Order_Details.class).getProductID();
+                        String orderIdDetail = or.getKey();
+                        String orderId = or.getValue(Order_Details.class).getOrderID();
+                        if(productId.equals(productIdOrderDetail)){
+                            order_detail = new Order_Details(orderIdDetail, productIdOrderDetail, orderId, amount, price);
                         }
+
                     }
-                } else {
-                    processDone = true;
                 }
 
             }

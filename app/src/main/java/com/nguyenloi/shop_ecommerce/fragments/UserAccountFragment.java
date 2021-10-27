@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,34 +16,30 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.activites.User.CustomerConsultantActivity;
 import com.nguyenloi.shop_ecommerce.activites.Bill.HistoryBillActivity;
 import com.nguyenloi.shop_ecommerce.activites.User.InformationUserActivity;
-import com.nguyenloi.shop_ecommerce.activites.Login.LoginActivity;
+import com.nguyenloi.shop_ecommerce.activites.User.IntroduceActivity;
 import com.squareup.picasso.Picasso;
 
 
 public class UserAccountFragment extends Fragment {
-    Button btnAccountHistory, btnAccountIntroduce,btnAccountSetting,btnAccountSupport, btnAccountLogout;
+    Button btnAccountHistory, btnAccountIntroduce, btnAccountSetting, btnAccountSupport, btnAccountLogout;
     ImageView imgAccount;
     TextView tvAccout;
 
-    FirebaseDatabase database ;
-    DatabaseReference reference;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_account,container,false);
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference();
+        View view = inflater.inflate(R.layout.fragment_user_account, container, false);
+
         setControl(view);
         //Load data
-        loadDataUserFromUserId();
+        loadDataCustomer();
 
         btnAccountSetting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,18 +51,14 @@ public class UserAccountFragment extends Fragment {
         btnAccountIntroduce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getContext(), IntroduceActivity.class);
-//                startActivity(intent);
-                Toast.makeText(getContext(), GlobalIdUser.userId, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), IntroduceActivity.class);
+                startActivity(intent);
             }
         });
         btnAccountLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                BottomNavigationUserActivity bottomNavigationActivity = (BottomNavigationUserActivity) getActivity();
-//                bottomNavigationActivity.takeLogout("LogoutAccount");
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                startActivity(intent);
+
             }
         });
         btnAccountSupport.setOnClickListener(new View.OnClickListener() {
@@ -86,19 +77,23 @@ public class UserAccountFragment extends Fragment {
         });
         return view;
 
+
+
     }
 
-    private void loadDataUserFromUserId(){
-        reference.child("Account").child(GlobalIdUser.userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+    private void loadDataCustomer() {
+        FirebaseDatabase.getInstance().getReference().child("Customer").child(GlobalIdUser.customerId)
+                .get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                String userName = task.getResult().child("username").getValue().toString();
+                String userName = task.getResult().child("name").getValue().toString();
                 String url = task.getResult().child("image").getValue().toString();
 
-                tvAccout.setText(userName);
-                if(url.equals("null")){
+                tvAccout.setText( userName);
+                if (url.equals("null")) {
                     imgAccount.setImageResource(R.drawable.pika);
-                }else{
+                } else {
                     Picasso.get().load(url).into(imgAccount);
                 }
 
@@ -106,13 +101,15 @@ public class UserAccountFragment extends Fragment {
         });
     }
 
+
     private void setControl(View view) {
-        btnAccountHistory=view.findViewById(R.id.btnAccountHistory);
-        btnAccountIntroduce=view.findViewById(R.id.btnAccountIntroduce);
-        btnAccountLogout=view.findViewById(R.id.btnAccountLogout);
-        btnAccountSupport=view.findViewById(R.id.btnAccountSupport);
-        btnAccountSetting=view.findViewById(R.id.btnAccountSetting);
-        tvAccout=view.findViewById(R.id.tvAccount);
-        imgAccount=view.findViewById(R.id.imgAccount);
+        btnAccountHistory = view.findViewById(R.id.btnAccountHistory);
+        btnAccountIntroduce = view.findViewById(R.id.btnAccountIntroduce);
+        btnAccountLogout = view.findViewById(R.id.btnAccountLogout);
+        btnAccountSupport = view.findViewById(R.id.btnAccountSupport);
+        btnAccountSetting = view.findViewById(R.id.btnAccountSetting);
+        tvAccout = view.findViewById(R.id.tvAccount);
+        imgAccount = view.findViewById(R.id.imgAccount);
+
     }
 }

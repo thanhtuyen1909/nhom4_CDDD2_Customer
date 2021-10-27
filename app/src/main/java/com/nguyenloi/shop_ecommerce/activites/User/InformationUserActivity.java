@@ -31,21 +31,22 @@ import com.squareup.picasso.Picasso;
 import java.util.UUID;
 
 public class InformationUserActivity extends AppCompatActivity {
-    Button btnInformationChangePassword,btnInformationSave;
-    ImageView  imgInformationEdit, imgInformation;
-    EditText edtInformationUsername;
+    Button btnInformationChangePassword, btnInformationSave;
+    ImageView imgInformationEdit, imgInformation;
+    EditText edtInformationUsername, edtMonth, edtDate, edtYear;
     TextView tvInformationPhone;
 
     FirebaseDatabase database;
-    DatabaseReference reference ;
+    DatabaseReference reference;
 
-    FirebaseStorage firebaseStorage ;
+    FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+
 
     Uri imageUri;
     boolean imageControl = false;
+    String dateOfBirth = "";
 
-    String passwordUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class InformationUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InformationUserActivity.this, ChangePasswordActivity.class);
-                intent.putExtra("password",passwordUser);
+                intent.putExtra("password", GlobalIdUser.getPassword());
                 startActivity(intent);
             }
         });
@@ -95,24 +96,40 @@ public class InformationUserActivity extends AppCompatActivity {
                 imageChooser();
             }
         });
+
     }
 
-    public void imageChooser (){
+    public void imageChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,1);
+        startActivityForResult(intent, 1);
 
     }
 
-    private void updateProfile(){
+    private void updateProfile() {
+        if (!edtMonth.getText().equals("") && !edtYear.getText().equals("") && !edtDate.getText().equals("")) {
+            if (edtYear.length() == 4 && edtDate.length() <= 2 && edtMonth.length() <= 2) {
+                String strDate = edtYear.getText() + "-" + edtMonth.getText() + "-" + edtDate.getText();
+                updateUserNameImage();
+                reference.child("Customer").child(GlobalIdUser.customerId).child("dob").setValue(strDate);
+            } else {
+                Toast.makeText(InformationUserActivity.this, "Định dạng ngày sinh không phù hợp (ngày/thángg/năm)", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(InformationUserActivity.this, "Ngày sinh không được để trống", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void updateUserNameImage() {
         String username = edtInformationUsername.getText().toString();
-        reference.child("Account").child(GlobalIdUser.userId).child("username").setValue(username);
+        reference.child("Customer").child(GlobalIdUser.customerId).child("name").setValue(username);
 
 
-        if(imageControl){
+        if (imageControl) {
             UUID randomId = UUID.randomUUID();
-            final  String imageName = "images/"+randomId+"jpg";
+            final String imageName = "images/profile/" + randomId + "jpg";
             storageReference.child(imageName).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -121,45 +138,52 @@ public class InformationUserActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             String filePath = uri.toString();
-                            reference.child("Account").child(GlobalIdUser.userId).child("image").setValue(filePath)
+                            reference.child("Customer").child(GlobalIdUser.getCustomerId()).child("image").setValue(filePath)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            Toast.makeText(InformationUserActivity.this, "Chỉnh sửa thông tin thành công", Toast.LENGTH_SHORT).show();
+                                            edtInformationUsername.setEnabled(true);
+                                            Toast.makeText(InformationUserActivity.this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT).show();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(InformationUserActivity.this,"Chỉnh sửa thông tin thất bại" , Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(InformationUserActivity.this, "Chỉnh sửa thông tin thất bại", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
                     });
                 }
             });
-        }else{
-            reference.child("Users").child(GlobalIdUser.userId).child("image").setValue("null");
         }
 
     }
 
-    private void loadDataUserFromUserId(){
-        reference.child("Account").child(GlobalIdUser.userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+    private void loadDataUserFromUserId() {
+        reference.child("Customer").child(GlobalIdUser.customerId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                String userName = task.getResult().child("username").getValue().toString();
+                String userName = task.getResult().child("name").getValue().toString();
+                dateOfBirth = task.getResult().child("dob").getValue().toString();
                 String url = task.getResult().child("image").getValue().toString();
-                String phone = task.getResult().child("phone").getValue().toString();
-                passwordUser = task.getResult().child("password").getValue().toString();
 
                 edtInformationUsername.setText(userName);
-                tvInformationPhone.setText(phone);
-                if(url.equals("null")){
+                tvInformationPhone.setText("Số điện thoại: " + GlobalIdUser.getPhoneNumber());
+                if (url.equals("null")) {
                     imgInformation.setImageResource(R.drawable.pika);
-                }else{
+                } else {
                     Picasso.get().load(url).into(imgInformation);
                 }
 
+                if (!dateOfBirth.equals("null")) {
+                    edtDate.setEnabled(false);
+                    edtMonth.setEnabled(false);
+                    edtYear.setEnabled(false);
+                    String[] partsDate = dateOfBirth.split("-");
+                    edtDate.setText(partsDate[2]);
+                    edtMonth.setText(partsDate[1]);
+                    edtYear.setText(partsDate[0]);
+                }
             }
         });
     }
@@ -167,26 +191,28 @@ public class InformationUserActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null)
-        {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             imgInformation.setBackground(null);
             imageUri = data.getData();
             Picasso.get().load(imageUri).into(imgInformation);
-            imageControl =  true;
-        }
-        else
-        {
+            imageControl = true;
+        } else {
             imageControl = false;
         }
     }
 
+
     private void setControl() {
-        btnInformationChangePassword=findViewById(R.id.btnInformationChangePassword);
-        btnInformationSave=findViewById(R.id.btnInformationSave);
-        imgInformationEdit=findViewById(R.id.imgInformationEdit);
-        tvInformationPhone=findViewById(R.id.tvInformationPhone);
-        edtInformationUsername=findViewById(R.id.edtInformationUsername);
-        imgInformation=findViewById(R.id.imgInformation);
+        btnInformationChangePassword = findViewById(R.id.btnInformationChangePassword);
+        btnInformationSave = findViewById(R.id.btnInformationSave);
+        imgInformationEdit = findViewById(R.id.imgInformationEdit);
+        tvInformationPhone = findViewById(R.id.tvInformationPhone);
+        edtInformationUsername = findViewById(R.id.edtInformationUsername);
+        imgInformation = findViewById(R.id.imgInformation);
+        edtDate = findViewById(R.id.edtDate);
+        edtMonth = findViewById(R.id.edtMonth);
+        edtYear = findViewById(R.id.edtYear);
+
     }
 
     @Override

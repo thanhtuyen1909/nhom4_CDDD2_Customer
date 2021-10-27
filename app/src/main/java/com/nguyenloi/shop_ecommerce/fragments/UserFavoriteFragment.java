@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,9 @@ import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.adapters.ProductsFavoriteAdapter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class UserFavoriteFragment extends Fragment {
     Query queryByFavorite;
@@ -73,14 +77,11 @@ public class UserFavoriteFragment extends Fragment {
                 }
             }
         }
-        setDataChangeRecyclerView();
-
     }
 
 
     private void setRecylerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        ;
         rcvFavorite.setLayoutManager(linearLayoutManager);
         setDataChangeRecyclerView();
     }
@@ -115,7 +116,6 @@ public class UserFavoriteFragment extends Fragment {
                 if (processDone) {
                     loadDataFavorite();
                     AllFavoriteUser.setArrAllFavoriteUser(arrFavorite);
-
                     processDone = false;
                 }
 

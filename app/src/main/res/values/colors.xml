@@ -14,6 +14,7 @@
     <color name="colorDivider">#222020</color>
     <color name="colorTintIcon">#212330</color>
     <color name="colorMenu">#03A9F4</color>
-    <color name="colorCard">#C3A9F1</color>
+    <color name="colorCard">#B7BFE8</color>
+    <color name="colorSelected">#546CEA</color>
 
 </resources>

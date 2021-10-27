@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,12 @@ import com.nguyenloi.shop_ecommerce.R;
 import com.nguyenloi.shop_ecommerce.activites.Cart.CartActivity;
 import com.nguyenloi.shop_ecommerce.activites.Other.FindProductActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class SearchItemFragment extends Fragment {
@@ -60,13 +66,13 @@ public class SearchItemFragment extends Fragment {
         imgIconHomeNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(getContext(), CartActivity.class);
-               startActivity(intent);
+
             }
         });
 
         return view;
     }
+
      private void onClickSearch(){
          //Tab on keyboard done
          edtAutoCompleted.setImeOptions(EditorInfo.IME_ACTION_DONE);

@@ -75,7 +75,7 @@ public class CategoryCategoryAdapter extends RecyclerView.Adapter<CategoryCatego
                     cardView.setBackgroundResource(R.color.colorBackground);
                 }
                 //The selected card is set to colorSelected
-                holder.cardCategoryCategory.setBackgroundResource(R.color.teal_200);
+                holder.cardCategoryCategory.setBackgroundResource(R.color.colorSelected);
 
             }
         });

@@ -52,6 +52,8 @@ public class ChangePasswordDetailActivity extends AppCompatActivity {
             if (isValidEmailId(password)) {
                 if (password.equals(confirmPassword)) {
                     changePassword(password);
+                    GlobalIdUser.setPassword(password);
+                    finish();
                     Toast.makeText(ChangePasswordDetailActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
                 } else {
                     tvChangePasswordDetail.setText("Xác nhận mật khẩu không trùng khớp");

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,8 +31,10 @@ public class RegisterActivity extends AppCompatActivity {
     String password, cofirmPassword, email;
 
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();;
-    DatabaseReference reference = database.getReference();;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    ;
+    DatabaseReference reference = database.getReference();
+    ;
 
     Query filterPhoneNumberUser;
 
@@ -68,24 +71,23 @@ public class RegisterActivity extends AppCompatActivity {
                     //Check length phone number
                     if (edtRegisterPhone.getText().toString().length() == 10) {
                         //Check exits phone number
-                        filterPhoneNumberUser = reference.child("Account").orderByChild("phone").equalTo(edtRegisterPhone.getText().toString());
+                        filterPhoneNumberUser = reference.child("Account").orderByChild("username").equalTo(edtRegisterPhone.getText().toString());
 
-                        filterPhoneNumberUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                        filterPhoneNumberUser.addValueEventListener(new ValueEventListener() {
+
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                UserLogin user = snapshot.getValue(UserLogin.class);
-                                tvRegisterNotification.setText("Số điện thoại đã tồn tại");
-                                try {
-                                    if (edtRegisterPhone.getText().toString().equals(user.getPhone())) {
-                                        tvRegisterNotification.setText("Go");
-                                    }
-                                } catch (Exception ex) {
+                                if (snapshot.exists()) {
+
+                                   tvRegisterNotification.setText("Đã tồn tại số điện thoại này");
+                                } else {
                                     Intent intent = new Intent(RegisterActivity.this, OtpActivity.class);
                                     intent.putExtra("phoneNumber", edtRegisterPhone.getText().toString().trim());
                                     intent.putExtra("email", email);
                                     intent.putExtra("password", password);
                                     startActivity(intent);
                                 }
+
                             }
 
                             @Override

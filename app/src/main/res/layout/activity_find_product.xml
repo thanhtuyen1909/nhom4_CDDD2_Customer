@@ -9,6 +9,8 @@
     android:orientation="vertical"
     tools:context=".activites.Other.FindProductActivity">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -60,7 +62,7 @@
                 android:textColor="@color/colorTintIcon" />
 
             <ImageView
-                android:id="@+id/imageView"
+               android:id="@+id/imgFindFilter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="7"
@@ -81,9 +83,9 @@
             android:layout_margin="@dimen/size_border_all"
             android:layout_weight="1" />
     </LinearLayout>
-
     <!-- Custom Navigation Drawer Start -->
     <LinearLayout
+
         android:id="@+id/navigation_layout"
         android:layout_width="240dp"
         android:layout_height="match_parent"
@@ -101,22 +103,20 @@
             android:layout_marginRight="3dp"
             android:layout_marginBottom="5dp"
             android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:scaleType="fitCenter"
             android:src="@drawable/logo"
             tools:ignore="ContentDescription" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
         <LinearLayout
             android:layout_width="240dp"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="vertical">
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -133,13 +133,13 @@
                     android:textStyle="bold" />
 
                 <com.google.android.material.slider.RangeSlider
-                    android:id="@+id/sliderRange"
+                 android:id="@+id/sRangePriceFilter"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
-                    android:value="20"
-                    android:valueFrom="0"
-                    android:valueTo="100"
+                    android:stepSize="1000000"
+                    android:valueFrom="0.0"
+                    android:valueTo="20000000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:values="@array/initial_slider_values"
@@ -161,14 +161,14 @@
                     android:textStyle="bold" />
 
                 <RatingBar
-                    android:id="@+id/ratingBar"
-                    style="@style/Widget.AppCompat.RatingBar.Indicator"
+                    android:id="@+id/ratingFilter"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="15dp"
-                    android:rating="5"
-                    android:stepSize="0.1" />
+                    android:stepSize="0.5"
+                    android:numStars="5"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -186,15 +186,17 @@
                     android:textStyle="bold" />
 
                 <Spinner
+                    android:id="@+id/spFilterManufactures"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginTop="15dp"
-                    android:entries="@array/thuonghieu"
                     android:paddingStart="15dp" />
             </LinearLayout>
 
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -204,16 +206,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Đặt lại" />
+                android:text="Đặt lại"
+                android:id="@+id/btnFilterRefresh"/>
 
             <Button
+                android:id="@+id/btnFilterSubmit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Xác nhận" />
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
     </LinearLayout>
+    <!-- Custom Navigation Drawer End -->
     <!-- Custom Navigation Drawer End -->
 
 </androidx.drawerlayout.widget.DrawerLayout>

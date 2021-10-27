@@ -98,11 +98,13 @@ public class LoginActivity extends AppCompatActivity {
            @Override
            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                UserLogin user = snapshot.getValue(UserLogin.class);
-               if (phone.equals(user.getPhone()) && password.equals(user.getPassword())) {
+               if (phone.equals(user.getUsername()) && password.equals(user.getPassword())) {
                    userId = snapshot.getKey();
                    Intent intent = new Intent(LoginActivity.this, BottomNavigationUserActivity.class);
                    GlobalIdUser globalIdUser=new GlobalIdUser();
                    globalIdUser.setUserId(userId);
+                   globalIdUser.setPhoneNumber(user.getUsername());
+                   globalIdUser.setPassword(user.getPassword());
                    startActivity(intent);
                    finish();
                }

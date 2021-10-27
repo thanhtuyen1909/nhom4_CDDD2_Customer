@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvRatingDetailComment"
+            android:id="@+id/rcvRatingDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10sp"
@@ -22,20 +22,14 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvRatingDetailCommentList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="4" />
-
         <Button
             android:id="@+id/btnRatingDetail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_weight="4"
-            android:text="Button" />
+            android:layout_weight="9"
+            android:text="Đánh giá" />
     </LinearLayout>
 
 </LinearLayout>

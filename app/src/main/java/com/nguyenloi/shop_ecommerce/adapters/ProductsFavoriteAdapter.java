@@ -1,7 +1,9 @@
 package com.nguyenloi.shop_ecommerce.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -87,13 +89,29 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
         holder.imgListProductsTym.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String keyFavorite = FindKeyFavoriteToDelete(model.getKey());
-               try{
-                   FirebaseDatabase.getInstance().getReference().child("Favorite")
-                           .child(keyFavorite).removeValue();
-               }catch (Exception e){
+                AlertDialog.Builder btn = new AlertDialog.Builder(v.getContext());
+                btn.setMessage("Bạn có muốn xoá sản phẩm này ra khỏi danh sách yêu thích không? ");
+                btn.setIcon(R.drawable.ic_launcher_background);
+                btn.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String keyFavorite = FindKeyFavoriteToDelete(model.getKey());
+                        try{
+                            FirebaseDatabase.getInstance().getReference().child("Favorite")
+                                    .child(keyFavorite).removeValue();
+                        }catch (Exception e){
 
-               }
+                        }
+                    }
+                });
+                btn.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                btn.create().show();
+
 
             }
         });

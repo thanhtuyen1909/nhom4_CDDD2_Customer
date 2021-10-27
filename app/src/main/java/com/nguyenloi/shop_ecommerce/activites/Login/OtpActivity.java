@@ -24,7 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenloi.shop_ecommerce.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -56,7 +59,6 @@ public class OtpActivity extends AppCompatActivity {
         if (getIntent().hasExtra("userIdNotLogin")) {
             String phoneNumber = "+84" + getIntent().getStringExtra("phoneNumber");
             userId = getIntent().getStringExtra("userIdNotLogin");
-            Toast.makeText(OtpActivity.this, "key "+userId, Toast.LENGTH_SHORT).show();
             phone = getIntent().getStringExtra("phoneNumber");
             tvOtp.setText("Đã có mã OTP gửi đến số điện thoại: " + phone + " bạn hãy xác nhận thông tin");
             sendSms(phoneNumber);
@@ -94,20 +96,29 @@ public class OtpActivity extends AppCompatActivity {
 
     //Insert To Firebase
     private void insertToFirebase() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("username", email);
-        map.put("password", password);
-        map.put("image", "null");
-        map.put("status", "unlock");
-        map.put("role_id", 1);
-        map.put("phone", phone);
+        Map<String, Object> mapAccount = new HashMap<>();
+        mapAccount.put("password", password);
+        mapAccount.put("status", "unlock");
+        mapAccount.put("role_id", 1);
+        mapAccount.put("username", phone);
 
-        reference.child("Account").push()
-                .setValue(map)
+        Map<String, Object> mapCustomer = new HashMap<>();
+        String getNow = getDateTime();
+        mapCustomer.put("created_at",getNow );
+        mapCustomer.put("dob","null");
+        mapCustomer.put("id", "abc"+phone);
+        mapCustomer.put("image", "null");
+        mapCustomer.put("name", email);
+        mapCustomer.put("status","red");
+        mapCustomer.put("type_id", "Type1");
+
+        reference.child("Account").child("abc"+phone)
+                .setValue(mapAccount)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        finish();
+                      reference.child("Customer").push()
+                              .setValue(mapCustomer);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -115,6 +126,11 @@ public class OtpActivity extends AppCompatActivity {
                 Toast.makeText(OtpActivity.this, "Lỗi: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public String getDateTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return simpleDateFormat.format(date);
     }
 
 
@@ -152,6 +168,7 @@ public class OtpActivity extends AppCompatActivity {
         Intent i = new Intent(OtpActivity.this, ForgetPasswordDetailActivity.class);
         i.putExtra("userIdNotLogin", userId);
         startActivity(i);
+        finish();
     }
 
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =

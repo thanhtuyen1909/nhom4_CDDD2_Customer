@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -38,7 +38,9 @@ import com.nguyenloi.shop_ecommerce.adapters.ProductsHomeSuggestionAdapter;
 import com.nguyenloi.shop_ecommerce.adapters.ProductsHomeTopSoldAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserHomeFragment extends Fragment {
     RecyclerView rcvHomeTopSold, rcvHomeSuggestion, rcvHomeCategory;
@@ -49,9 +51,10 @@ public class UserHomeFragment extends Fragment {
     ProductsHomeSuggestionAdapter suggestionAdapter;
     ProductsHomeCategoryAdapter categoryAdapter;
     private String category_id, description, image, name, created_at, manu_id, key;
-    private int quantity, import_price, sold, price;
+    private int quantity, import_price, sold, price, rating;
 
-    Query querySortBySold, querySortBySuggestion, queryByCategory, querySortBySoldTop4, queryBySuggestion;
+    Query querySortBySold, querySortBySuggestion, queryByCategory, querySortBySoldTop4, queryBySuggestion,
+           queryByOrderId, queryGetCustomer;;
     List<SlideModel> arrListAds;
     ArrayList<Products> arrProducts;
     ArrayList<Category> arrCategory;
@@ -79,6 +82,10 @@ public class UserHomeFragment extends Fragment {
         queryByCategory = FirebaseDatabase.getInstance().getReference().child("Categories");
         queryBySuggestion = FirebaseDatabase.getInstance().getReference().
                 child("AutocompleteSuggesstion").orderByChild("userId").equalTo(GlobalIdUser.userId);
+        queryByOrderId = FirebaseDatabase.getInstance().getReference().
+                child("Order").orderByChild("accountID").equalTo(GlobalIdUser.userId);
+        queryGetCustomer = FirebaseDatabase.getInstance().getReference().
+                child("Customer").orderByChild("id").equalTo(GlobalIdUser.userId);
 
         //Load data
         loadDataByTopSold();
@@ -94,6 +101,9 @@ public class UserHomeFragment extends Fragment {
         //load all manufactures
         loadAllManufactures();
         AllManufactures.setAllManufactures(arrManufacture);
+        //loadOrderUser
+        loadOrderUser();
+        loadDataUserFromUserId();
         //Tab on keyboard done
         replaceLayoutMenuTop();
         return view;
@@ -137,7 +147,9 @@ public class UserHomeFragment extends Fragment {
                     import_price = products.getValue(Products.class).getImport_price();
                     sold = products.getValue(Products.class).getSold();
                     price = products.getValue(Products.class).getPrice();
-                    pro = new Products(category_id, description, image, name, created_at, manu_id, key, quantity, import_price, sold, price);
+                    rating = products.getValue(Products.class).getRating();
+                    pro = new Products(category_id, description, image, name, created_at, manu_id
+                            , key, quantity, import_price, sold, price, rating);
                     arrProducts.add(pro);
                 }
             }
@@ -167,6 +179,54 @@ public class UserHomeFragment extends Fragment {
 
             }
         });
+    }
+
+    private void loadOrderUser() {
+       queryByOrderId.addValueEventListener(new ValueEventListener() {
+            boolean processDone = false;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!processDone && snapshot.exists()) {
+                    for (DataSnapshot order : snapshot.getChildren()) {
+                        String key = order.getKey();
+                        GlobalIdUser.setOrderId(key);
+                        processDone = true;
+                    }
+                } else {
+                    processDone = true;
+                }
+                //Filter data for recycler view
+                if (processDone) {
+                   if(GlobalIdUser.getOrderId().equals("")){
+                       insertNewOrderUser();
+                   }
+                    processDone = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void insertNewOrderUser(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("accountID", GlobalIdUser.userId);
+        map.put("address", "null");
+        map.put("created_at", "null");
+        map.put("total", 0);
+        map.put("status", "null");
+        map.put("transport_fee", "null");
+        FirebaseDatabase.getInstance().getReference().child("Order")
+                .push().setValue(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                    }
+                });
     }
 
     private void loadDataAds() {
@@ -221,6 +281,26 @@ public class UserHomeFragment extends Fragment {
                         .build();
         categoryAdapter = new ProductsHomeCategoryAdapter(options, getContext());
         rcvHomeCategory.setAdapter(categoryAdapter);
+    }
+
+    private void loadDataUserFromUserId(){
+        queryGetCustomer.addValueEventListener(new ValueEventListener() {
+            boolean processDone = false;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!processDone && snapshot.exists()) {
+                    for (DataSnapshot customer : snapshot.getChildren()) {
+                         String idCustomer = customer.getKey();
+                         GlobalIdUser.setCustomerId(idCustomer);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void setControl(View v) {

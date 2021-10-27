@@ -16,15 +16,20 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.slider.RangeSlider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.nguyenloi.shop_ecommerce.Class.AllManufactures;
 import com.nguyenloi.shop_ecommerce.Class.AllProducts;
 import com.nguyenloi.shop_ecommerce.Class.GlobalIdUser;
 import com.nguyenloi.shop_ecommerce.Class.Products;
@@ -34,6 +39,7 @@ import com.nguyenloi.shop_ecommerce.adapters.ProductsFindAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -46,7 +52,13 @@ public class FindProductActivity extends AppCompatActivity {
     String nameProduct;
     private ArrayList<Products> arrProducts;
     Query queryBySuggestion;
-    ImageView btnFilter;
+    ImageView imgFindFilter;
+    RangeSlider sRangePriceFilter;
+    RatingBar ratingFilter;
+    Spinner spFilterManufactures;
+    Button btnFilterRefresh, btnFilterSubmit;
+    List<String> arrNameManufactures;
+    DrawerLayout navDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,22 +67,14 @@ public class FindProductActivity extends AppCompatActivity {
         setControl();
         this.getSupportActionBar().hide();
 
-        btnFilter = findViewById(R.id.imageView);
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Nay m la m nhanh qua hinh nhu ađ sai thư viên z ha
-                DrawerLayout navDrawer = findViewById(R.id.activity_main_drawer);
-                // If the navigation drawer is not open then open it, if its already open then close it.
-                if(!navDrawer.isDrawerOpen(Gravity.RIGHT)) navDrawer.openDrawer(Gravity.RIGHT);
-                else navDrawer.closeDrawer(Gravity.LEFT);
-            }
-        });
-
-
-
         queryBySuggestion = FirebaseDatabase.getInstance().getReference().
                 child("AutocompleteSuggesstion").orderByChild("userId").equalTo(GlobalIdUser.userId);
+
+        //Add data spinner
+        arrNameManufactures = new ArrayList<>();
+        loadDataSpinnerManufactures();
+        //SetOnClickFrom NavigationDrawable
+        tabOnInDrawable();
 
         loadDataSearch();
         //Get and set name from search main
@@ -101,6 +105,70 @@ public class FindProductActivity extends AppCompatActivity {
 
     }
 
+    private void tabOnInDrawable() {
+        imgFindFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 navDrawer = findViewById(R.id.activity_main_drawer);
+                if (!navDrawer.isDrawerOpen(Gravity.RIGHT)) navDrawer.openDrawer(Gravity.RIGHT);
+                else navDrawer.closeDrawer(Gravity.LEFT);
+            }
+        });
+
+        btnFilterSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrProducts.clear();
+                List<Float> data1 = sRangePriceFilter.getValues();
+               int  valueGetMin = Math.round(data1.get(0));
+               int  valueGetMax = Math.round(data1.get(data1.size()-1));
+               int userRating = (int)Math.round(ratingFilter.getRating());
+               String getTextSpinner = spFilterManufactures.getSelectedItem().toString();
+               for(int i=0;i<AllProducts.getArrAllProducts().size();i++){
+                   //Filter by start
+                   if(AllProducts.getArrAllProducts().get(i).getRating()==userRating){
+                       int iPrice =AllProducts.getArrAllProducts().get(i).getPrice();
+                      //Filter by price
+                       if(iPrice>=valueGetMin&&iPrice<=valueGetMax){
+                          //Filter by manuFactures
+                           for(int j=0; j<AllManufactures.getAllManufactures().size();j++){
+                               if(AllManufactures.getAllManufactures().get(j).getName().equals(getTextSpinner)
+                               &&AllManufactures.getAllManufactures().get(j).getIdManufactures()
+                                       .equals(AllProducts.getArrAllProducts().get(i).getManu_id())){
+                                   arrProducts.add(AllProducts.getArrAllProducts().get(i));
+                               }
+                           }
+                       }
+                   }
+               }
+                setDataChangeRecyclerView();
+            }
+        });
+
+          btnFilterRefresh.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  ratingFilter.setRating(Float.parseFloat("0.0"));
+                  sRangePriceFilter.setValues(0.0f,0.0f);
+                  spFilterManufactures.setSelection(0);
+              }
+          });
+
+    }
+
+    private void loadDataSpinnerManufactures() {
+        for (int i = 0; i < AllManufactures.getAllManufactures().size(); i++) {
+            arrNameManufactures.add(AllManufactures.getAllManufactures().get(i).getName());
+        }
+
+        //setType spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arrNameManufactures);
+        adapter.setDropDownViewResource
+                (android.R.layout.simple_list_item_single_choice);
+        spFilterManufactures.setAdapter(adapter);
+    }
+
 
     private void onClickSearch() {
         //Tab on keyboard done
@@ -127,7 +195,8 @@ public class FindProductActivity extends AppCompatActivity {
     }
 
     private void loadDataFilter() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FindProductActivity.this, LinearLayoutManager.VERTICAL, false);;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FindProductActivity.this, LinearLayoutManager.VERTICAL, false);
+        ;
         rcvFindProducts.setLayoutManager(linearLayoutManager);
         setDataChangeRecyclerView();
     }
@@ -167,10 +236,16 @@ public class FindProductActivity extends AppCompatActivity {
 
 
     private void setControl() {
+        imgFindFilter = findViewById(R.id.imgFindFilter);
         imgFindArrowBack = findViewById(R.id.imgFindArrowBack);
         tvFindSearchTitle = findViewById(R.id.tvFindSearchTitle);
         rcvFindProducts = findViewById(R.id.rcvFindProducts);
         edtFindAutocompleted = findViewById(R.id.edtFindAutocompleted);
+        btnFilterRefresh = findViewById(R.id.btnFilterRefresh);
+        btnFilterSubmit = findViewById(R.id.btnFilterSubmit);
+        spFilterManufactures = findViewById(R.id.spFilterManufactures);
+        sRangePriceFilter = findViewById(R.id.sRangePriceFilter);
+        ratingFilter = findViewById(R.id.ratingFilter);
     }
 
     //Load data search by this user

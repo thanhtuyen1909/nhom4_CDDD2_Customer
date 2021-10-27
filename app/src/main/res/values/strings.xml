@@ -46,10 +46,7 @@
         <item>Màu 2 </item>
     </string-array>
 
-    <string-array name="thuonghieu">
-        <item>Asus</item>
-        <item>Acer</item>
-    </string-array>
+
 
     <string-array name="initial_slider_values">
         <item>20.0</item>

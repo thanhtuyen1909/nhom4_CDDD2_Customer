@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop_Ecommerce">
         <activity
+            android:name=".activites.User.NewPasswordActivity"
+            android:exported="true"
+            android:parentActivityName=".activites.Login.OtpActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".Rating"
             android:exported="true">
             <intent-filter>
@@ -145,16 +155,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activites.User.NewPasswordActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.Login.OtpActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".activites.Login.ForgetPasswordActivity"
             android:exported="true"
