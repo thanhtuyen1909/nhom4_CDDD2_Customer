@@ -48,7 +48,7 @@
                 app:srcCompat="@drawable/ic_edit" />
         </LinearLayout>
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lvCartDetail"
             android:layout_width="match_parent"
             android:layout_height="266dp"

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="120dp"
+    android:layout_margin="3dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,11 +14,13 @@
         >
 
         <ImageView
-            android:id="@+id/imgItemCart"
+            android:id="@+id/imgCart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="5"
-            app:srcCompat="@drawable/lap2" />
+            android:layout_margin="13dp"
+            android:layout_weight="4"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/lap1" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -115,4 +119,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>
