@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView"
+    android:orientation="vertical"
+    android:background="@color/colorBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_height_menu"
+        android:background="@color/colorMenu"
+        android:id="@+id/layoutHome"
+        android:orientation="horizontal">
+
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/size_border_all"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/imgHomeSlider"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:animateLayoutChanges="true"
+                android:background="#3F51B5"
+                android:elevation="3dp"
+                android:gravity="center"
+                app:auto_cycle="true"
+                app:corner_radius="20"
+                app:delay="0"
+                app:error_image="@drawable/lap2"
+                app:period="3000"
+                app:placeholder="@drawable/lap1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvHomeCategory"
+                android:layout_width="match_parent"
+                android:layout_height="120dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="19sp"
+                android:layout_marginBottom="3sp"
+                android:text="Gợi ý dành cho bạn"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvHomeSuggestion"
+                android:layout_width="match_parent"
+                android:layout_height="165dp" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="19sp"
+                android:text="Mua nhiều nhất"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvHomeTopSold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <LinearLayout
+        style="@style/bottom_custom_size"/>
+</LinearLayout>

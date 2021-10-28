@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/itFilter"
+        android:icon="@drawable/ic_filter"
+        android:title="Bộ lọc"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/itFilterWaitInformation"
+                android:orderInCategory="100"
+                android:title="Chờ xác nhận" />
+
+            <item
+                android:id="@+id/itFilterConfirmed"
+                android:orderInCategory="100"
+                android:title="Đã xác nhận" />
+
+            <item
+                android:id="@+id/itFilterBeingTransported"
+                android:orderInCategory="100"
+                android:title="Đang vận chuyển" />
+            <item
+                android:id="@+id/itFilterReceived"
+                android:orderInCategory="100"
+                android:title="Đã nhận hàng" />
+
+
+
+        </menu>
+    </item>
+</menu>

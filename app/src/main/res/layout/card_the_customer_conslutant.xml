@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="3dp"
+    android:layout_marginTop="@dimen/size_border_all"
+    app:cardCornerRadius="2dp"
+    android:background="@color/colorBackground"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/lnLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#758CF4">
+
+            <TextView
+                android:id="@+id/tvCardName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#758CF4"
+                android:padding="16dp"
+                android:singleLine="false"
+                android:text="Code name"
+                android:textColor="#000000"
+                android:textSize="16dp">
+
+            </TextView>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="3"
+                android:background="#758CF4"
+                app:srcCompat="@drawable/ic_keyboard_arrow_down_white_24dp"
+                app:tint="#000000" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/expandLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#96A6FD">
+
+            <TextView
+                android:id="@+id/tvCardDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:singleLine="false"
+                android:text="Description TEXTVIEW"
+                android:textColor="#423C3C"
+                android:textSize="23sp"></TextView>
+
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

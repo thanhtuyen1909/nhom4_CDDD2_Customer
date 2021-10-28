@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ve_5">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">5</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="ve_2_total">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="ve_2_total_free">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="image_arrow_back">
+       <item name="android:layout_width">match_parent</item>
+       <item name="android:layout_height">match_parent</item>
+       <item name="android:layout_margin">5dp</item>
+       <item name="tint">@color/white</item>
+       <item name="android:layout_weight">8</item>
+       <item name="srcCompat"> @drawable/ic_arrow_back</item>
+    </style>
+
+    <style name="bottom_custom_size">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+</resources>
