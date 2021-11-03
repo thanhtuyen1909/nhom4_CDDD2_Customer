@@ -1,128 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nguyenloi.shop_ecommerce">
+    package="vn.edu.tdc.zuke_customer">
+
+    <!-- permission -->
+    <uses-permission android:name="android.permission.INTERNET" />
+<!--<uses-permission android:name="android.permission.CALL_PHONE"/>-->
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Shop_Ecommerce">
+        android:theme="@style/AppTheme.NoActionBar"
+        android:usesCleartextTraffic="true">
 
-        <activity
-            android:name=".activites.LoginActivity"
-            android:exported="true">
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBFY4VjmflzQlWy-MFdum-U8WwHk6_Lkng" />
 
-        </activity>
+        <!-- activitys -->
         <activity
-            android:name=".FindProductActivity"
-            android:parentActivityName=".activites.BottomNavigationUserActivity"
-            android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".NotificationActiviy"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
-
-        </activity>
-        <activity
-            android:name=".RatingDetailActivity"
-            android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".ChangePasswordDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.InformationUserActivity">
-
-        </activity>
-        <activity
-            android:name=".activites.BottomNavigationUserActivity"
-            android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".activites.DetailProductActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
-
-        </activity>
-        <activity
-            android:name=".activites.CartDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.CartActivity">
-
-        </activity>
-        <activity
-            android:name=".activites.CartActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
-
-        </activity>
-        <activity
-            android:name=".activites.HistoryBillActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
+            android:name=".activitys.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activites.TheBillHistoryDetailActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.HistoryBillActivity">
-
+            android:name=".activitys.RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activitys.ForgotPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activitys.OTPVerificationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activitys.ForgotPasswordChangeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.CustomerConsultantActivity"
-            android:exported="true">
+            android:name=".activitys.FacebookAuthActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
+
+        <activity
+            android:name=".activitys.HomeScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.IntroduceActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
-
+            android:name=".activitys.ProfileScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.InformationUserActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.BottomNavigationUserActivity">
-
+            android:name=".activitys.EditProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.ChangePasswordActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.InformationUserActivity">
-
+            android:name=".activitys.ChangePasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.NewPasswordActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.OtpActivity">
-
+            android:name=".activitys.SupportActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.ForgetPasswordActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.LoginActivity">
+            android:name=".activitys.IntroduceAppActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
+        <activity
+            android:name=".activitys.MapActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".activitys.CartActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.RegisterActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.LoginActivity">
+            android:name=".activitys.PaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
+        <activity
+            android:name=".activitys.SearchActivity"
+            android:theme="@style/MaterialTheme">
+        </activity>
+
+
+        <activity
+            android:name=".activitys.FavoriteActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".activitys.NotificationActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".activitys.DetailProductActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activites.OtpActivity"
-            android:exported="true"
-            android:parentActivityName=".activites.ForgetPasswordActivity">
+            android:name=".activitys.ListCommentProductActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
+
+        <activity
+            android:name=".activitys.HistoryOrderActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activitys.DetailHistoryOrderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activitys.RatingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+
+        <activity
+            android:name=".activitys.CategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
