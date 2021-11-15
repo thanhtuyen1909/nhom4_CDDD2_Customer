@@ -202,7 +202,6 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
         @Override
         public void searchCate(String key) {
             intent = new Intent(HomeScreenActivity.this, SearchActivity.class);
-            Log.d("TAG", "searchCate: "+key);
             intent.putExtra("key", key);
             intent.putExtra("accountID", accountID);
             startActivity(intent);
@@ -271,7 +270,7 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
                     product.setKey(dataSnapshot.getKey());
-                    if(product.getStatus() == 0 && listProductSold.size() < 6) {
+                    if (product.getStatus() == 0 && listProductSold.size() < 6) {
                         listProductSold.add(product);
                     }
                 }
@@ -296,7 +295,7 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
                     product.setKey(dataSnapshot.getKey());
-                    if(product.getStatus() == 0 && listProductRating.size() < 6) {
+                    if (product.getStatus() == 0 && listProductRating.size() < 6) {
                         listProductRating.add(product);
                     }
                 }

@@ -1,15 +1,18 @@
 package vn.edu.tdc.zuke_customer.activitys;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 
 import vn.edu.tdc.zuke_customer.R;
@@ -21,20 +24,33 @@ public class SupportActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView subtitleAppbar;
     ListView lvQuestion;
+    ImageView buttonAction;
     SupportAdapter conslutantAdapter;
+    String accountID = "";
+    Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_support);
 
+        // Lấy dữ liệu được gửi sang:
+        intent = getIntent();
+        accountID = intent.getStringExtra("accountID");
+
         // Toolbar:
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         subtitleAppbar = findViewById(R.id.subtitleAppbar);
         subtitleAppbar.setText(R.string.titleHT);
+        buttonAction = findViewById(R.id.buttonAction);
+        buttonAction.setBackground(getResources().getDrawable(R.drawable.ic_round_question_answer_24));
         assert getSupportActionBar() != null;   //null check
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        buttonAction.setOnClickListener(v -> {
+            startActivity(new Intent(SupportActivity.this, ChatActivity.class)
+                    .putExtra("accountID", accountID));
+        });
 
         setControl();
         addData();

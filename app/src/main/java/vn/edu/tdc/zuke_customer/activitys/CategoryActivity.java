@@ -123,6 +123,7 @@ public class CategoryActivity extends AppCompatActivity implements NavigationBar
                     listPro.clear();
                     for (DataSnapshot node : snapshot.getChildren()) {
                         Product product = node.getValue(Product.class);
+                        product.setKey(node.getKey());
                         if (product.getStatus() == 0) {
                             if (product.getCategory_id().equals(categoryID)) {
                                 if (listPro.size() > 0) {
@@ -202,6 +203,7 @@ public class CategoryActivity extends AppCompatActivity implements NavigationBar
                 listPro.clear();
                 for (DataSnapshot node : snapshot.getChildren()) {
                     Product product = node.getValue(Product.class);
+                    product.setKey(node.getKey());
                     if (product.getStatus() == 0) {
                         if (listPro.size() > 0) {
                             boolean check = false;

@@ -44,8 +44,6 @@
             android:name=".activitys.FacebookAuthActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
-
         <activity
             android:name=".activitys.HomeScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -70,12 +68,10 @@
             android:name=".activitys.IntroduceAppActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".activitys.MapActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".activitys.CartActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -84,35 +80,30 @@
             android:name=".activitys.PaymentActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".activitys.SearchActivity"
             android:theme="@style/MaterialTheme">
         </activity>
-
-
         <activity
             android:name=".activitys.FavoriteActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
-
         <activity
             android:name=".activitys.NotificationActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
-
         <activity
             android:name=".activitys.DetailProductActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activitys.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".activitys.ListCommentProductActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
-
         <activity
             android:name=".activitys.HistoryOrderActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -124,8 +115,6 @@
             android:name=".activitys.RatingActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
-
         <activity
             android:name=".activitys.CategoryActivity"
             android:theme="@style/AppTheme.NoActionBar">

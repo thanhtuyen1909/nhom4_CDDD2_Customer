@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,7 +42,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     TextView title, mess;
     Button btnSubmit;
     Handler handler = new Handler();
-    TextInputEditText editTextPasswordConfirm, editTextPassword, editTextNewPassword;
+    EditText editTextPasswordConfirm, editTextPassword, editTextNewPassword;
     DatabaseReference accountRef = FirebaseDatabase.getInstance().getReference("Account/" + accountID);
 
     @Override

@@ -59,7 +59,7 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
     Product item = null;
     Intent intent;
     TextView subtitleAppbar, price, sold, price_main, name, description, rating, detail, title, mess;
-    ImageView imgProduct, addCart, hotline;
+    ImageView imgProduct, addCart, contact;
     ToggleButton button_favorite;
     Button btnMuaNgay;
     RatingBar simpleRatingBar;
@@ -69,7 +69,6 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
     ArrayList<Product> listRelate;
     ArrayList<Rating> listComment;
     CommentAdapter commentAdapter;
-    private static final int REQUEST_PHONE_CALL = 1;
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference offerDetailRef = db.getReference("Offer_Details");
@@ -111,7 +110,7 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
         relateProduct = findViewById(R.id.relateProduct);
         btnMuaNgay = findViewById(R.id.btnMuaNgay);
         addCart = findViewById(R.id.addCart);
-        hotline = findViewById(R.id.hotline);
+        contact = findViewById(R.id.contact);
         detail = findViewById(R.id.detail);
         rcvComment = findViewById(R.id.rcvComment);
         conRating = findViewById(R.id.conRating);
@@ -125,7 +124,7 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
         btnMuaNgay.setOnClickListener(this);
         button_favorite.setOnClickListener(this);
         detail.setOnClickListener(this);
-        hotline.setOnClickListener(this);
+        contact.setOnClickListener(this);
         addCart.setOnClickListener(this);
 
         // Recycleview:
@@ -234,29 +233,13 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
     private String formatPrice(int price) {
         String stmp = String.valueOf(price);
         int amount;
-        amount = (int)(stmp.length() / 3);
+        amount = (stmp.length() / 3);
         if (stmp.length() % 3 == 0)
             amount--;
-        for (int i = 1; i <= amount; i++)
-        {
+        for (int i = 1; i <= amount; i++) {
             stmp = new StringBuilder(stmp).insert(stmp.length() - (i * 3) - (i - 1), ",").toString();
         }
         return stmp + " ₫";
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_PHONE_CALL) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + "0123456789"));
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
-                }
-                startActivity(intent);
-            }
-        }
     }
 
     private void data() {
@@ -318,22 +301,14 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
             addCart();
             startActivity(new Intent(DetailProductActivity.this, PaymentActivity.class)
                     .putExtra("accountID", accountID));
-        }
-        else if (v == hotline) {
-            intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:" + "0123456789"));
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
-            }
-            startActivity(intent);
-        }
-        else if (v == addCart) {
-            if(item.getQuantity() > 0) {
+        } else if (v == contact) {
+            startActivity(new Intent(DetailProductActivity.this, ChatActivity.class)
+                    .putExtra("accountID", accountID));
+        } else if (v == addCart) {
+            if (item.getQuantity() > 0) {
                 addCart();
-            }
-            else showWarningDialog("Sản phẩm đã hết hàng, vui lòng quay lại sau!");
-        }
-        else if (v == button_favorite) {
+            } else showWarningDialog("Sản phẩm đã hết hàng, vui lòng quay lại sau!");
+        } else if (v == button_favorite) {
             if (!button_favorite.isChecked()) {
                 favoriteRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -352,15 +327,13 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
 
                     }
                 });
-            }
-            else {
+            } else {
                 Favorite favorite = new Favorite();
                 favorite.setProductId(item.getKey());
                 favorite.setUserId(accountID);
                 favoriteRef.push().setValue(favorite).addOnSuccessListener(unused -> showSuccesDialog("Thêm sản phẩm vào yêu thích thành công!")).addOnFailureListener(e -> showWarningDialog("Thêm sản phẩm vào yêu thích thất bại!"));
             }
-        }
-        else {
+        } else {
             // Xem tất cả bình luận
             startActivity(new Intent(DetailProductActivity.this, ListCommentProductActivity.class)
                     .putExtra("productID", item.getKey())
