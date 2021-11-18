@@ -4,10 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -67,18 +70,31 @@ public class MessageAdapter extends RecyclerView.Adapter {
     }
 
     private class SentMessageHolder extends RecyclerView.ViewHolder {
+        ImageView layoutImage;
         TextView messageText, timeText, text_gchat_date_me;
 
         SentMessageHolder(View itemView) {
             super(itemView);
-
+            layoutImage = itemView.findViewById(R.id.messageTv);
             messageText = itemView.findViewById(R.id.show_message);
             timeText = itemView.findViewById(R.id.text_gchat_timestamp_me);
             text_gchat_date_me = itemView.findViewById(R.id.text_gchat_date_me);
         }
 
         void bind(Chat message) {
-            messageText.setText(message.getMessage());
+            switch (message.getType()) {
+                case "text":
+                    messageText.setVisibility(View.VISIBLE);
+                    layoutImage.setVisibility(View.GONE);
+                    messageText.setText(message.getMessage());
+
+                    break;
+                case "image":
+                    messageText.setVisibility(View.GONE);
+                    layoutImage.setVisibility(View.VISIBLE);
+                    Picasso.get().load(message.getMessage()).fit().into(layoutImage);
+                    break;
+            }
 
             // Format the stored timestamp into a readable String using method.
             text_gchat_date_me.setText(message.getCreated_at().substring(0, 10));
@@ -87,10 +103,12 @@ public class MessageAdapter extends RecyclerView.Adapter {
     }
 
     public class ReceivedMessageHolder extends RecyclerView.ViewHolder {
+        ImageView layoutImage;
         TextView text_gchat_message, text_gchat_date_other, text_gchat_timestamp_other;
 
         public ReceivedMessageHolder(@NonNull View itemView) {
             super(itemView);
+            layoutImage = itemView.findViewById(R.id.messageTv);
             text_gchat_message = itemView.findViewById(R.id.show_message);
             text_gchat_date_other = itemView.findViewById(R.id.text_gchat_date_other);
             text_gchat_timestamp_other = itemView.findViewById(R.id.text_gchat_timestamp_other);
@@ -98,6 +116,20 @@ public class MessageAdapter extends RecyclerView.Adapter {
 
         void bind(Chat message) {
             text_gchat_message.setText(message.getMessage());
+
+            switch (message.getType()) {
+                case "text":
+                    text_gchat_message.setVisibility(View.VISIBLE);
+                    layoutImage.setVisibility(View.GONE);
+                    text_gchat_message.setText(message.getMessage());
+
+                    break;
+                case "image":
+                    text_gchat_message.setVisibility(View.GONE);
+                    layoutImage.setVisibility(View.VISIBLE);
+                    Picasso.get().load(message.getMessage()).fit().into(layoutImage);
+                    break;
+            }
 
             // Format the stored timestamp into a readable String using method.
             text_gchat_date_other.setText(message.getCreated_at().substring(0, 10));

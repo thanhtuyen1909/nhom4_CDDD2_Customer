@@ -182,6 +182,7 @@ public class ProfileScreenActivity extends AppCompatActivity implements View.OnC
             startActivity(intent);
         } else if (v == hoTro) {
             intent = new Intent(ProfileScreenActivity.this, SupportActivity.class);
+            intent.putExtra("accountID", accountID);
             startActivity(intent);
         } else if (v == gioiThieu) {
             intent = new Intent(ProfileScreenActivity.this, IntroduceAppActivity.class);

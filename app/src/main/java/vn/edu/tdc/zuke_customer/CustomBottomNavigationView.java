@@ -18,7 +18,7 @@ public class CustomBottomNavigationView extends BottomNavigationView {
     private Paint mPaint;
 
     /** the CURVE_CIRCLE_RADIUS represent the radius of the fab button */
-    final int CURVE_CIRCLE_RADIUS = 128 / 2;
+    final int CURVE_CIRCLE_RADIUS = 200 / 2;
     // the coordinates of the first curve
     Point mFirstCurveStartPoint = new Point();
     Point mFirstCurveEndPoint = new Point();
@@ -72,8 +72,8 @@ public class CustomBottomNavigationView extends BottomNavigationView {
         mNavigationBarHeight = getHeight();
         // the coordinates (x,y) of the start point before curve
         mFirstCurveStartPoint.set((mNavigationBarWidth / 2) - (CURVE_CIRCLE_RADIUS * 2) - (CURVE_CIRCLE_RADIUS / 3), 0);
-        // the coordinates (x,y) of the end point after curve + (CURVE_CIRCLE_RADIUS / 3)
-        mFirstCurveEndPoint.set(mNavigationBarWidth / 2, CURVE_CIRCLE_RADIUS);
+        // the coordinates (x,y) of the end point after curve
+        mFirstCurveEndPoint.set(mNavigationBarWidth / 2, CURVE_CIRCLE_RADIUS + (CURVE_CIRCLE_RADIUS / 4));
         // same thing for the second curve
         mSecondCurveStartPoint = mFirstCurveEndPoint;
         mSecondCurveEndPoint.set((mNavigationBarWidth / 2) + (CURVE_CIRCLE_RADIUS * 2) + (CURVE_CIRCLE_RADIUS / 3), 0);
