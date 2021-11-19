@@ -104,7 +104,7 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        if(from.equals("payment")) {
+        if(from != null && from.equals("payment")) {
             startActivity(new Intent(DetailHistoryOrderActivity.this, HomeScreenActivity.class).putExtra("account", accountID));
         }
         onBackPressed();
