@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -302,8 +301,12 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
             startActivity(new Intent(DetailProductActivity.this, PaymentActivity.class)
                     .putExtra("accountID", accountID));
         } else if (v == contact) {
-            startActivity(new Intent(DetailProductActivity.this, ChatActivity.class)
-                    .putExtra("accountID", accountID));
+            intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:0123456789"));
+            if (ActivityCompat.checkSelfPermission(DetailProductActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            startActivity(intent);
         } else if (v == addCart) {
             if (item.getQuantity() > 0) {
                 addCart();

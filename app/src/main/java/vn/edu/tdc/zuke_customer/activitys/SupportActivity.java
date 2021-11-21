@@ -24,7 +24,6 @@ public class SupportActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView subtitleAppbar;
     ListView lvQuestion;
-    ImageView buttonAction;
     SupportAdapter conslutantAdapter;
     String accountID = "";
     Intent intent;
@@ -43,14 +42,8 @@ public class SupportActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         subtitleAppbar = findViewById(R.id.subtitleAppbar);
         subtitleAppbar.setText(R.string.titleHT);
-        buttonAction = findViewById(R.id.buttonAction);
-        buttonAction.setBackground(getResources().getDrawable(R.drawable.ic_round_question_answer_24));
         assert getSupportActionBar() != null;   //null check
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        buttonAction.setOnClickListener(v -> {
-            startActivity(new Intent(SupportActivity.this, ChatActivity.class)
-                    .putExtra("accountID", accountID));
-        });
 
         setControl();
         addData();

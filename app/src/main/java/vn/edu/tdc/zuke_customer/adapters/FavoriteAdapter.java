@@ -22,10 +22,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import vn.edu.tdc.zuke_customer.R;
 import vn.edu.tdc.zuke_customer.data_models.Favorite;
+import vn.edu.tdc.zuke_customer.data_models.Offer;
 import vn.edu.tdc.zuke_customer.data_models.OfferDetail;
 import vn.edu.tdc.zuke_customer.data_models.Product;
 
@@ -38,6 +42,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("Products");
     DatabaseReference favRef = FirebaseDatabase.getInstance().getReference("Favorite");
     DatabaseReference offerDetailRef = FirebaseDatabase.getInstance().getReference("Offer_Details");
+    DatabaseReference offerRef = FirebaseDatabase.getInstance().getReference("Offers");
+    int maxSale = 0;
 
     public FavoriteAdapter(Context context, ArrayList<Favorite> items) {
         this.context = context;
@@ -62,6 +68,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         holder.itemPriceMain.setText("");
         holder.itemRating.setText("");
         holder.itemRatingAmount.setText("");
+
         // Thông tin sản phẩm:
         productRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -70,7 +77,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                     Product product = node.getValue(Product.class);
                     product.setKey(node.getKey());
                     if (product.getKey().equals(favorite.getProductId())) {
-                        if(product.getStatus() == -1) {
+                        if (product.getStatus() == -1) {
                             favRef.child(favorite.getKey()).removeValue();
                             notifyDataSetChanged();
                         } else {
@@ -81,26 +88,63 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                             offerDetailRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    int maxSale = 0;
-                                    for (DataSnapshot node1 : snapshot.getChildren()) {
-                                        OfferDetail detail = node1.getValue(OfferDetail.class);
-                                        if (detail.getProductID().equals(favorite.getProductId())) {
-                                            if (detail.getPercentSale() > maxSale) {
-                                                maxSale = detail.getPercentSale();
-                                            }
+                                    ArrayList<OfferDetail> list = new ArrayList<>();
+                                    holder.txtDiscount.setText("");
+                                    boolean check = true;
+                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                        OfferDetail offerDetail = snapshot1.getValue(OfferDetail.class);
+                                        if(offerDetail.getProductID().equals(product.getKey())) {
+                                            check = false;
+                                            offerRef.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    maxSale = 0;
+                                                    for (DataSnapshot snapshot2 : snapshot.getChildren()) {
+                                                        Offer offer = snapshot2.getValue(Offer.class);
+                                                        offer.setKey(snapshot2.getKey());
+                                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                                                        long startDay = sdf.parse(offer.getStartDate(), new ParsePosition(0)).getTime();
+                                                        long endtDay = sdf.parse(offer.getEndDate(), new ParsePosition(0)).getTime();
+                                                        long now = new Date().getTime();
+                                                        if (startDay == endtDay) {
+                                                            endtDay += 1000 * 60 * 60 * 24 - 1;
+                                                        }
+                                                        if (offer.getKey().equals(offerDetail.getOfferID()) && now <= endtDay && now >= startDay) {
+                                                            list.add(offerDetail);
+                                                        }
+                                                    }
+                                                    for (OfferDetail offerDetail : list) {
+                                                        if (offerDetail.getPercentSale() > maxSale) {
+                                                            maxSale = offerDetail.getPercentSale();
+                                                        }
+                                                    }
+                                                    if (maxSale != 0) {
+                                                        holder.txtDiscount.setVisibility(View.VISIBLE);
+                                                        holder.txtDiscount.setText(maxSale + "%");
+                                                        holder.itemPriceMain.setVisibility(View.VISIBLE);
+                                                        int discount = product.getPrice() / 100 * (100 - maxSale);
+                                                        holder.itemPrice.setText(formatPrice(discount));
+                                                        holder.itemPriceMain.setText(formatPrice(product.getPrice()));
+                                                        holder.itemPriceMain.setPaintFlags(holder.itemPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                                    } else {
+                                                        holder.txtDiscount.setVisibility(View.INVISIBLE);
+                                                        holder.itemPrice.setText(formatPrice(product.getPrice()));
+                                                        holder.itemPriceMain.setVisibility(View.INVISIBLE);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
                                         }
                                     }
-                                    if (maxSale != 0) {
-                                        holder.itemPriceMain.setVisibility(View.VISIBLE);
-                                        int discount = product.getPrice() / 100 * (100 - maxSale);
-                                        holder.itemPrice.setText(formatPrice(discount));
-                                        holder.itemPriceMain.setText(formatPrice(product.getPrice()));
-                                        holder.itemPriceMain.setPaintFlags(holder.itemPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                                    } else {
+                                    if(check) {
+                                        holder.txtDiscount.setVisibility(View.INVISIBLE);
                                         holder.itemPrice.setText(formatPrice(product.getPrice()));
                                         holder.itemPriceMain.setVisibility(View.INVISIBLE);
                                     }
-
                                 }
 
                                 @Override
@@ -109,10 +153,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                                 }
                             });
                             //Ảnh
-                            StorageReference imageRef =  FirebaseStorage.getInstance().getReference("images/products/" + product.getName() + "/" + product.getImage());
+                            StorageReference imageRef = FirebaseStorage.getInstance().getReference("images/products/" + product.getName() + "/" + product.getImage());
                             imageRef.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).resize(holder.itemImage.getWidth(), holder.itemImage.getHeight()).into(holder.itemImage));
                             //Rating:
-                            if(product.getRating() > 0) {
+                            if (product.getRating() > 0) {
                                 holder.itemRating.setText(product.getRating() + "");
                             } else {
                                 holder.itemRating.setVisibility(View.GONE);
@@ -123,6 +167,13 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                                 holder.itemRatingAmount.setText(product.getSold() + " đã bán");
                             } else {
                                 holder.itemRatingAmount.setVisibility(View.INVISIBLE);
+                            }
+
+                            //Hết hàng:
+                            if (product.getQuantity() == 0) {
+                                holder.txtSoldOff.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.txtSoldOff.setVisibility(View.INVISIBLE);
                             }
                         }
                     }
@@ -141,9 +192,12 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                     if (v == holder.bt_favorite) {
                         itemClick.deleteFavorite(favorite.getKey());
                     } else if (v == holder.bt_cart) {
-                        itemClick.addCart(favorite.getProductId(), formatInt(holder.itemPrice.getText() + ""));
+                        if(product1.getQuantity() > 0) {
+                            itemClick.addCart(favorite.getProductId(), formatInt(holder.itemPrice.getText() + ""));
+                        }
+                        else itemClick.addCart("Hết hàng", formatInt(holder.itemPrice.getText() + ""));
                     } else {
-                        if(product1 != null) itemClick.detailProduct(product1);
+                        if (product1 != null) itemClick.detailProduct(product1);
                     }
                 }, 50);
             } else {
@@ -155,11 +209,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     private String formatPrice(int price) {
         String stmp = String.valueOf(price);
         int amount;
-        amount = (int)(stmp.length() / 3);
+        amount = (int) (stmp.length() / 3);
         if (stmp.length() % 3 == 0)
             amount--;
-        for (int i = 1; i <= amount; i++)
-        {
+        for (int i = 1; i <= amount; i++) {
             stmp = new StringBuilder(stmp).insert(stmp.length() - (i * 3) - (i - 1), ",").toString();
         }
         return stmp + " ₫";
@@ -177,7 +230,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ToggleButton bt_favorite;
         ImageView itemImage, bt_cart;
-        TextView itemTitle, itemPrice, itemPriceMain, itemRating, itemRatingAmount;
+        TextView itemTitle, itemPrice, itemPriceMain, itemRating, itemRatingAmount, txtDiscount, txtSoldOff;
         View.OnClickListener onClickListener;
 
         public ViewHolder(View view) {
@@ -190,6 +243,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             itemRatingAmount = view.findViewById(R.id.item_rating_amount);
             bt_favorite = view.findViewById(R.id.button_favorite);
             bt_cart = view.findViewById(R.id.addCart);
+
+            txtDiscount = view.findViewById(R.id.textDiscount);
+            txtSoldOff = view.findViewById(R.id.textSoldOff);
+
             bt_cart.setOnClickListener(this);
             bt_favorite.setOnClickListener(this);
             view.setOnClickListener(this);

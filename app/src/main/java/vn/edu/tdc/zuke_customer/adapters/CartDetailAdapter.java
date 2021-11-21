@@ -30,11 +30,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.NumberFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import vn.edu.tdc.zuke_customer.R;
 import vn.edu.tdc.zuke_customer.data_models.CartDetail;
+import vn.edu.tdc.zuke_customer.data_models.Offer;
 import vn.edu.tdc.zuke_customer.data_models.OfferDetail;
 import vn.edu.tdc.zuke_customer.data_models.Product;
 
@@ -43,10 +47,12 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
     ArrayList<CartDetail> list;
     ItemClickListener itemClickListener;
     DatabaseReference proRef = FirebaseDatabase.getInstance().getReference("Products");
-    DatabaseReference promoRef = FirebaseDatabase.getInstance().getReference("Offer_Details");
+    DatabaseReference offerDetailRef = FirebaseDatabase.getInstance().getReference("Offer_Details");
+    DatabaseReference offerRef = FirebaseDatabase.getInstance().getReference("Offers");
     DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference("Cart");
     DatabaseReference cartDetailRef = FirebaseDatabase.getInstance().getReference("Cart_Detail");
     ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
+    int maxSale = 0;
 
     public void setItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
@@ -79,7 +85,7 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
                 for (DataSnapshot node : snapshot.getChildren()) {
                     Product product = node.getValue(Product.class);
                     if (node.getKey().equals(item.getProductID())) {
-                        if(product.getStatus() == -1) {
+                        if (product.getStatus() == -1) {
                             cartDetailRef.child(item.getKey()).removeValue();
                             cartRef.child(item.getCartID()).child("total").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -92,32 +98,74 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
 
                                 }
                             });
-                        } else {
+                        }
+                        else {
                             //set name
                             holder.itemName.setText(product.getName());
                             //set gia san pham
                             holder.itemPrice.setText(formatPrice(product.getPrice()));
-                            promoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            offerDetailRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    int maxSale = 0;
-                                    for(DataSnapshot node1 : snapshot.getChildren()){
-                                        OfferDetail detail = node1.getValue(OfferDetail.class);
-                                        if(detail.getProductID().equals(item.getProductID())){
-                                            if(detail.getPercentSale() > maxSale){
-                                                maxSale = detail.getPercentSale();
-                                            }
+                                    ArrayList<OfferDetail> list = new ArrayList<>();
+                                    holder.txtDiscount.setText("");
+                                    boolean check = true;
+                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                        OfferDetail offerDetail = snapshot1.getValue(OfferDetail.class);
+                                        if (offerDetail.getProductID().equals(node.getKey())) {
+                                            check = false;
+                                            offerRef.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    maxSale = 0;
+                                                    for (DataSnapshot snapshot2 : snapshot.getChildren()) {
+                                                        Offer offer = snapshot2.getValue(Offer.class);
+                                                        offer.setKey(snapshot2.getKey());
+                                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                                                        long startDay = sdf.parse(offer.getStartDate(), new ParsePosition(0)).getTime();
+                                                        long endtDay = sdf.parse(offer.getEndDate(), new ParsePosition(0)).getTime();
+                                                        long now = new Date().getTime();
+                                                        if (startDay == endtDay) {
+                                                            endtDay += 1000 * 60 * 60 * 24 - 1;
+                                                        }
+                                                        if (offer.getKey().equals(offerDetail.getOfferID()) && now <= endtDay && now >= startDay) {
+                                                            list.add(offerDetail);
+                                                        }
+                                                    }
+                                                    for (OfferDetail offerDetail : list) {
+                                                        if (offerDetail.getPercentSale() > maxSale) {
+                                                            maxSale = offerDetail.getPercentSale();
+                                                        }
+                                                    }
+                                                    if (maxSale != 0) {
+                                                        holder.txtDiscount.setVisibility(View.VISIBLE);
+                                                        holder.txtDiscount.setText(maxSale + "%");
+
+                                                        holder.itemPrice.setVisibility(View.VISIBLE);
+
+                                                        int discount = product.getPrice() / 100 * (100 - maxSale);
+                                                        holder.itemPriceDiscount.setText(formatPrice(discount));
+                                                        holder.itemPrice.setText(formatPrice(product.getPrice()));
+                                                        holder.itemPrice.setPaintFlags(holder.itemPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                                    } else {
+                                                        holder.txtDiscount.setVisibility(View.INVISIBLE);
+                                                        holder.itemPriceDiscount.setText(formatPrice(product.getPrice()));
+                                                        holder.itemPrice.setVisibility(View.INVISIBLE);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
                                         }
                                     }
-                                    if(maxSale != 0){
-                                        int discount = product.getPrice() /100 * (100-maxSale);
-                                        holder.itemPriceDiscount.setText(formatPrice(discount));
-                                        holder.itemPrice.setPaintFlags(holder.itemPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                                    } else {
+                                    if (check) {
+                                        holder.txtDiscount.setVisibility(View.INVISIBLE);
                                         holder.itemPriceDiscount.setText(formatPrice(product.getPrice()));
                                         holder.itemPrice.setVisibility(View.INVISIBLE);
                                     }
-
                                 }
 
                                 @Override
@@ -125,7 +173,8 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
 
                                 }
                             });
-                            holder.edtValue.setText(""+item.getAmount());
+
+                            holder.edtValue.setText("" + item.getAmount());
                             //set hinh anh
                             FirebaseStorage storage = FirebaseStorage.getInstance();
                             final long ONE_MEGABYTE = 1024 * 1024;
@@ -134,6 +183,14 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
                                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                 holder.itemImage.setImageBitmap(Bitmap.createScaledBitmap(bmp, holder.itemImage.getWidth(), holder.itemImage.getHeight(), false));
                             });
+
+                            //check hết hàng
+                            if (product.getQuantity() == 0) {
+                                holder.txtSoldOff.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.txtSoldOff.setVisibility(View.INVISIBLE);
+                            }
+
                         }
                     }
                 }
@@ -145,7 +202,7 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
             }
         });
         holder.onClickListener = v -> {
-            if(itemClickListener != null) {
+            if (itemClickListener != null) {
                 int value = Integer.parseInt(String.valueOf(holder.edtValue.getText()));
                 if (v == holder.btnAdd) {
                     value++;
@@ -157,7 +214,8 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
                     holder.edtValue.setText(String.valueOf(value));
                     itemClickListener.changeQuantity(item, value);
                 }
-                if (v == holder.cardView) itemClickListener.delete(item.getKey(), formatInt(holder.itemPriceDiscount.getText().toString()));
+                if (v == holder.cardView)
+                    itemClickListener.delete(item.getKey(), formatInt(holder.itemPriceDiscount.getText().toString()));
 
             } else {
                 return;
@@ -171,12 +229,12 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         SwipeRevealLayout swipeRevealLayout;
         CardView cardView;
         ImageView itemImage;
-        TextView itemName, itemPrice, itemPriceDiscount;
-        Button btnAdd,btnMinus;
+        TextView itemName, itemPrice, itemPriceDiscount, txtDiscount, txtSoldOff;
+        Button btnAdd, btnMinus;
         EditText edtValue;
         View.OnClickListener onClickListener;
 
@@ -192,6 +250,10 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
             btnAdd = view.findViewById(R.id.plusButton);
             btnMinus = view.findViewById(R.id.minusButton);
             edtValue = view.findViewById(R.id.valueAmount);
+
+            txtDiscount = view.findViewById(R.id.textDiscount);
+            txtSoldOff = view.findViewById(R.id.textSoldOff);
+
             btnMinus.setOnClickListener(this);
             btnAdd.setOnClickListener(this);
             cardView.setOnClickListener(this);
@@ -199,7 +261,7 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            if(onClickListener != null) {
+            if (onClickListener != null) {
                 onClickListener.onClick(v);
             }
         }
@@ -207,17 +269,17 @@ public class CartDetailAdapter extends RecyclerView.Adapter<CartDetailAdapter.Vi
 
     public interface ItemClickListener {
         void changeQuantity(CartDetail item, int value);
+
         void delete(String id, int price);
     }
 
     private String formatPrice(int price) {
         String stmp = String.valueOf(price);
         int amount;
-        amount = (int)(stmp.length() / 3);
+        amount = (int) (stmp.length() / 3);
         if (stmp.length() % 3 == 0)
             amount--;
-        for (int i = 1; i <= amount; i++)
-        {
+        for (int i = 1; i <= amount; i++) {
             stmp = new StringBuilder(stmp).insert(stmp.length() - (i * 3) - (i - 1), ",").toString();
         }
         return stmp + " ₫";

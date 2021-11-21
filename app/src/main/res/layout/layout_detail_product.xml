@@ -254,7 +254,7 @@
             android:id="@+id/contact"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:src="@drawable/ic_round_question_answer_24"
+            android:src="@drawable/ic_round_local_phone_24"
             android:layout_height="35dp"/>
 
         <ImageView

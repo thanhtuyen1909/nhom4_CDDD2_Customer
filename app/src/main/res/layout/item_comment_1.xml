@@ -43,7 +43,8 @@
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/img"
             android:ellipsize="end"
-            android:lines="3"
+            android:maxLines="3"
+            android:minLines="1"
             android:text="Title"
             android:textSize="16sp" />
 

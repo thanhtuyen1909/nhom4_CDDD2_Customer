@@ -109,6 +109,26 @@
         <entry key="..\:/Users/admin/AndroidStudioProjects/Zuke-Customer/app/src/main/res/layout/layout_favorite.xml" value="0.1" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/Zuke-Customer/app/src/main/res/layout/layout_home.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/Zuke-Customer/app/src/main/res/layout/layout_profile.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/drawable/bg.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/drawable/custom_button_1.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/drawable/custom_button_2.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/drawable/noti.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/appbar.xml" value="0.22" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/appbar_1.xml" value="0.22" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/appbar_2.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/appbar_3.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/item_comment.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/item_comment_1.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/item_notification.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/item_product_cart.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/item_product_goiy.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/item_product_muanhieu.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/item_product_order.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/item_product_search_favorite.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/layout_detail_product.xml" value="0.10689890710382513" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/layout_introduce.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/layout_list_cart.xml" value="0.1" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/nhom4_LTDD2_Customer/app/src/main/res/layout/layout_support.xml" value="0.10689890710382513" />
       </map>
     </option>
   </component>

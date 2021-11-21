@@ -33,6 +33,7 @@ import vn.edu.tdc.zuke_customer.adapters.Product2Adapter;
 import vn.edu.tdc.zuke_customer.data_models.Category;
 import vn.edu.tdc.zuke_customer.data_models.ManuProduct;
 import vn.edu.tdc.zuke_customer.data_models.Manufactures;
+import vn.edu.tdc.zuke_customer.data_models.Notification;
 import vn.edu.tdc.zuke_customer.data_models.Product;
 
 public class CategoryActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
@@ -48,13 +49,15 @@ public class CategoryActivity extends AppCompatActivity implements NavigationBar
     private CustomBottomNavigationView customBottomNavigationView;
     Intent intent;
     Toolbar toolbar;
-    TextView subtitleAppbar;
+    TextView subtitleAppbar, amountNoti;
     ImageView buttonAction;
+    int sum = 0;
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference proRef = db.getReference("Products");
     DatabaseReference manuRef = db.getReference("Manufactures");
     DatabaseReference cateRef = db.getReference("Categories");
+    DatabaseReference notiRef = db.getReference().child("Notification");
     ArrayList<ArrayList<Product>> listPro = new ArrayList<>();
 
     @Override
@@ -73,15 +76,14 @@ public class CategoryActivity extends AppCompatActivity implements NavigationBar
         setSupportActionBar(toolbar);
         subtitleAppbar = findViewById(R.id.subtitleAppbar);
         subtitleAppbar.setText(R.string.titleDMSP);
+        amountNoti = findViewById(R.id.amountNoti);
+        amountNoti.setVisibility(View.VISIBLE);
         buttonAction = findViewById(R.id.buttonAction);
         buttonAction.setBackground(getResources().getDrawable(R.drawable.ic_round_notifications_24));
-        buttonAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent = new Intent(CategoryActivity.this, NotificationActivity.class);
-                intent.putExtra("accountID", accountID);
-                startActivity(intent);
-            }
+        buttonAction.setOnClickListener(v -> {
+            intent = new Intent(CategoryActivity.this, NotificationActivity.class);
+            intent.putExtra("accountID", accountID);
+            startActivity(intent);
         });
 
         // Bottom navigation:
@@ -240,6 +242,24 @@ public class CategoryActivity extends AppCompatActivity implements NavigationBar
                         }
                     });
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // Số lượng thông báo chưa xem:
+        notiRef.orderByChild("accountID").equalTo(accountID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sum = 0;
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    Notification notification = d.getValue(Notification.class);
+                    if(notification.getStatus() == 0) sum++;
+                }
+                amountNoti.setText(sum + "");
             }
 
             @Override

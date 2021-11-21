@@ -1,5 +1,6 @@
 package vn.edu.tdc.zuke_customer.activitys;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -71,7 +72,21 @@ public class NotificationActivity extends AppCompatActivity {
         recycleView.addItemDecoration(itemDecoration);
     }
 
-    private NotificationAdapter.ItemClickListener itemClickListener = id -> notiRef.child(id).removeValue();
+    private final NotificationAdapter.ItemClickListener itemClickListener = new NotificationAdapter.ItemClickListener() {
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        public void delete(String id) {
+            notiRef.child(id).removeValue();
+            notificationAdapter.notifyDataSetChanged();
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        public void changeStatus(String id) {
+            notiRef.child(id).child("status").setValue(1);
+            notificationAdapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     public boolean onSupportNavigateUp() {

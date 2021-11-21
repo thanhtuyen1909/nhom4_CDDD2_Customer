@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +34,7 @@ import com.smarteist.autoimageslider.SliderView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 
 import vn.edu.tdc.zuke_customer.CustomBottomNavigationView;
@@ -48,17 +45,20 @@ import vn.edu.tdc.zuke_customer.adapters.Product2Adapter;
 import vn.edu.tdc.zuke_customer.adapters.ProductAdapter;
 import vn.edu.tdc.zuke_customer.data_models.Banner;
 import vn.edu.tdc.zuke_customer.data_models.Category;
+import vn.edu.tdc.zuke_customer.data_models.Notification;
 import vn.edu.tdc.zuke_customer.data_models.Product;
 
 public class HomeScreenActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
     // Khai báo biến:
     Toolbar toolbar;
-    String accountID = "-MnFno1Jzj8tuduSeAw4";
+    String accountID = "";
     ImageView buttonAction;
+    TextView amountNoti;
     RecyclerView recyclerCate, recyclerGoiY, recyclerMuaNhieu;
     ArrayList<Category> listCate;
     ArrayList<Product> listProductSold, listProductRating;
     ArrayList<Banner> listBanner;
+    ArrayAdapter<String> autoComplete;
     CategoryAdapter categoryAdapter;
     Product2Adapter productAdapterSold;
     ProductAdapter productAdapterRating;
@@ -67,12 +67,14 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
     AutoCompleteTextView searchView;
     private CustomBottomNavigationView customBottomNavigationView;
     Intent intent;
+    int sum = 0;
 
-    Query querySortBySold, querySortBySuggestion, queryBanner;
+    Query queryBanner;
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference proRef = db.getReference().child("Products");
     DatabaseReference cateRef = db.getReference().child("Categories");
     DatabaseReference banRef = db.getReference().child("Offers");
+    DatabaseReference notiRef = db.getReference().child("Notification");
 
 
     @Override
@@ -89,6 +91,10 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
         setSupportActionBar(toolbar);
         buttonAction = findViewById(R.id.buttonAction);
         searchView = findViewById(R.id.searchView);
+        ArrayList<String> search = new ArrayList<String>();
+        autoComplete = new ArrayAdapter<>(HomeScreenActivity.this, android.R.layout.simple_list_item_1, search);
+        searchView.setAdapter(autoComplete);
+        amountNoti = findViewById(R.id.amountNoti);
 
         buttonAction.setOnClickListener(v -> {
             intent = new Intent(HomeScreenActivity.this, NotificationActivity.class);
@@ -152,6 +158,7 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
             }
             return true;
         });
+
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -160,17 +167,14 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                final ArrayAdapter<String> autoComplete = new ArrayAdapter<String>(HomeScreenActivity.this, android.R.layout.simple_list_item_1);
-                FirebaseDatabase.getInstance().getReference().
-                        child("AutocompleteSuggesstion").orderByChild("userId").equalTo(accountID).addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference("AutocompleteSuggesstion").orderByChild("userId").equalTo(accountID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot suggestionSnapshot : snapshot.getChildren()) {
-                                String suggestion = suggestionSnapshot.child("suggestion").getValue(String.class);
-                                autoComplete.add(suggestion);
-                            }
+                        for (DataSnapshot suggestionSnapshot : snapshot.getChildren()) {
+                            String suggestion = suggestionSnapshot.child("suggestion").getValue(String.class);
+                            search.add(suggestion);
                         }
+                        autoComplete.notifyDataSetChanged();
                     }
 
                     @Override
@@ -178,7 +182,7 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
 
                     }
                 });
-                searchView.setAdapter(autoComplete);
+
             }
 
             @Override
@@ -261,8 +265,7 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
         });
 
         // Lọc mua nhiều nhất
-        querySortBySold = proRef.orderByChild("sold");
-        querySortBySold.addValueEventListener(new ValueEventListener() {
+        proRef.orderByChild("sold").addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -270,7 +273,7 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
                     product.setKey(dataSnapshot.getKey());
-                    if (product.getStatus() == 0 && listProductSold.size() < 6) {
+                    if (product.getStatus() == 0) {
                         listProductSold.add(product);
                     }
                 }
@@ -285,17 +288,15 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
         });
 
         // Các sản phẩm gợi ý:
-        querySortBySuggestion = proRef.orderByChild("rating").limitToLast(6);
-        querySortBySuggestion.addValueEventListener(new ValueEventListener() {
+        proRef.orderByChild("rating").addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int max = 0;
                 listProductRating.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
                     product.setKey(dataSnapshot.getKey());
-                    if (product.getStatus() == 0 && listProductRating.size() < 6) {
+                    if (product.getStatus() == 0) {
                         listProductRating.add(product);
                     }
                 }
@@ -309,7 +310,23 @@ public class HomeScreenActivity extends AppCompatActivity implements NavigationB
             }
         });
 
+        // Số lượng thông báo chưa xem:
+        notiRef.orderByChild("accountID").equalTo(accountID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sum = 0;
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    Notification notification = d.getValue(Notification.class);
+                    if(notification.getStatus() == 0) sum++;
+                }
+                amountNoti.setText(sum + "");
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void checkIsSuggesstion() {

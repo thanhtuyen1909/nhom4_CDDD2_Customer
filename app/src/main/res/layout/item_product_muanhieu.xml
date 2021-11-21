@@ -1,86 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:layout_width="wrap_content"
-    card_view:cardUseCompatPadding="true"
-    android:layout_height="wrap_content"
-    card_view:cardCornerRadius="15dp">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    card_view:cardCornerRadius="15dp"
+    card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:layout_gravity="center"
-        android:padding="7dp">
+        android:layout_gravity="center">
 
-        <ImageView
-            android:id="@+id/item_image"
-            android:layout_width="wrap_content"
-            android:layout_height="130dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/ic_login_hero" />
+        <RelativeLayout
 
-        <TextView
-            android:id="@+id/item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/item_image"
-            android:layout_marginTop="10dp"
-            android:lines="2"
-            android:ellipsize="end"
-            android:text="Item Title"
-            android:textColor="@color/contentTextColor"
-            android:textSize="16sp" />
+            android:translationZ="1dp">
 
-        <TextView
-            android:id="@+id/item_price"
+            <TextView
+                android:id="@+id/textSoldOff"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@color/bg_row_background"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="Hết hàng"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/item_title"
-            android:text="Item Title"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/price_color"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:translationZ="1dp">
 
-        <TextView
-            android:id="@+id/item_price_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/item_title"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="13dp"
-            android:layout_toRightOf="@+id/item_price"
-            android:text="Item Title"
-            android:textSize="13sp" />
+            <TextView
+                android:id="@+id/textDiscount"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ribbon"
+                android:layout_marginTop="10dp"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/item_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/item_price"
-            android:layout_marginTop="9dp"
-            android:drawableStart="@drawable/ic_baseline_star_24"
-            android:text="4.3"
-            android:textColor="@color/darkTextColor"
-            android:textSize="13sp" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/item_rating_amount"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/item_price"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="11dp"
-            android:layout_toRightOf="@+id/item_rating"
-            android:text="(26) - 134 Đã bán"
-            android:textSize="11sp" />
+            android:layout_margin="5dp">
+
+            <ImageView
+                android:id="@+id/item_image"
+                android:layout_width="wrap_content"
+                android:layout_height="130dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_login_hero" />
+
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_image"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:lines="2"
+                android:text="Item Title"
+                android:textColor="@color/contentTextColor"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_title"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="10dp"
+                android:text="Item Title"
+                android:textColor="@color/price_color"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/item_price_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_price"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="5dp"
+                android:text="Item Title"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/item_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_price_main"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="9dp"
+                android:drawableStart="@drawable/ic_baseline_star_24"
+                android:text="4.3"
+                android:textColor="@color/darkTextColor"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/item_rating_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_price_main"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="11dp"
+                android:layout_toRightOf="@+id/item_rating"
+                android:text=""
+                android:textSize="11sp" />
+        </RelativeLayout>
 
     </RelativeLayout>
 
