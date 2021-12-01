@@ -18,7 +18,7 @@ public class CustomBottomNavigationView extends BottomNavigationView {
     private Paint mPaint;
 
     /** the CURVE_CIRCLE_RADIUS represent the radius of the fab button */
-    final int CURVE_CIRCLE_RADIUS = 200 / 2;
+    public static int CURVE_CIRCLE_RADIUS = 200 / 2;
     // the coordinates of the first curve
     Point mFirstCurveStartPoint = new Point();
     Point mFirstCurveEndPoint = new Point();

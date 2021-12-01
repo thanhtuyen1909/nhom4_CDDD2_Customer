@@ -41,6 +41,7 @@ import vn.edu.tdc.zuke_customer.R;
 import vn.edu.tdc.zuke_customer.adapters.Product2Adapter;
 import vn.edu.tdc.zuke_customer.data_models.Category;
 import vn.edu.tdc.zuke_customer.data_models.Manufactures;
+import vn.edu.tdc.zuke_customer.data_models.Notification;
 import vn.edu.tdc.zuke_customer.data_models.Product;
 
 public class SearchActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
@@ -64,10 +65,12 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
     float minPrice = -1.0f, maxPrice = -1.0f, rating = -1.0f;
     String cate_id = "", manu_id = "";
     Button btnReset, btnApply;
-    int iDem = 0;
-    TextView txtFilter;
+    int sum = 0;
+    TextView txtFilter, amountNoti;
     private CustomBottomNavigationView customBottomNavigationView;
+
     DatabaseReference productRef = FirebaseDatabase.getInstance().getReference("Products");
+    DatabaseReference notiRef = FirebaseDatabase.getInstance().getReference().child("Notification");
 
     @SuppressLint("NewApi")
     @Override
@@ -76,6 +79,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
         setContentView(R.layout.layout_search);
         UIinit();
         setEvent();
+
     }
 
     private void setEvent() {
@@ -106,7 +110,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
 
             float minPrice = priceRange.getValues().get(0);
             float maxPrice = priceRange.getValues().get(1);
-
+            Log.d("TAG","max: "+(int)maxPrice);
+            Log.d("TAG","min: "+(int)minPrice);
             query = String.valueOf(searchView.getQuery());
             manu_id = ((Manufactures) spinManu.getSelectedItem()).getKey();
             cate_id = ((Category) spinCate.getSelectedItem()).getKey();
@@ -132,6 +137,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
         //get data from intent
         intent = getIntent();
         accountID = intent.getStringExtra("accountID");
+
         if (intent.getStringExtra("query") != null) {
             query = intent.getStringExtra("query");
         }
@@ -170,21 +176,23 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
         ratingBar = findViewById(R.id.ratingBar);
         btnApply = findViewById(R.id.btnApply);
         btnReset = findViewById(R.id.btnReset);
+
         // Toolbar:
         setSupportActionBar(toolbar);
         subtitleAppbar.setText(R.string.titleTK);
+        amountNoti = findViewById(R.id.amountNoti);
+        amountNoti.setVisibility(View.VISIBLE);
         buttonAction.setBackground(getResources().getDrawable(R.drawable.ic_round_notifications_24));
 
         // Bottom navigation:
         customBottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
         customBottomNavigationView.getMenu().findItem(R.id.mHome).setChecked(false);
-        //RecycleView
 
+        //RecycleView
         recyclerView.setHasFixedSize(true);
-        adapter = new Product2Adapter(this, list);
+        adapter = new Product2Adapter(this, list, "search");
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        Log.d("TAG", "name: ");
 
         //drawer
         navDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -196,6 +204,24 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
             @Override
             public String getFormattedValue(float value) {
                 return formatPrice((int) value);
+            }
+        });
+
+        // Số lượng thông báo chưa xem:
+        notiRef.orderByChild("accountID").equalTo(accountID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sum = 0;
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    Notification notification = d.getValue(Notification.class);
+                    if(notification.getStatus() == 0) sum++;
+                }
+                amountNoti.setText(sum + "");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
@@ -304,7 +330,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
                     for (int i = 0; i < list.size(); i++) {
                         Product product = list.get(i);
                         if (!product.getName().toLowerCase().contains(query.toLowerCase().trim())) {
-                            ;
                             list.remove(i);
                             i--;
                         }
@@ -312,13 +337,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
                 }
 
                 if (maxPrice != -1.0f && minPrice != -1.0f) {
-                    iDem = 0;
                     for (int i = 0; i < list.size(); i++) {
-                        iDem = i;
                         Product product = list.get(i);
                         if (product.getPrice() > maxPrice || product.getPrice() < minPrice) {
-                            list.remove(iDem);
-                            iDem--;
+                            list.remove(i);
+                            i--;
                         }
                     }
                 }
@@ -350,9 +373,7 @@ public class SearchActivity extends AppCompatActivity implements NavigationBarVi
                     }
                 }
                 txtFilter.setText("Kết quả : " + list.size() + " sản phẩm");
-
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override

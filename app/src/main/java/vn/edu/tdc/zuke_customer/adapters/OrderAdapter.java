@@ -59,7 +59,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     if(Integer.parseInt(snapshot.getKey()) == item.getStatus()) {
-                        holder.tv_trangthai.setText("Trạng thái: " + snapshot.getValue(String.class));
+                        if(item.getStatus() == 7) {
+                            holder.tv_trangthai.setText("Đã nhận hàng");
+                        }
+                        else if(item.getStatus() == 10) {
+                            holder.tv_trangthai.setText("Hủy");
+                        } else holder.tv_trangthai.setText(snapshot.getValue(String.class));
                     }
                 }
             }

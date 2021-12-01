@@ -98,6 +98,7 @@ public class HistoryOrderActivity extends AppCompatActivity implements PopupMenu
         public void getInfor(Order item) {
             intent = new Intent(HistoryOrderActivity.this, DetailHistoryOrderActivity.class);
             intent.putExtra("item", item);
+            intent.putExtra("accountID", accountID);
             startActivity(intent);
         }
 
@@ -220,7 +221,7 @@ public class HistoryOrderActivity extends AppCompatActivity implements PopupMenu
                             Order order = snapshot.getValue(Order.class);
                             order.setOrderID(snapshot.getKey());
                             if (accountID.equals(order.getAccountID()) &&
-                                    (order.getStatus() == 2 || order.getStatus() == 3 || order.getStatus() == 4)) {
+                                    order.getStatus() == 2) {
                                 list.add(order);
                             }
                         }
@@ -242,7 +243,7 @@ public class HistoryOrderActivity extends AppCompatActivity implements PopupMenu
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Order order = snapshot.getValue(Order.class);
                             order.setOrderID(snapshot.getKey());
-                            if (accountID.equals(order.getAccountID()) && order.getStatus() == 5) {
+                            if (accountID.equals(order.getAccountID()) && order.getStatus() == 3) {
                                 list.add(order);
                             }
                         }
@@ -264,7 +265,7 @@ public class HistoryOrderActivity extends AppCompatActivity implements PopupMenu
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Order order = snapshot.getValue(Order.class);
                             order.setOrderID(snapshot.getKey());
-                            if (accountID.equals(order.getAccountID()) && (order.getStatus() == 6 || order.getStatus() == 8)) {
+                            if (accountID.equals(order.getAccountID()) && order.getStatus() == 4) {
                                 list.add(order);
                             }
                         }

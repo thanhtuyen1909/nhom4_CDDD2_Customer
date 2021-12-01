@@ -92,14 +92,12 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         super.onCodeSent(s, forceResendingToken);
-                        Log.d("TAG", "onCodeSent: ");
                         moveOPTActivity(account, s, name);
 
                     }
                 })
                 .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-        Log.d("TAG", "sendOTPCode:");
     }
 
     private void UIinit() {

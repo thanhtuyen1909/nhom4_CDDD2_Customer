@@ -37,7 +37,7 @@ import vn.edu.tdc.zuke_customer.R;
 public class ChangePasswordActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView subtitleAppbar;
-    String accountID = "abc05684428156";
+    String accountID = "";
     Intent intent;
     TextView title, mess;
     Button btnSubmit;

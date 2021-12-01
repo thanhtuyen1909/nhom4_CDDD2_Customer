@@ -1,13 +1,16 @@
 package vn.edu.tdc.zuke_customer.data_models;
 
 public class Notification {
+    // Properties
     private String key;
     private String accountID;
     private String image;
     private String title;
     private String content;
     private String created_at;
+    private int status;
 
+    // Getter - setter
     public String getCreated_at() {
         return created_at;
     }
@@ -56,6 +59,15 @@ public class Notification {
         this.content = content;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    // Constructors
     public Notification() {
     }
 

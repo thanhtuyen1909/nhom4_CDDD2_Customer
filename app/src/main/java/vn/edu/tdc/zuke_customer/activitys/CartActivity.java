@@ -26,20 +26,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import vn.edu.tdc.zuke_customer.R;
 import vn.edu.tdc.zuke_customer.adapters.CartDetailAdapter;
 import vn.edu.tdc.zuke_customer.data_models.Cart;
 import vn.edu.tdc.zuke_customer.data_models.CartDetail;
+import vn.edu.tdc.zuke_customer.data_models.Offer;
 import vn.edu.tdc.zuke_customer.data_models.OfferDetail;
 import vn.edu.tdc.zuke_customer.data_models.Product;
 
 public class CartActivity extends AppCompatActivity {
     Toolbar toolbar;
     Intent intent;
-    TextView subtitleAppbar, title, mess;
+    TextView subtitleAppbar, title, mess, check;
     ImageView buttonAction;
     String accountID = "";
     RecyclerView cartRecycleView;
@@ -52,6 +56,8 @@ public class CartActivity extends AppCompatActivity {
     DatabaseReference proRef = db.getReference("Products");
     DatabaseReference ref = db.getReference("Cart");
     DatabaseReference detailRef = db.getReference("Cart_Detail");
+    DatabaseReference offerDetailRef = FirebaseDatabase.getInstance().getReference("Offer_Details");
+    DatabaseReference offerRef = FirebaseDatabase.getInstance().getReference("Offers");
     int total = 0;
 
     @Override
@@ -78,22 +84,84 @@ public class CartActivity extends AppCompatActivity {
         });
 
         // Khởi tạo biến:
+        check = findViewById(R.id.check);
         btnPayment = findViewById(R.id.buttonThanhToan);
         cartRecycleView = findViewById(R.id.listProduct);
         cartRecycleView.setHasFixedSize(true);
         listCart = new ArrayList<>();
         cartAdapter = new CartDetailAdapter(this, listCart);
-        btnPayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent = new Intent(CartActivity.this, PaymentActivity.class);
-                intent.putExtra("accountID", accountID);
-                startActivity(intent);
-            }
+
+        btnPayment.setOnClickListener(v -> {
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot node : snapshot.getChildren()) {
+                        Cart cart = node.getValue(Cart.class);
+                        cart.setCartID(node.getKey());
+                        if (cart.getAccountID().equals(accountID)) {
+                            detailRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    ArrayList<CartDetail> list = new ArrayList<>();
+                                    total = 0;
+                                    for (DataSnapshot node1 : snapshot.getChildren()) {
+                                        CartDetail detail = node1.getValue(CartDetail.class);
+                                        detail.setKey(node1.getKey());
+                                        if (cart.getCartID().equals(detail.getCartID())) {
+                                            list.add(detail);
+                                        }
+                                    }
+                                    check.setText("0");
+                                    for (CartDetail detail : list) {
+                                        proRef.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                                    Product product = dataSnapshot.getValue(Product.class);
+                                                    product.setKey(dataSnapshot.getKey());
+                                                    if(product.getKey().equals(detail.getProductID()) && product.getQuantity() == 0) {
+                                                        check.setText("-1");
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
+                                    handler.postDelayed(() -> {
+                                        if(String.valueOf(check.getText()).equals("-1")) {
+                                            showWarningDialog("Giỏ hàng của bạn có sản phẩm đã hết hàng. Vui lòng loại khỏi giỏ hàng để tiến hành thanh toán!");
+                                        }
+                                        else {
+                                            startActivity(intent = new Intent(CartActivity.this, PaymentActivity.class)
+                                                    .putExtra("accountID", accountID));
+                                        }
+                                    }, 200);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         });
 
         // Gán dữ liệu:
         data();
+
         cartAdapter.setItemClickListener(itemClickListener);
         cartRecycleView.setAdapter(cartAdapter);
         cartRecycleView.setLayoutManager(new LinearLayoutManager(this));
@@ -160,41 +228,65 @@ public class CartActivity extends AppCompatActivity {
             map.put("cartID", item.getCartID());
             map.put("amount", value);
             map.put("productID", item.getProductID());
-            proRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            proRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                     for (DataSnapshot node : snapshot.getChildren()) {
                         Product product = node.getValue(Product.class);
-                        if (node.getKey().equals(item.getProductID())) {
-                            DatabaseReference promoRef = FirebaseDatabase.getInstance().getReference("Offer_Details");
-                            promoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        product.setKey(node.getKey());
+                        if (product.getKey().equals(item.getProductID())) {
+                            offerDetailRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    int maxSale = 0;
-                                    for (DataSnapshot node1 : snapshot.getChildren()) {
-                                        OfferDetail detail = node1.getValue(OfferDetail.class);
-                                        if (detail.getProductID().equals(item.getProductID())) {
-                                            if (detail.getPercentSale() > maxSale) {
-                                                maxSale = detail.getPercentSale();
-                                            }
+                                    ArrayList<OfferDetail> list = new ArrayList<>();
+                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                        OfferDetail offerDetail = snapshot1.getValue(OfferDetail.class);
+                                        if(offerDetail.getProductID().equals(product.getKey())) {
+                                            offerRef.addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    int maxSale = 0;
+                                                    for (DataSnapshot snapshot2 : snapshot.getChildren()) {
+                                                        Offer offer = snapshot2.getValue(Offer.class);
+                                                        offer.setKey(snapshot2.getKey());
+                                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                                                        long startDay = sdf.parse(offer.getStartDate(), new ParsePosition(0)).getTime();
+                                                        long endtDay = sdf.parse(offer.getEndDate(), new ParsePosition(0)).getTime();
+                                                        long now = new Date().getTime();
+                                                        if (startDay == endtDay) {
+                                                            endtDay += 1000 * 60 * 60 * 24 - 1;
+                                                        }
+                                                        if (offer.getKey().equals(offerDetail.getOfferID()) && now <= endtDay && now >= startDay) {
+                                                            list.add(offerDetail);
+                                                        }
+                                                    }
+                                                    for (OfferDetail offerDetail : list) {
+                                                        if (offerDetail.getPercentSale() > maxSale) {
+                                                            maxSale = offerDetail.getPercentSale();
+                                                        }
+                                                    }
+                                                    if (maxSale != 0) {
+                                                        int priceDiscount = product.getPrice() / 100 * (100 - maxSale);
+                                                        item.setPrice(priceDiscount);
+                                                        map.put("price", product.getPrice());
+                                                        DatabaseReference detailRef = db.getReference("Cart_Detail");
+                                                        detailRef.child(item.getKey()).updateChildren(map);
+                                                    } else {
+                                                        item.setPrice(product.getPrice());
+                                                        map.put("price", product.getPrice());
+                                                        DatabaseReference detailRef = db.getReference("Cart_Detail");
+                                                        detailRef.child(item.getKey()).updateChildren(map);
+                                                    }
+                                                    cartAdapter.notifyDataSetChanged();
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
                                         }
                                     }
-                                    if (maxSale != 0) {
-                                        int priceDiscount = product.getPrice() / 100 * (100 - maxSale);
-                                        item.setPrice(priceDiscount);
-                                        map.put("price", item.getPrice());
-                                        DatabaseReference detailRef = db.getReference("Cart_Detail");
-                                        detailRef.child(item.getKey()).updateChildren(map);
-                                        cartAdapter.notifyDataSetChanged();
-                                    } else {
-                                        item.setPrice(product.getPrice());
-                                        map.put("price", item.getPrice());
-                                        DatabaseReference detailRef = db.getReference("Cart_Detail");
-                                        detailRef.child(item.getKey()).updateChildren(map);
-                                        cartAdapter.notifyDataSetChanged();
-                                    }
-
                                 }
 
                                 @Override
@@ -211,6 +303,7 @@ public class CartActivity extends AppCompatActivity {
 
                 }
             });
+
             //update Cart total
             updateCartTotal(item.getCartID());
 
@@ -327,6 +420,32 @@ public class CartActivity extends AppCompatActivity {
         });
 
         view.findViewById(R.id.buttonNo).setOnClickListener(v -> alertDialog.dismiss());
+
+        if (alertDialog.getWindow() != null) {
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        alertDialog.show();
+    }
+
+    private void showWarningDialog(String notify) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this, R.style.AlertDialogTheme);
+        View view = LayoutInflater.from(CartActivity.this).inflate(
+                R.layout.layout_warning_dialog,
+                findViewById(R.id.layoutDialogContainer)
+        );
+        builder.setView(view);
+        TextView title = view.findViewById(R.id.textTitle);
+        title.setText(R.string.title);
+        TextView mess = view.findViewById(R.id.textMessage);
+        mess.setText(notify);
+        ((TextView) view.findViewById(R.id.buttonAction)).setText(getResources().getString(R.string.yes));
+
+        final AlertDialog alertDialog = builder.create();
+
+        view.findViewById(R.id.buttonAction).setOnClickListener(v -> {
+            alertDialog.dismiss();
+        });
+
 
         if (alertDialog.getWindow() != null) {
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));

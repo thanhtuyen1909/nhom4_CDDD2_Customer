@@ -35,6 +35,7 @@ import vn.edu.tdc.zuke_customer.adapters.FavoriteAdapter;
 import vn.edu.tdc.zuke_customer.data_models.Cart;
 import vn.edu.tdc.zuke_customer.data_models.CartDetail;
 import vn.edu.tdc.zuke_customer.data_models.Favorite;
+import vn.edu.tdc.zuke_customer.data_models.Notification;
 import vn.edu.tdc.zuke_customer.data_models.Product;
 
 public class FavoriteActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
@@ -43,16 +44,18 @@ public class FavoriteActivity extends AppCompatActivity implements NavigationBar
     RecyclerView recyclerView;
     ArrayList<Favorite> list;
     FavoriteAdapter adapter;
-    TextView title, mess, subtitleAppbar;
+    TextView title, mess, subtitleAppbar, amountNoti;
     CustomBottomNavigationView customBottomNavigationView;
     Intent intent;
     Toolbar toolbar;
     ImageView buttonAction;
+    int sum = 0;
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference cartRef = db.getReference("Cart");
     DatabaseReference cartDetailRef = db.getReference("Cart_Detail");
     DatabaseReference favoriteRef = db.getReference("Favorite");
+    DatabaseReference notiRef = db.getReference().child("Notification");
     Handler handler = new Handler();
 
     @Override
@@ -69,6 +72,8 @@ public class FavoriteActivity extends AppCompatActivity implements NavigationBar
         setSupportActionBar(toolbar);
         subtitleAppbar = findViewById(R.id.subtitleAppbar);
         subtitleAppbar.setText(R.string.titleDSYT);
+        amountNoti = findViewById(R.id.amountNoti);
+        amountNoti.setVisibility(View.VISIBLE);
         buttonAction = findViewById(R.id.buttonAction);
         buttonAction.setBackground(getResources().getDrawable(R.drawable.ic_round_notifications_24));
         buttonAction.setOnClickListener(new View.OnClickListener() {
@@ -106,66 +111,71 @@ public class FavoriteActivity extends AppCompatActivity implements NavigationBar
     private final FavoriteAdapter.ItemClick itemClick = new FavoriteAdapter.ItemClick() {
         @Override
         public void addCart(String productID, int price) {
-            // Kiểm tra đã có giỏ hàng chưa?
-            cartRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    cartID = "";
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        if (dataSnapshot.child("accountID").getValue(String.class).equals(accountID)) {
-                            // Nếu có thì? -> lấy CartID
-                            cartID = dataSnapshot.getKey();
-                            cartDetailRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot1) {
-                                    check = true;
-                                    int total = dataSnapshot.child("total").getValue(Integer.class);
-                                    for(DataSnapshot dataSnapshot1 : snapshot1.getChildren()) {
-                                        CartDetail cartDetail = dataSnapshot1.getValue(CartDetail.class);
-                                        cartDetail.setKey(dataSnapshot1.getKey());
-                                        if(cartDetail.getCartID().equals(cartID) && cartDetail.getProductID().equals(productID)) {
-                                            check = false;
-                                            int amount = cartDetail.getAmount() + 1;
-                                            cartDetailRef.child(cartDetail.getKey()).child("amount").setValue(amount);
-                                            cartDetailRef.child(cartDetail.getKey()).child("price").setValue(price);
+            // Kiểm tra còn hàng hay không?
+            if(!productID.equals("Hết hàng")) {
+                // Kiểm tra đã có giỏ hàng chưa?
+                cartRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        cartID = "";
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            if (dataSnapshot.child("accountID").getValue(String.class).equals(accountID)) {
+                                // Nếu có thì? -> lấy CartID
+                                cartID = dataSnapshot.getKey();
+                                cartDetailRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                                        check = true;
+                                        int total = dataSnapshot.child("total").getValue(Integer.class);
+                                        for(DataSnapshot dataSnapshot1 : snapshot1.getChildren()) {
+                                            CartDetail cartDetail = dataSnapshot1.getValue(CartDetail.class);
+                                            cartDetail.setKey(dataSnapshot1.getKey());
+                                            if(cartDetail.getCartID().equals(cartID) && cartDetail.getProductID().equals(productID)) {
+                                                check = false;
+                                                int amount = cartDetail.getAmount() + 1;
+                                                cartDetailRef.child(cartDetail.getKey()).child("amount").setValue(amount);
+                                                cartDetailRef.child(cartDetail.getKey()).child("price").setValue(price);
+                                                cartRef.child(cartID).child("total").setValue(total + price);
+                                                break;
+                                            }
+                                        }
+                                        if(check) {
+                                            CartDetail cartDetail = new CartDetail(cartID, productID, 1, price);
+                                            cartDetailRef.push().setValue(cartDetail);
                                             cartRef.child(cartID).child("total").setValue(total + price);
-                                            break;
                                         }
                                     }
-                                    if(check) {
-                                        CartDetail cartDetail = new CartDetail(cartID, productID, 1, price);
-                                        cartDetailRef.push().setValue(cartDetail);
-                                        cartRef.child(cartID).child("total").setValue(total + price);
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
                                     }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-                            break;
+                                });
+                                break;
+                            }
                         }
+                        // Nếu chưa thì? -> tạo mới
+                        if (cartID.equals("")) {
+                            Cart cart = new Cart(accountID, 0);
+                            String key = cartRef.push().getKey();
+                            cartRef.child(key).setValue(cart);
+                            cartRef.child(key).child("total").setValue(price);
+                            CartDetail cartDetail = new CartDetail(key, productID, 1, price);
+                            cartDetailRef.push().setValue(cartDetail);
+                            cartRef.child(key).child("total").setValue(price);
+                        }
+
+                        showSuccesDialog("Thêm vào giỏ hàng thành công!");
                     }
-                    // Nếu chưa thì? -> tạo mới
-                    if (cartID.equals("")) {
-                        Cart cart = new Cart(accountID, 0);
-                        String key = cartRef.push().getKey();
-                        cartRef.child(key).setValue(cart);
-                        cartRef.child(key).child("total").setValue(price);
-                        CartDetail cartDetail = new CartDetail(key, productID, 1, price);
-                        cartDetailRef.push().setValue(cartDetail);
-                        cartRef.child(key).child("total").setValue(price);
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
-
-                    showSuccesDialog("Thêm vào giỏ hàng thành công!");
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+                });
+            } else {
+                showWarningDialog("Sản phẩm đã hết hàng, vui lòng thử lại sau!");
+            }
         }
 
         @SuppressLint("NotifyDataSetChanged")
@@ -198,6 +208,24 @@ public class FavoriteActivity extends AppCompatActivity implements NavigationBar
                     }
                 }
                 adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // Số lượng thông báo chưa xem:
+        notiRef.orderByChild("accountID").equalTo(accountID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sum = 0;
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    Notification notification = d.getValue(Notification.class);
+                    if(notification.getStatus() == 0) sum++;
+                }
+                amountNoti.setText(sum + "");
             }
 
             @Override

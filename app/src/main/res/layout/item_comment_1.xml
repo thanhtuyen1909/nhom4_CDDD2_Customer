@@ -22,7 +22,8 @@
             android:id="@+id/img"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:src="@drawable/man"/>
 
         <TextView
             android:id="@+id/txt_name"
@@ -43,7 +44,8 @@
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/img"
             android:ellipsize="end"
-            android:lines="3"
+            android:maxLines="3"
+            android:minLines="1"
             android:text="Title"
             android:textSize="16sp" />
 

@@ -135,7 +135,7 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
         relateProduct.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         relateProduct.setAdapter(productRelate);
 
-        rcvComment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rcvComment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rcvComment.setAdapter(commentAdapter);
 
         // Kiểm tra nếu nhận được đối tượng tiến hành đổ dữ liệu:

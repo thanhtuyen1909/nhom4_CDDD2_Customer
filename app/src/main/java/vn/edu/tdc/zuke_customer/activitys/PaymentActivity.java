@@ -47,7 +47,7 @@ public class PaymentActivity extends AppCompatActivity {
     Intent intent;
     ImageView btnMap;
     Button btnSubmit;
-    TextInputEditText edtAddress, edtName, edtPhone, edtDiscountCode, edtNote;
+    TextInputEditText edtAddress, edtName, edtPhone, edtNote;
     RecyclerView productRecyclerView;
     TextView txtTotal, txtTransportFee, txtDiscount, txtRemain, title, mess, subtitleAppbar;
     ArrayList<CartDetail> listCart;
@@ -56,9 +56,7 @@ public class PaymentActivity extends AppCompatActivity {
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference cartRef = db.getReference("Cart");
     DatabaseReference detailRef = db.getReference("Cart_Detail");
-    DatabaseReference code_cusRef = db.getReference("DiscountCode_Customer");
-    DatabaseReference customerRef = db.getReference("Customer");
-    DatabaseReference discountcodeRef = db.getReference("DiscountCode");
+
     DatabaseReference areaRef = db.getReference("Area");
     String address = "", accountID = "";
 
@@ -84,7 +82,6 @@ public class PaymentActivity extends AppCompatActivity {
         edtName = findViewById(R.id.editTextName);
         edtPhone = findViewById(R.id.editTextPhone);
         productRecyclerView = findViewById(R.id.listProduct);
-        edtDiscountCode = findViewById(R.id.editTextDiscountCode);
         edtNote = findViewById(R.id.editTextMessage);
         txtTotal = findViewById(R.id.txt_tongtien);
         txtRemain = findViewById(R.id.txt_conlai);
@@ -108,94 +105,7 @@ public class PaymentActivity extends AppCompatActivity {
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Xử lý sự kiện cho focus edtDiscountCode và edtAddress:
-        edtDiscountCode.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                if (String.valueOf(edtAddress.getText()).equals("")) {
-                    showWarningDialog("Vui lòng chọn địa chỉ giao hàng trước");
-                    edtAddress.requestFocus();
-                }
-            } else {
-                customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot node : snapshot.getChildren()) {
-                            Customer customer = node.getValue(Customer.class);
-                            customer.setKey(node.getKey());
-                            if (customer.getAccountID().equals(accountID)) {
-                                code_cusRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot1) {
-                                        for (DataSnapshot node1 : snapshot1.getChildren()) {
-                                            DiscountCode_Customer temp = node1.getValue(DiscountCode_Customer.class);
-                                            if (temp.getCustomer_id().equals(customer.getKey())) {
-                                                discountcodeRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                                                        boolean check = false;
-                                                        for (DataSnapshot node2 : snapshot2.getChildren()) {
-                                                            DiscountCode code = node2.getValue(DiscountCode.class);
-                                                            if (code.getCode().equals(String.valueOf(edtDiscountCode.getText()))) {
-                                                                check = true;
-                                                                if (code.getType().equals("%")) {
 
-                                                                    int value = code.getValue();
-                                                                    int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
-                                                                    int discount = totalPrice / 100 * value;
-                                                                    int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
-                                                                    txtDiscount.setText(formatPrice(discount));
-                                                                    txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
-                                                                } else if (code.getType().equals("VND")) {
-                                                                    int value = code.getValue();
-                                                                    int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
-                                                                    int discount = value;
-                                                                    int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
-                                                                    txtDiscount.setText(formatPrice(discount));
-                                                                    txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
-                                                                } else if (code.getType().equals("Free ship")) {
-                                                                    int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
-                                                                    txtDiscount.setText(formatPrice(transportFee));
-                                                                    int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
-                                                                    int discount = toPrice(String.valueOf(txtDiscount.getText()));
-                                                                    txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
-
-                                                                }
-
-                                                            }
-                                                        }
-                                                        if (!check) {
-                                                            txtDiscount.setText(formatPrice(0));
-                                                            int total = toPrice(String.valueOf(txtTotal.getText()));
-                                                            int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
-                                                            txtRemain.setText(formatPrice(total + transportFee));
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-        });
         edtAddress.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 if (!String.valueOf(edtAddress.getText()).equals("")) {
@@ -312,41 +222,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                     }
                 });
-                //Delete Discount code
-                if (!String.valueOf(txtDiscount.getText()).equals("")) {
-                    customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot node : snapshot.getChildren()) {
-                                Customer customer = node.getValue(Customer.class);
-                                if (customer.getAccountID().equals(accountID)) {
-                                    code_cusRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot1) {
-                                            for (DataSnapshot node1 : snapshot1.getChildren()) {
-                                                DiscountCode_Customer temp = node1.getValue(DiscountCode_Customer.class);
-                                                if (temp.getCustomer_id().equals(node.getKey()) && temp.getCode().equals(edtDiscountCode.getText() + "")) {
-                                                    code_cusRef.child(node1.getKey()).removeValue();
-                                                    break;
-                                                }
-                                            }
-                                        }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
             }
         });
     }
@@ -504,3 +380,4 @@ public class PaymentActivity extends AppCompatActivity {
         alertDialog.show();
     }
 }
+

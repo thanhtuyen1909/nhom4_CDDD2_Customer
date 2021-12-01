@@ -64,7 +64,7 @@ public class ListCommentProductActivity extends AppCompatActivity {
         // RecyclerView:
         rcvComment.setHasFixedSize(true);
         data();
-        rcvComment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rcvComment.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rcvComment.setAdapter(commentAdapter);
     }
 

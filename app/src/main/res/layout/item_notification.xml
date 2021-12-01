@@ -14,7 +14,7 @@
         android:layout_height="110dp"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical">
+        card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:id="@+id/view_background"
@@ -44,6 +44,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:orientation="vertical"
@@ -78,6 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/imageView"
+                android:ellipsize="end"
+                android:lines="1"
                 android:text="Title"
                 android:textColor="@color/darkTextColor"
                 android:textSize="16sp"

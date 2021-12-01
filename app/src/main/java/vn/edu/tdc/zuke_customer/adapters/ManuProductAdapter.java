@@ -91,6 +91,4 @@ public class ManuProductAdapter extends RecyclerView.Adapter<ManuProductAdapter.
             rcvProduct = view.findViewById(R.id.child_rv);
         }
     }
-
-
 }

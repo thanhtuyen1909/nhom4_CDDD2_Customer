@@ -1,8 +1,8 @@
 package vn.edu.tdc.zuke_customer.activitys;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,13 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import vn.edu.tdc.zuke_customer.R;
-import vn.edu.tdc.zuke_customer.adapters.CartDetailAdapter;
 import vn.edu.tdc.zuke_customer.adapters.NotificationAdapter;
-import vn.edu.tdc.zuke_customer.data_models.CartDetail;
 import vn.edu.tdc.zuke_customer.data_models.Notification;
 
 public class NotificationActivity extends AppCompatActivity {
-    String accountID = "-MnFno1Jzj8tuduSeAw4";
+    String accountID = "";
     RecyclerView recycleView;
     Toolbar toolbar;
     TextView subtitleAppbar;
@@ -36,7 +34,6 @@ public class NotificationActivity extends AppCompatActivity {
 
     ArrayList<Notification> listNotify;
     NotificationAdapter notificationAdapter;
-    FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference notiRef = FirebaseDatabase.getInstance().getReference("Notification");
 
     @Override
@@ -71,7 +68,21 @@ public class NotificationActivity extends AppCompatActivity {
         recycleView.addItemDecoration(itemDecoration);
     }
 
-    private NotificationAdapter.ItemClickListener itemClickListener = id -> notiRef.child(id).removeValue();
+    private final NotificationAdapter.ItemClickListener itemClickListener = new NotificationAdapter.ItemClickListener() {
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        public void delete(String id) {
+            notiRef.child(id).removeValue();
+            notificationAdapter.notifyDataSetChanged();
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        public void changeStatus(String id) {
+            notiRef.child(id).child("status").setValue(1);
+            notificationAdapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     public boolean onSupportNavigateUp() {

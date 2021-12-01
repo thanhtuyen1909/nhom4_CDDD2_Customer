@@ -103,7 +103,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     edtEmail.setText(customer.getEmail());
                     btnChooseDate.setVisibility(customer.getDob().equals("") ? View.VISIBLE : View.GONE);
                 }
-//https://firebasestorage.googleapis.com/v0/b/cddd2-f1bcd.appspot.com/o/images%2Fprofile%2Fcdffb4c5-f659-45c6-bd69-5cfbd8788847jpg?alt=media&token=1f3177ae-0182-4293-b418-89a3871f3e59
             }
 
             @Override

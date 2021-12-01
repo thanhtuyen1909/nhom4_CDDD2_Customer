@@ -16,7 +16,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +33,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private ArrayList<Rating> items;
     DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("Customer");
     DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference("Order");
-    Query queryCustomer;
 
     public CommentAdapter(Context context, ArrayList<Rating> items) {
         this.context = context;
@@ -62,7 +60,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                                 holder.itemName.setText(customer.getName());
                                 holder.itemDetail.setText(item.getComment());
                                 holder.itemTime.setText(timeDiff(item.getCreated_at(), new Date()));
-                                if(!customer.getImage().equals("")) Picasso.get().load(customer.getImage()).fit().into(holder.itemImage);
+                                if(!customer.getImage().equals("")) {
+                                    Picasso.get().load(customer.getImage()).fit().into(holder.itemImage);
+                                }
                                 holder.itemRating.setRating(item.getRating());
                                 if(item.getReply() != null) {
                                     holder.layout.setVisibility(View.VISIBLE);

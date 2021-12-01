@@ -56,7 +56,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/rounded_border_edittext"
+                style="@style/modifiedEditText"
                 android:hint="Xác nhận mật khẩu"
                 android:inputType="textPassword"
                 android:paddingStart="5dp" />

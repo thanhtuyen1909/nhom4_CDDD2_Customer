@@ -151,7 +151,7 @@ public class RatingActivity extends AppCompatActivity {
                                     iDem++;
                                 }
                             }
-                            productRef.child(rating.getProductID()).child("rating").setValue(Math.round(iSum / iDem));
+                            productRef.child(rating.getProductID()).child("rating").setValue((float)(iSum / iDem));
                         }
 
                         @Override

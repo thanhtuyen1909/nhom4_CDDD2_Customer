@@ -89,7 +89,12 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if(Integer.parseInt(snapshot.getKey()) == item.getStatus()) {
-                            txtStatus.setText(snapshot.getValue(String.class));
+                            if(item.getStatus() == 7) {
+                                txtStatus.setText("Đã nhận hàng");
+                            }
+                            else if(item.getStatus() == 10) {
+                                txtStatus.setText("Hủy");
+                            } else txtStatus.setText(snapshot.getValue(String.class));
                         }
                     }
                 }

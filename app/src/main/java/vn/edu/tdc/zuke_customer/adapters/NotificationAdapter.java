@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
@@ -40,7 +41,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @NonNull
     @Override
-    public NotificationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View itemView = inflater.inflate(R.layout.item_notification, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView);
@@ -50,18 +51,30 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notification item = list.get(position);
+        holder.title.setText("");
+        holder.content.setText("");
+
         holder.title.setText(item.getTitle());
         holder.content.setText(item.getContent());
         Date now = new Date();
         holder.created_at.setText(timeDiff(item.getCreated_at(), now));
-        if(!item.getImage().equals("")) Picasso.get().load(item.getImage()).fit().into(holder.itemImage);
+        if (!item.getImage().equals(""))
+            Picasso.get().load(item.getImage()).fit().into(holder.itemImage);
 
         viewBinderHelper.bind(holder.swipeRevealLayout, item.getKey());
         holder.cardView.setOnClickListener(v -> {
-            if(itemClickListener != null) {
+            if (itemClickListener != null) {
                 itemClickListener.delete(item.getKey());
             }
         });
+        holder.layout.setOnClickListener(v -> {
+            if (itemClickListener != null) {
+                if(item.getStatus() == 0) itemClickListener.changeStatus(item.getKey());
+            }
+        });
+        if(item.getStatus() == 0) {
+            holder.layout.setBackgroundColor(ContextCompat.getColor(context, R.color.my_card));
+        } else holder.layout.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
     }
 
     private String timeDiff(String created, Date now) {
@@ -93,17 +106,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         SwipeRevealLayout swipeRevealLayout;
-        CardView cardView;
+        CardView cardView, layout;
         private ImageView itemImage;
         private TextView title, content, created_at;
-        View.OnClickListener onClickListener;
 
         public ViewHolder(View view) {
             super(view);
             swipeRevealLayout = view.findViewById(R.id.swipelayout);
             cardView = view.findViewById(R.id.cardView);
+            layout = view.findViewById(R.id.layout);
             itemImage = view.findViewById(R.id.img);
             title = view.findViewById(R.id.txt_title);
             content = view.findViewById(R.id.txt_content);
@@ -113,5 +126,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface ItemClickListener {
         void delete(String id);
+        void changeStatus(String id);
     }
 }
