@@ -1,6 +1,7 @@
 package vn.edu.tdc.zuke_customer.data_models;
 
 public class Customer {
+    // Properties
     private String key;
     private String accountID;
     private String created_at;
@@ -10,7 +11,9 @@ public class Customer {
     private String status;
     private String type_id;
     private String email;
+    private int totalPayment;
 
+    // Get - set
     public String getKey() {
         return key;
     }
@@ -83,17 +86,16 @@ public class Customer {
         this.email = email;
     }
 
-    public Customer() {
+    public int getTotalPayment() {
+        return totalPayment;
     }
 
-    public Customer(String accountID, String created_at, String dob, String image, String name, String status, String type_id) {
-        this.accountID = accountID;
-        this.created_at = created_at;
-        this.dob = dob;
-        this.image = image;
-        this.name = name;
-        this.status = status;
-        this.type_id = type_id;
+    public void setTotalPayment(int totalPayment) {
+        this.totalPayment = totalPayment;
+    }
+
+    // Constructor:
+    public Customer() {
     }
 
     @Override

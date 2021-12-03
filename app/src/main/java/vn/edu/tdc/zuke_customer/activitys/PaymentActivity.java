@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -25,11 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import vn.edu.tdc.zuke_customer.R;
 import vn.edu.tdc.zuke_customer.adapters.CartDetailTTAdapter;
@@ -47,7 +46,7 @@ public class PaymentActivity extends AppCompatActivity {
     Intent intent;
     ImageView btnMap;
     Button btnSubmit;
-    TextInputEditText edtAddress, edtName, edtPhone, edtNote;
+    TextInputEditText edtAddress, edtName, edtPhone, edtNote, edtDiscountCode;
     RecyclerView productRecyclerView;
     TextView txtTotal, txtTransportFee, txtDiscount, txtRemain, title, mess, subtitleAppbar;
     ArrayList<CartDetail> listCart;
@@ -56,8 +55,11 @@ public class PaymentActivity extends AppCompatActivity {
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference cartRef = db.getReference("Cart");
     DatabaseReference detailRef = db.getReference("Cart_Detail");
-
     DatabaseReference areaRef = db.getReference("Area");
+    DatabaseReference cusRef = db.getReference("Customer");
+    DatabaseReference cusTypeRef = db.getReference("CustomerType");
+    DatabaseReference code_cusRef = db.getReference("DiscountCode_Customer");
+    DatabaseReference discountcodeRef = db.getReference("DiscountCode");
     String address = "", accountID = "";
 
     @Override
@@ -78,6 +80,7 @@ public class PaymentActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //get control
+        edtDiscountCode = findViewById(R.id.editTextDiscountCode);
         edtAddress = findViewById(R.id.editTextAddress);
         edtName = findViewById(R.id.editTextName);
         edtPhone = findViewById(R.id.editTextPhone);
@@ -86,7 +89,7 @@ public class PaymentActivity extends AppCompatActivity {
         txtTotal = findViewById(R.id.txt_tongtien);
         txtRemain = findViewById(R.id.txt_conlai);
         txtTransportFee = findViewById(R.id.txt_phivanchuyen);
-        txtDiscount = findViewById(R.id.txt_dathanhtoan);
+        txtDiscount = findViewById(R.id.txt_giamgia);
         btnSubmit = findViewById(R.id.buttonTTXacNhan);
         btnMap = findViewById(R.id.btnMap);
         listCart = new ArrayList<>();
@@ -105,7 +108,102 @@ public class PaymentActivity extends AppCompatActivity {
         productRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Xử lý sự kiện cho focus edtDiscountCode và edtAddress:
+        edtDiscountCode.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                if (String.valueOf(edtAddress.getText()).equals("")) {
+                    showWarningDialog("Vui lòng chọn địa chỉ giao hàng trước");
+                    edtAddress.requestFocus();
+                }
+            } else {
+                cusRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot node : snapshot.getChildren()) {
+                            Customer customer = node.getValue(Customer.class);
+                            customer.setKey(node.getKey());
+                            if (customer.getAccountID().equals(accountID)) {
+                                code_cusRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                                        for (DataSnapshot node1 : snapshot1.getChildren()) {
+                                            DiscountCode_Customer temp = node1.getValue(DiscountCode_Customer.class);
+                                            if (temp.getCustomer_id().equals(customer.getKey())) {
+                                                discountcodeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                                                        boolean check = false;
+                                                        for (DataSnapshot node2 : snapshot2.getChildren()) {
+                                                            DiscountCode code = node2.getValue(DiscountCode.class);
+                                                            if (code.getCode().equals(String.valueOf(edtDiscountCode.getText()))) {
+                                                                check = true;
+                                                                if (code.getType().equals("%")) {
+                                                                    int value = code.getValue();
+                                                                    int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
+                                                                    int discount = totalPrice / 100 * value;
+                                                                    int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
+                                                                    int oldDiscount = toPrice(txtDiscount.getText() + "");
+                                                                    discount += oldDiscount;
+                                                                    Log.d("TAG","old : "+oldDiscount+" new : "+ discount);
+                                                                    txtDiscount.setText(formatPrice(discount));
+                                                                    txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
+                                                                } else if (code.getType().equals("VND")) {
+                                                                    int value = code.getValue();
+                                                                    int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
+                                                                    int discount = value;
+                                                                    int oldDiscount = toPrice(txtDiscount.getText() + "");
+                                                                    discount += oldDiscount;
+                                                                    int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
+                                                                    txtDiscount.setText(formatPrice(discount));
+                                                                    txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
+                                                                } else if (code.getType().equals("Free ship")) {
+                                                                    int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
+                                                                    txtDiscount.setText(formatPrice(transportFee));
+                                                                    int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
+                                                                    int discount = toPrice(String.valueOf(txtDiscount.getText()));
+                                                                    int oldDiscount = toPrice(txtDiscount.getText() + "");
+                                                                    discount += oldDiscount;
+                                                                    txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
 
+                                                                }
+
+                                                            }
+                                                        }
+                                                        if (!check) {
+                                                            int oldDiscount = toPrice(txtDiscount.getText() + "");
+
+                                                            txtDiscount.setText(formatPrice(oldDiscount));
+                                                            int total = toPrice(String.valueOf(txtTotal.getText()));
+                                                            int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
+                                                            txtRemain.setText(formatPrice(total + transportFee - oldDiscount));
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
         edtAddress.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 if (!String.valueOf(edtAddress.getText()).equals("")) {
@@ -135,7 +233,8 @@ public class PaymentActivity extends AppCompatActivity {
                                 }
 
                             });
-                        } else {
+                        }
+                        else {
                             txtTransportFee.setText(formatPrice(60000));
                             int total = toPrice(String.valueOf(txtTotal.getText()));
                             int discount = toPrice(String.valueOf(txtDiscount.getText()));
@@ -176,6 +275,7 @@ public class PaymentActivity extends AppCompatActivity {
                 order.setShipperID("null");
                 order.setStatus(1);
                 order.setTotal(toPrice(String.valueOf(txtRemain.getText())));
+                order.setRemain(toPrice(String.valueOf(txtRemain.getText())));
                 orderRef.child(key).setValue(order).addOnSuccessListener(unused -> {
                     order.setOrderID(key);
                     showSuccesDialog("Đặt hàng thành công!\nCảm ơn bạn đã sử dụng dịch vụ của chúng tôi.", order);
@@ -236,8 +336,8 @@ public class PaymentActivity extends AppCompatActivity {
     // Get data:
     private void data() {
         txtTotal.setText(formatPrice(0));
-        txtDiscount.setText(formatPrice(0));
         txtTransportFee.setText(formatPrice(0));
+        txtDiscount.setText(formatPrice(0));
         txtRemain.setText(formatPrice(0));
         cartRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -279,9 +379,37 @@ public class PaymentActivity extends AppCompatActivity {
 
             }
         });
-        txtDiscount.setText(formatPrice(0));
-        txtTransportFee.setText(formatPrice(0));
         txtRemain.setText(formatPrice(total));
+        cusRef.orderByChild("accountID").equalTo(accountID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Customer customer = dataSnapshot.getValue(Customer.class);
+                    cusTypeRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
+                                if (dataSnapshot1.getKey().equals(customer.getType_id())) {
+                                    int discount = dataSnapshot1.child("discount").getValue(Integer.class);
+                                    txtDiscount.setText(formatPrice(total * discount / 100));
+                                    txtRemain.setText(formatPrice(total - (total * discount / 100)));
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     // Kiểm tra lỗi
@@ -307,11 +435,10 @@ public class PaymentActivity extends AppCompatActivity {
     private String formatPrice(int price) {
         String stmp = String.valueOf(price);
         int amount;
-        amount = (int)(stmp.length() / 3);
+        amount = (int) (stmp.length() / 3);
         if (stmp.length() % 3 == 0)
             amount--;
-        for (int i = 1; i <= amount; i++)
-        {
+        for (int i = 1; i <= amount; i++) {
             stmp = new StringBuilder(stmp).insert(stmp.length() - (i * 3) - (i - 1), ",").toString();
         }
         return stmp + " ₫";
@@ -354,6 +481,7 @@ public class PaymentActivity extends AppCompatActivity {
         }
         alertDialog.show();
     }
+
     private void showWarningDialog(String notify) {
         AlertDialog.Builder builder = new AlertDialog.Builder(PaymentActivity.this, R.style.AlertDialogTheme);
         View view = LayoutInflater.from(PaymentActivity.this).inflate(

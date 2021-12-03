@@ -102,6 +102,7 @@ public class RatingActivity extends AppCompatActivity {
         return true;
     }
 
+    // Kiểm tra lỗi trước khi push dữ liệu:
     private int checkError() {
         for(Rating rating : list) {
             if(rating.getComment().equals("") || rating.getRating() == 0) {
@@ -112,6 +113,7 @@ public class RatingActivity extends AppCompatActivity {
         return 1;
     }
 
+    // Các hàm thông báo:
     private void showErrorDialog(String notify) {
         AlertDialog.Builder builder = new AlertDialog.Builder(RatingActivity.this, R.style.AlertDialogTheme);
         View view = LayoutInflater.from(RatingActivity.this).inflate(
@@ -172,7 +174,6 @@ public class RatingActivity extends AppCompatActivity {
         }
         alertDialog.show();
     }
-
     private void showSuccesDialog(String notify) {
         AlertDialog.Builder builder = new AlertDialog.Builder(RatingActivity.this, R.style.AlertDialogTheme);
         View view = LayoutInflater.from(RatingActivity.this).inflate(
@@ -202,7 +203,6 @@ public class RatingActivity extends AppCompatActivity {
 
         handler.postDelayed(alertDialog::dismiss, 1500);
     }
-
     private void showWarningDialog(String notify) {
         AlertDialog.Builder builder = new AlertDialog.Builder(RatingActivity.this, R.style.AlertDialogTheme);
         View view = LayoutInflater.from(RatingActivity.this).inflate(
@@ -229,6 +229,7 @@ public class RatingActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    // Lấy dữ liệu:
     private void data() {
         ratingRef.addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")

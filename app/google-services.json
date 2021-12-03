@@ -8,41 +8,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:900526100194:android:b9a307510fdc1ebcd998bb",
-        "android_client_info": {
-          "package_name": "com.nguyenloi.shop_ecommerce"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "900526100194-5l6dkjur9qdfe6qpdupk3dgvaeic6iv8.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDtf-VDT837kY85nvhWLU5cOTGk4OVga9I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "900526100194-5l6dkjur9qdfe6qpdupk3dgvaeic6iv8.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:900526100194:android:31da14d91f7bb67dd998bb",
         "android_client_info": {
           "package_name": "vn.edu.tdc.zuke_customer"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "900526100194-174t15c78od6aiqqrhanavesvlsmp13c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.edu.tdc.zuke_customer",
+            "certificate_hash": "b9cfcc788e1e430280d243c407cb01debbf01f90"
+          }
+        },
+        {
+          "client_id": "900526100194-btitbqo8lmqhr8e90v8d7m404ou2lt8m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.edu.tdc.zuke_customer",
+            "certificate_hash": "0bbf374319b86db6e1320ee7f5bbb67956a91f5f"
+          }
+        },
         {
           "client_id": "900526100194-dkh7n03htc1jobtsp0a1v0ncacbkr782.apps.googleusercontent.com",
           "client_type": 1,

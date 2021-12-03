@@ -3,6 +3,7 @@ package vn.edu.tdc.zuke_customer.adapters;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,7 +130,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                                                     } else {
                                                         holder.txtDiscount.setVisibility(View.INVISIBLE);
                                                         holder.itemPrice.setText(formatPrice(product.getPrice()));
-                                                        holder.itemPriceMain.setVisibility(View.INVISIBLE);
+                                                        holder.itemPriceMain.setVisibility(View.GONE);
                                                     }
                                                 }
 
@@ -143,7 +144,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                                     if(check) {
                                         holder.txtDiscount.setVisibility(View.INVISIBLE);
                                         holder.itemPrice.setText(formatPrice(product.getPrice()));
-                                        holder.itemPriceMain.setVisibility(View.INVISIBLE);
+                                        holder.itemPriceMain.setVisibility(View.GONE);
                                     }
                                 }
 
@@ -171,7 +172,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                             if (product.getQuantity() == 0) {
                                 holder.txtSoldOff.setVisibility(View.VISIBLE);
                             } else {
-                                holder.txtSoldOff.setVisibility(View.INVISIBLE);
+                                holder.txtSoldOff.setVisibility(View.GONE);
                             }
                         }
                     }

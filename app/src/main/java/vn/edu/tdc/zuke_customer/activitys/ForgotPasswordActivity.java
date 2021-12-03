@@ -56,9 +56,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                                Log.d("TAG", "onVerificationCompleted: ");
                                 signInWithPhoneAuthCredential(phoneAuthCredential);
-//                                moveChangePasswordScreen();
                             }
 
                             @Override
@@ -69,7 +67,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                             @Override
                             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                 super.onCodeSent(s, forceResendingToken);
-                                Log.d("TAG", "onCodeSent: ");
                                 moveOPTActivity(phoneNumber, s);
 
                             }
@@ -79,12 +76,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void moveChangePasswordScreen() {
-        Intent intent = new Intent(ForgotPasswordActivity.this, HomeScreenActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     private void moveOPTActivity(String phoneNumber, String verification_id) {
@@ -104,9 +95,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
                             FirebaseUser user = task.getResult().getUser();
-//                            moveChangePasswordScreen();
                             // Update UI
                         } else {
                             // Sign in failed, display a message and update the UI

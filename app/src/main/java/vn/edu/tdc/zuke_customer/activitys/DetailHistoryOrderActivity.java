@@ -29,7 +29,7 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView subtitleAppbar;
     String from = "", accountID = "";
-    TextView txtTotal, txtDate, txtStatus, txtNote, txtName, txtAddress, txtPhone;
+    TextView txtTotal, txtDate, txtStatus, txtNote, txtName, txtAddress, txtPhone, txtFinal;
     Intent intent;
     Order item = null;
     RecyclerView recyclerView;
@@ -110,7 +110,7 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         if(from != null && from.equals("payment")) {
-            startActivity(new Intent(DetailHistoryOrderActivity.this, HomeScreenActivity.class).putExtra("account", accountID));
+            startActivity(new Intent(DetailHistoryOrderActivity.this, HomeScreenActivity.class).putExtra("accountID", accountID));
         }
         onBackPressed();
         return true;

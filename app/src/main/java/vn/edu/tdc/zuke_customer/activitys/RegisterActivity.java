@@ -71,7 +71,6 @@ public class RegisterActivity extends AppCompatActivity {
     private void sendOTPCode(Account account, String name) {
         String phoneNumber = String.valueOf(edtPhone.getText());
         phoneNumber = "+84".concat(phoneNumber.substring(1, phoneNumber.length()));
-        Log.d("TAG", "sendOTPCode: " + phoneNumber);
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(phoneNumber)
                 .setTimeout(60L, TimeUnit.SECONDS)
@@ -79,9 +78,8 @@ public class RegisterActivity extends AppCompatActivity {
                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                        Log.d("TAG", " completed");
                         signInWithPhoneAuthCredential(phoneAuthCredential);
-                        moveHomeScreen();
+                        moveLoginScreen();
                     }
 
                     @Override
@@ -118,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
         intent.putExtra("name", name);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.stay);
+        finish();
     }
 
     private int checkError() {
@@ -169,7 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
                         // Sign in success, update UI with the signed-in user's information
                         FirebaseUser user = task.getResult().getUser();
                         // Update UI
-                        moveHomeScreen();
+                        moveLoginScreen();
                     } else {
                         // Sign in failed, display a message and update the UI
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -179,9 +178,10 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    private void moveHomeScreen() {
-        startActivity(new Intent(RegisterActivity.this, HomeScreenActivity.class));
+    private void moveLoginScreen() {
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
+        finish();
     }
 
     private void showWarningDialog(String notify) {

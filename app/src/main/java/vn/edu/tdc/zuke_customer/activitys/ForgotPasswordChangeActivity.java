@@ -38,35 +38,31 @@ public class ForgotPasswordChangeActivity extends AppCompatActivity {
         setContentView(R.layout.layout_forgot_password_change);
         changeStatusBarColor();
         UIinit();
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("TAG", "onClick: "+checkError());
-                if(checkError() == 1){
-                    DatabaseReference accountRef = FirebaseDatabase.getInstance().getReference("Account");
-                    accountRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for(DataSnapshot node : snapshot.getChildren()){
-                                Account account = node.getValue(Account.class);
-                                if(account.getUsername().equals(String.valueOf(phoneNumber))){
-                                    account.setPassword(String.valueOf(edtPass.getText()));
-                                    accountRef.child(node.getKey()).setValue(account.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            showSuccesDialog("Cập nhật mật khẩu thành công");
-                                        }
-                                    });
-                                }
+        btnSubmit.setOnClickListener(v -> {
+            if(checkError() == 1){
+                DatabaseReference accountRef = FirebaseDatabase.getInstance().getReference("Account");
+                accountRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot node : snapshot.getChildren()){
+                            Account account = node.getValue(Account.class);
+                            if(account.getUsername().equals(String.valueOf(phoneNumber))){
+                                account.setPassword(String.valueOf(edtPass.getText()));
+                                accountRef.child(node.getKey()).setValue(account.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        showSuccesDialog("Cập nhật mật khẩu thành công");
+                                    }
+                                });
                             }
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                }
+                    }
+                });
             }
         });
     }
@@ -104,6 +100,7 @@ public class ForgotPasswordChangeActivity extends AppCompatActivity {
     public void onBack(View view){
         startActivity(new Intent(this, OTPVerificationActivity.class));
         overridePendingTransition(R.anim.slide_in_left, android.R.anim.slide_out_right);
+        finish();
     }
     private void showWarningDialog(String notify) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ForgotPasswordChangeActivity.this, R.style.AlertDialogTheme);
@@ -148,6 +145,7 @@ public class ForgotPasswordChangeActivity extends AppCompatActivity {
         view.findViewById(R.id.buttonAction).setOnClickListener(v -> {
             alertDialog.dismiss();
             startActivity(new Intent(ForgotPasswordChangeActivity.this, LoginActivity.class));
+            finish();
         });
 
         if (alertDialog.getWindow() != null) {

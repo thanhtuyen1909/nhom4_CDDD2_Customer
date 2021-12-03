@@ -1,6 +1,7 @@
 package vn.edu.tdc.zuke_customer.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,12 +70,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         });
         holder.layout.setOnClickListener(v -> {
             if (itemClickListener != null) {
-                if(item.getStatus() == 0) itemClickListener.changeStatus(item.getKey());
+                if (item.getStatus() == 0) itemClickListener.changeStatus(item.getKey());
             }
         });
-        if(item.getStatus() == 0) {
-            holder.layout.setBackgroundColor(ContextCompat.getColor(context, R.color.my_card));
-        } else holder.layout.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        if (item.getStatus() == 0) {
+            holder.content.setTextColor(ContextCompat.getColor(context, R.color.black));
+            holder.content.setTypeface(holder.content.getTypeface(), Typeface.BOLD);
+        } else {
+            holder.content.setTextColor(ContextCompat.getColor(context, R.color.colorTextPrimary));
+            holder.content.setTypeface(holder.content.getTypeface(), Typeface.NORMAL);
+        }
     }
 
     private String timeDiff(String created, Date now) {
@@ -126,6 +131,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public interface ItemClickListener {
         void delete(String id);
+
         void changeStatus(String id);
     }
 }

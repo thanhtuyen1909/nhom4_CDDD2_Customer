@@ -13,6 +13,7 @@ public class Order implements Parcelable {
     private String shipperID;
     private int status;
     private int total;
+    private int remain;
     private String phone;
     private String name;
 
@@ -25,6 +26,7 @@ public class Order implements Parcelable {
         shipperID = in.readString();
         status = in.readInt();
         total = in.readInt();
+        remain = in.readInt();
         phone = in.readString();
         name = in.readString();
     }
@@ -39,6 +41,7 @@ public class Order implements Parcelable {
         dest.writeString(shipperID);
         dest.writeInt(status);
         dest.writeInt(total);
+        dest.writeInt(remain);
         dest.writeString(phone);
         dest.writeString(name);
     }
@@ -117,14 +120,6 @@ public class Order implements Parcelable {
         this.status = status;
     }
 
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -141,11 +136,27 @@ public class Order implements Parcelable {
         this.name = name;
     }
 
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public int getRemain() {
+        return remain;
+    }
+
+    public void setRemain(int remain) {
+        this.remain = remain;
+    }
+
     // Contructor
     public Order() {
     }
 
-    public Order(String orderID, String accountID, String address, String created_at, String note, String shipperID, int status, int total) {
+    public Order(String orderID, String accountID, String address, String created_at, String note, String shipperID, int status, int total, int remain) {
         this.orderID = orderID;
         this.accountID = accountID;
         this.address = address;
@@ -154,5 +165,6 @@ public class Order implements Parcelable {
         this.shipperID = shipperID;
         this.status = status;
         this.total = total;
+        this.remain = remain;
     }
 }

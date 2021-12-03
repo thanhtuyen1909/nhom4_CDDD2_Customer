@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import vn.edu.tdc.zuke_customer.R;
 import vn.edu.tdc.zuke_customer.adapters.NotificationAdapter;
@@ -91,7 +92,7 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void data() {
-        notiRef.addValueEventListener(new ValueEventListener() {
+        notiRef.orderByChild("created_at").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listNotify.clear();
@@ -102,6 +103,7 @@ public class NotificationActivity extends AppCompatActivity {
                         listNotify.add(noti);
                     }
                 }
+                Collections.reverse(listNotify);
                 notificationAdapter.notifyDataSetChanged();
             }
 

@@ -1,15 +1,11 @@
 package vn.edu.tdc.zuke_customer.activitys;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +20,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +33,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import vn.edu.tdc.zuke_customer.R;
 import vn.edu.tdc.zuke_customer.adapters.CommentAdapter;
@@ -46,6 +44,7 @@ import vn.edu.tdc.zuke_customer.adapters.ProductAdapter;
 import vn.edu.tdc.zuke_customer.data_models.Cart;
 import vn.edu.tdc.zuke_customer.data_models.CartDetail;
 import vn.edu.tdc.zuke_customer.data_models.Favorite;
+import vn.edu.tdc.zuke_customer.data_models.Offer;
 import vn.edu.tdc.zuke_customer.data_models.OfferDetail;
 import vn.edu.tdc.zuke_customer.data_models.Product;
 import vn.edu.tdc.zuke_customer.data_models.Rating;
@@ -58,7 +57,7 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
     Toolbar toolbar;
     Product item = null;
     Intent intent;
-    TextView subtitleAppbar, price, sold, price_main, name, description, rating, detail, title, mess;
+    TextView subtitleAppbar, price, sold, price_main, name, description, rating, detail, title, mess, txtDiscount, txtSoldOff;
     ImageView imgProduct, addCart, contact;
     ToggleButton button_favorite;
     Button btnMuaNgay;
@@ -69,9 +68,11 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
     ArrayList<Product> listRelate;
     ArrayList<Rating> listComment;
     CommentAdapter commentAdapter;
+    int maxSale;
 
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference offerDetailRef = db.getReference("Offer_Details");
+    DatabaseReference offerRef = db.getReference("Offers");
     DatabaseReference proRef = db.getReference("Products");
     DatabaseReference ratingRef = db.getReference("Rating");
     DatabaseReference favoriteRef = db.getReference("Favorite");
@@ -114,6 +115,8 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
         detail = findViewById(R.id.detail);
         rcvComment = findViewById(R.id.rcvComment);
         conRating = findViewById(R.id.conRating);
+        txtDiscount = findViewById(R.id.textDiscount);
+        txtSoldOff = findViewById(R.id.textSoldOff);
         listComment = new ArrayList<>();
         listRelate = new ArrayList<>();
         productRelate = new ProductAdapter(this, listRelate);
@@ -151,6 +154,72 @@ public class DetailProductActivity extends AppCompatActivity implements View.OnC
             imageRef.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri).fit().into(imgProduct));
 
             //Giá
+            offerDetailRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<OfferDetail> list = new ArrayList<>();
+                    boolean check = true;
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        OfferDetail offerDetail = snapshot1.getValue(OfferDetail.class);
+                        if(offerDetail.getProductID().equals(item.getKey())) {
+                            check = false;
+                            offerRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    maxSale = 0;
+                                    for (DataSnapshot snapshot2 : snapshot.getChildren()) {
+                                        Offer offer = snapshot2.getValue(Offer.class);
+                                        offer.setKey(snapshot2.getKey());
+                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                                        long startDay = sdf.parse(offer.getStartDate(), new ParsePosition(0)).getTime();
+                                        long endtDay = sdf.parse(offer.getEndDate(), new ParsePosition(0)).getTime();
+                                        long now = new Date().getTime();
+                                        if (startDay == endtDay) {
+                                            endtDay += 1000 * 60 * 60 * 24 - 1;
+                                        }
+                                        if (offer.getKey().equals(offerDetail.getOfferID()) && now <= endtDay && now >= startDay) {
+                                            list.add(offerDetail);
+                                        }
+                                    }
+                                    for (OfferDetail offerDetail : list) {
+                                        if (offerDetail.getPercentSale() > maxSale) {
+                                            maxSale = offerDetail.getPercentSale();
+                                        }
+                                    }
+                                    if (maxSale != 0) {
+                                        txtDiscount.setVisibility(View.VISIBLE);
+                                        txtDiscount.setText(maxSale + "%");
+                                        price_main.setVisibility(View.VISIBLE);
+                                        int discount = item.getPrice() / 100 * (100 - maxSale);
+                                        price.setText(formatPrice(discount));
+                                        price_main.setText(formatPrice(item.getPrice()));
+                                        price_main.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                    } else {
+                                        txtDiscount.setVisibility(View.INVISIBLE);
+                                        price.setText(formatPrice(item.getPrice()));
+                                        price_main.setVisibility(View.GONE);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }
+                    if(check) {
+                        txtDiscount.setVisibility(View.INVISIBLE);
+                        price.setText(formatPrice(item.getPrice()));
+                        price_main.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
             offerDetailRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

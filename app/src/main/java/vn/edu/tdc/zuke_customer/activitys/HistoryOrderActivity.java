@@ -243,7 +243,7 @@ public class HistoryOrderActivity extends AppCompatActivity implements PopupMenu
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Order order = snapshot.getValue(Order.class);
                             order.setOrderID(snapshot.getKey());
-                            if (accountID.equals(order.getAccountID()) && order.getStatus() == 3) {
+                            if (accountID.equals(order.getAccountID()) && (order.getStatus() == 3 || order.getStatus() == 4 || order.getStatus() == 5)) {
                                 list.add(order);
                             }
                         }
@@ -265,7 +265,7 @@ public class HistoryOrderActivity extends AppCompatActivity implements PopupMenu
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Order order = snapshot.getValue(Order.class);
                             order.setOrderID(snapshot.getKey());
-                            if (accountID.equals(order.getAccountID()) && order.getStatus() == 4) {
+                            if (accountID.equals(order.getAccountID()) && (order.getStatus() == 6 || order.getStatus() == 7 || order.getStatus() == 8)) {
                                 list.add(order);
                             }
                         }
@@ -287,7 +287,7 @@ public class HistoryOrderActivity extends AppCompatActivity implements PopupMenu
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Order order = snapshot.getValue(Order.class);
                             order.setOrderID(snapshot.getKey());
-                            if (accountID.equals(order.getAccountID()) && order.getStatus() == 0){
+                            if (accountID.equals(order.getAccountID()) && (order.getStatus() == 9 || order.getStatus() == 10 || order.getStatus() == 0)){
                                 list.add(order);
                             }
                         }
