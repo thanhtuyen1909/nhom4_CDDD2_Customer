@@ -2,6 +2,8 @@ package vn.edu.tdc.zuke_customer.activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 
 import vn.edu.tdc.zuke_customer.R;
 import vn.edu.tdc.zuke_customer.adapters.OrderDetailAdapter;
+import vn.edu.tdc.zuke_customer.data_models.Detail_Sale;
 import vn.edu.tdc.zuke_customer.data_models.Order;
 import vn.edu.tdc.zuke_customer.data_models.OrderDetail;
 
@@ -29,7 +32,8 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView subtitleAppbar;
     String from = "", accountID = "";
-    TextView txtTotal, txtDate, txtStatus, txtNote, txtName, txtAddress, txtPhone, txtFinal;
+    TextView txtTotal, txtDate, txtStatus, txtNote, txtName, txtAddress, txtPhone, txtTotalSale;
+    LinearLayout detail_sale;
     Intent intent;
     Order item = null;
     RecyclerView recyclerView;
@@ -38,6 +42,7 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference statusRef = db.getReference("Status");
     DatabaseReference order_detailRef = db.getReference("Order_Details");
+    DatabaseReference detailSaleRef = db.getReference("Detail_Sale");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +71,8 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
         txtName = findViewById(R.id.txt_name);
         txtAddress = findViewById(R.id.txt_address);
         txtPhone = findViewById(R.id.txt_phone);
+        detail_sale = findViewById(R.id.detail_sale);
+        txtTotalSale = findViewById(R.id.txt_tonggiam);
 
         // Đổ dữ liệu recycleview:
         recyclerView = findViewById(R.id.recyclerView);
@@ -84,6 +91,7 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
             txtNote.setText(item.getNote());
             txtDate.setText(item.getCreated_at());
             txtTotal.setText(formatPrice(item.getTotal()));
+            addViewDetailSale();
             statusRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -105,6 +113,36 @@ public class DetailHistoryOrderActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void addViewDetailSale() {
+        detailSaleRef.child(item.getOrderID()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int totalSale = 0;
+                for(DataSnapshot node : snapshot.getChildren()) {
+                    Detail_Sale detailSale = node.getValue(Detail_Sale.class);
+                    View itemDetailSale = getLayoutInflater().inflate(R.layout.item_detail_sale, null, false);
+                    TextView txtNameDis = itemDetailSale.findViewById(R.id.txtNameDiscount);
+                    TextView txtDis = itemDetailSale.findViewById(R.id.txtDiscount);
+
+                    txtNameDis.setText(detailSale.getName());
+                    txtDis.setText(formatPrice(Integer.parseInt(detailSale.getDiscount().split(" ")[0])) + " " + detailSale.getDiscount().split(" ")[1]);
+                    totalSale += Integer.parseInt(detailSale.getDiscount().split(" ")[0]);
+                    detail_sale.addView(itemDetailSale);
+                }
+                if(totalSale != 0) {
+                    txtTotalSale.setText(formatPrice(totalSale));
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     @Override
