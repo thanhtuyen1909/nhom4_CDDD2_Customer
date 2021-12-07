@@ -44,6 +44,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     Handler handler = new Handler();
     EditText editTextPasswordConfirm, editTextPassword, editTextNewPassword;
     DatabaseReference accountRef = FirebaseDatabase.getInstance().getReference("Account/" + accountID);
+    boolean check = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,20 +75,29 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 accountRef.child("password").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        checkOldPass();
                         if (checkError() == 1) {
-                            // Nếu đúng thì thay đổi dữ liệu + thông báo success -> đóng dialog
-                            if (snapshot.getValue(String.class).equals(editTextPassword.getText() + "")) {
-                                accountRef.child("password").setValue(editTextPassword.getText() + "").addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        showSuccesDialog();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (check) {
+
+                                            accountRef.child(accountID).child("password").setValue(editTextNewPassword.getText() + "").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    showSuccesDialog();
+                                                }
+                                            });
+                                        }
+                                        // Nếu sai thì thông báo warning
+                                        else {
+                                            showWarningDialog("Vui lòng kiểm tra lại mật khẩu!");
+                                        }
                                     }
-                                });
-                            }
-                            // Nếu sai thì thông báo warning
-                            else {
-                                showWarningDialog("Vui lòng kiểm tra lại mật khẩu!");
-                            }
+
+                            }, 200);
+                            // Nếu đúng thì thay đổi dữ liệu + thông báo success -> đóng dialog
+
                         }
                     }
 
@@ -119,6 +129,26 @@ public class ChangePasswordActivity extends AppCompatActivity {
             return -1;
         }
         return 1;
+    }
+
+    private void checkOldPass() {
+        accountRef.child(accountID).child("password").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String pass = snapshot.getValue(String.class);
+                Log.d("TAG",pass);
+
+                if (!pass.equals(editTextPassword.getText()+"")) {
+                    showWarningDialog("Mật khẩu cũ không đúng !");
+                    check = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void showSuccesDialog() {

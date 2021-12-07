@@ -46,12 +46,13 @@ public class ChatActivity extends AppCompatActivity {
     EditText edtContent;
     ImageButton btnSend, btnAttach;
     Intent intent;
-    String accountID = "", accountTVV = "AccountTTV";
+    String accountID = "", accountTVV = "";
     RecyclerView recyclerView;
     ArrayList<Chat> listMessage;
     MessageAdapter adapter;
 
     DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chats");
+    DatabaseReference accRef = FirebaseDatabase.getInstance().getReference("Account");
     ValueEventListener seenListener;
 
     //permissions constants
@@ -237,6 +238,21 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
                 recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // lay accountTVV:
+        accRef.orderByChild("role_id").equalTo(7).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot node : snapshot.getChildren()) {
+                    accountTVV = node.getKey();
+                }
             }
 
             @Override

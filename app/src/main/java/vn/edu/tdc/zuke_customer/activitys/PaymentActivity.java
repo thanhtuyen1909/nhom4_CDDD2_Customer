@@ -3,7 +3,9 @@ package vn.edu.tdc.zuke_customer.activitys;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +54,7 @@ public class PaymentActivity extends AppCompatActivity {
     ArrayList<CartDetail> listCart;
     CartDetailTTAdapter cartAdapter;
     int total = 0;
+    boolean check = false;
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     DatabaseReference cartRef = db.getReference("Cart");
     DatabaseReference detailRef = db.getReference("Cart_Detail");
@@ -67,7 +70,7 @@ public class PaymentActivity extends AppCompatActivity {
     String address = "", accountID = "";
     String discountByCode = "", discountByMember = "";
     String typeCode = "", typeCus = "";
-
+    int saleByCode = 0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,61 +134,66 @@ public class PaymentActivity extends AppCompatActivity {
                                 code_cusRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot1) {
+                                        check = false;
                                         for (DataSnapshot node1 : snapshot1.getChildren()) {
                                             DiscountCode_Customer temp = node1.getValue(DiscountCode_Customer.class);
                                             if (temp.getCustomer_id().equals(customer.getKey()) && temp.getCode().equals(String.valueOf(edtDiscountCode.getText()))) {
                                                 discountcodeRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot snapshot2) {
-                                                        boolean check = false;
+
                                                         for (DataSnapshot node2 : snapshot2.getChildren()) {
                                                             DiscountCode code = node2.getValue(DiscountCode.class);
-                                                            if (code.getCode().equals(String.valueOf(edtDiscountCode.getText()))) {
+                                                            if (code.getCode().equals(String.valueOf(temp.getCode()))){
                                                                 check = true;
                                                                 if (code.getType().equals("%")) {
                                                                     typeCode = code.getCode() + ": Giảm tổng đơn hàng (%)";
                                                                     int value = code.getValue();
                                                                     int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
                                                                     int discount = totalPrice / 100 * value;
+                                                                    saleByCode = discount;
                                                                     discountByCode = discount + " (" + value + "%)";
                                                                     int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
                                                                     int oldDiscount = toPrice(txtDiscount.getText() + "");
                                                                     discount += oldDiscount;
+
                                                                     txtDiscount.setText(formatPrice(discount));
                                                                     txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
-                                                                } else if (code.getType().equals("VND")) {
+                                                                }
+                                                                else if (code.getType().equals("VND")) {
                                                                     typeCode = code.getCode() + ": Giảm tổng đơn hàng (VND)";
                                                                     int value = code.getValue();
+                                                                    saleByCode = value;
                                                                     discountByCode = value + "";
                                                                     int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
                                                                     int discount = value;
                                                                     int oldDiscount = toPrice(txtDiscount.getText() + "");
                                                                     discount += oldDiscount;
+
                                                                     int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
                                                                     txtDiscount.setText(formatPrice(discount));
                                                                     txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
-                                                                } else if (code.getType().equals("Free ship")) {
+                                                                }
+                                                                else if (code.getType().equals("Free ship")) {
                                                                     typeCode = code.getCode() + ": Free ship";
                                                                     int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
-                                                                    txtDiscount.setText(formatPrice(transportFee));
+
                                                                     int totalPrice = toPrice(String.valueOf(txtTotal.getText()));
-                                                                    int discount = toPrice(String.valueOf(txtDiscount.getText()));
+
                                                                     int oldDiscount = toPrice(txtDiscount.getText() + "");
-                                                                    discount += oldDiscount;
-                                                                    txtRemain.setText(formatPrice(totalPrice + transportFee - discount));
+                                                                    Log.d("TAG",""+oldDiscount);
+
+                                                                    oldDiscount += transportFee;
+                                                                    Log.d("TAG",""+oldDiscount);
+                                                                    saleByCode = transportFee;
+                                                                    txtDiscount.setText(formatPrice(oldDiscount));
+                                                                    txtRemain.setText(formatPrice(totalPrice + transportFee - oldDiscount));
 
                                                                 }
-
                                                             }
                                                         }
-                                                        if (!check) {
-                                                            int oldDiscount = toPrice(txtDiscount.getText() + "");
+                                                        Log.d("TAG","check "+saleByCode);
 
-                                                            txtDiscount.setText(formatPrice(oldDiscount));
-                                                            int total = toPrice(String.valueOf(txtTotal.getText()));
-                                                            int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
-                                                            txtRemain.setText(formatPrice(total + transportFee - oldDiscount));
-                                                        }
                                                     }
 
                                                     @Override
@@ -194,6 +202,17 @@ public class PaymentActivity extends AppCompatActivity {
                                                     }
                                                 });
                                             }
+
+                                        }
+                                        if (!check) {
+                                            int oldDiscount = toPrice(txtDiscount.getText() + "");
+                                            Log.d("TAG","sale : "+ saleByCode);
+                                            Log.d("TAG","old : "+ oldDiscount);
+                                            oldDiscount -= saleByCode;
+                                            txtDiscount.setText(formatPrice(oldDiscount));
+                                            int total = toPrice(String.valueOf(txtTotal.getText()));
+                                            int transportFee = toPrice(String.valueOf(txtTransportFee.getText()));
+                                            txtRemain.setText(formatPrice(total + transportFee - oldDiscount));
                                         }
                                     }
 
@@ -427,6 +446,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 if (dataSnapshot1.getKey().equals(customer.getType_id())) {
                                     int discount = dataSnapshot1.child("discount").getValue(Integer.class);
                                     int discountValue = total * discount / 100;
+                                    Log.d("TAG",discountValue+"");
                                     discountByMember = discountValue + " (" + discount + "%)";
                                     typeCus = "Loại khách hàng: " + dataSnapshot1.child("name").getValue(String.class);
                                     txtDiscount.setText(formatPrice(discountValue));

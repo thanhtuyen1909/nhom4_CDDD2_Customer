@@ -90,9 +90,6 @@ public class FacebookAuthActivity extends LoginActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Log.d("TAG", "onComplete:  " + user.getUid());
-                            Log.d("TAG", "onComplete:  " + user.getPhoneNumber());
-                            Log.d("TAG", "onComplete:  " + user.getDisplayName());
                             DatabaseReference accountRef = FirebaseDatabase.getInstance().getReference("Account");
                             accountRef.addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -132,6 +129,7 @@ public class FacebookAuthActivity extends LoginActivity {
                                         customer.setDob("");
                                         customer.setEmail("");
                                         customer.setType_id("Type");
+                                        customer.setTotalPayment(0);
                                         DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("Customer");
                                         customerRef.push().setValue(customer);
                                         updateUI(user);

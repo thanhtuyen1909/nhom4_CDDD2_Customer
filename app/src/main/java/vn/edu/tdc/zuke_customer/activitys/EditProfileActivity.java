@@ -154,9 +154,26 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         if (v == imgCus) {
             chooseImage();
         } else if (v == btnChangePass) {
-            intent = new Intent(EditProfileActivity.this, ChangePasswordActivity.class);
-            intent.putExtra("accountID", accountID);
-            startActivity(intent);
+            DatabaseReference accountRef = FirebaseDatabase.getInstance().getReference("Account");
+            accountRef.child(accountID).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String username = snapshot.getValue(String.class);
+                    if(username.equals("")){
+                        showWarningDialog("Tài khoản liên kết Facebook không thể sử dụng chức năng này");
+                    }else {
+                        intent = new Intent(EditProfileActivity.this, ChangePasswordActivity.class);
+                        intent.putExtra("accountID", accountID);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
         } else if (v == btnSubmit) {
             AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this, R.style.AlertDialogTheme);
             View view = LayoutInflater.from(EditProfileActivity.this).inflate(

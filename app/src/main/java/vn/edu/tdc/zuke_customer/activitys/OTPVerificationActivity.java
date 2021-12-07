@@ -243,6 +243,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
                                 customer.setDob("");
                                 customer.setEmail("");
                                 customer.setType_id("Type");
+                                customer.setTotalPayment(0);
                                 DatabaseReference customerRef = FirebaseDatabase.getInstance().getReference("Customer");
                                 customerRef.push().setValue(customer);
                                 //back to home
